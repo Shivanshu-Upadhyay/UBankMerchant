@@ -1,0 +1,95 @@
+.tablecontainer2{
+    background: #FFFFFF;
+    box-shadow: 0px 18px 26px rgb(0 0 0 / 5%);
+    border-radius: 20px;
+    width:100% !important;
+    overflow: auto;
+    max-height: calc(100vh - 200px);
+    
+}
+
+.tablebold {
+  white-space: nowrap;
+  font-family: "Mulish";
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 14px;
+  line-height: 23px;
+  color: #000000;
+  width: 400px;
+}
+
+.waiting {
+  border-radius: 30px;
+  font-family: "Mulish";
+  font-style: normal;
+  font-weight: 700;
+  background: transparent;
+  height: 30px;
+  line-height: 0px;
+}
+
+.showingdata {
+  font-family: "Mulish";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  color: #000000;
+}
+
+.tablestatusbuttonPend{
+  border: 1px solid #F9501A;
+    color: #F9501A;
+    padding: 7px 30px;
+    width: 100%;
+    background-color: transparent;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 400;
+
+}
+.tablestatusbuttonComp{
+  border: 1px solid #2bc155;
+    color: #2bc155;
+    padding: 7px 30px;
+    width: 100%;
+    background-color: transparent;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 400;
+
+}
+.tablestatusbuttonWait{
+  border: 1px solid #F9501A;
+    color: #F9501A;
+    padding: 7px 30px;
+    width: 100%;
+    background-color: transparent;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 400;
+
+}
+.tablestatusbuttonFail{
+  border: 1px solid red;
+    color: red;
+    padding: 7px 30px;
+    width: 100%;
+    background-color: transparent;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 400;
+
+}
+.tablestatusbuttonRef{
+  border: 1px solid #F9501A;
+    color: #F9501A;
+    padding: 7px 30px;
+    width: 100%;
+    background-color: transparent;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 400;
+
+}

@@ -1,0 +1,120 @@
+.heading {
+  font-style: normal;
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 43px;
+  color: #000000;
+}
+
+.firstBlock {
+  background: #ffffff;
+  -webkit-box-shadow: rgb(0 0 0 / 12%) 0px 1px 4px 1px;
+  box-shadow: rgb(0 0 0 / 12%) 0px 1px 4px 1px;
+  border: 1px solid #ced4da;
+  border-radius: 20px;
+  padding: 20px;
+  
+}
+ .secondBlock {
+  background: #ffffff !important;
+  -webkit-box-shadow: rgb(0 0 0 / 12%) 0px 1px 4px 1px;
+  box-shadow: rgb(0 0 0 / 12%) 0px 1px 4px 1px;
+  border: 1px solid #ced4da;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+
+
+ul li{
+    list-style: none;
+    margin-bottom: 40px;
+    font-family: 'Mulish';
+    font-style: normal;
+    font-weight: 700;
+    color: #000000;
+    white-space: nowrap;
+    cursor: pointer;
+}
+ 
+.formBlock{
+    height: 37rem;
+    overflow: scroll;
+}
+
+.saveButton{
+    background: #1EAAE7;
+    color: #FFFFFF;
+    border-radius: 50px;
+    height: 100%;
+    border: none;
+    padding: 8px 40px;
+   
+}
+
+form::-webkit-scrollbar {
+  width: 0px;
+}
+
+.formBlock::-webkit-scrollbar {
+  width: 0px;
+}
+
+.profileHeading{
+    font-size: 16px;
+    font-weight: 700;
+    color: #000;
+    border-bottom: 1px solid #ced4da;
+    padding-bottom: 4px;
+    margin-bottom: 15px;
+}
+
+
+
+label{
+     font-family: 'Mulish';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 28px;
+    color: #000000;
+}
+
+.boldOption{
+   font-weight: 800 !important;
+}
+
+.form-subtitle {
+    font-weight: 700;
+    color: #008080 !important;
+    font-size: 15px;
+    margin: 8px 0;
+}
+
+.keyBlock{
+     background: #FFFFFF;
+     width: 250px;
+    -webkit-box-shadow: rgb(0 0 0 / 12%) 0px 1px 4px 1px;
+    box-shadow: rgb(0 0 0 / 12%) 0px 1px 4px 1px;
+    border: 1px solid #ced4da;
+    border-radius: 20px;
+    padding: 20px
+}
+
+.activetab{
+    font-family: 'Mulish';
+    font-style: normal;
+    font-weight: 800;
+    color: #000000;
+    font-size: large;
+    white-space: nowrap;
+}
+
+input{
+     padding: 10px !important;
+     text-align: start;
+}
+
+select{
+  text-align: start;
+}

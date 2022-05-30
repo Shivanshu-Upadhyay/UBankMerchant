@@ -1,0 +1,42 @@
+.cardbox {
+  width: 23%;
+  border-radius: 20px;
+  align-items: center;
+  padding: 22px 15px;
+}
+
+
+.namedata{
+    font-family: 'Mulish';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 25px;
+}
+.numberData{
+    color: #66666699;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    margin: 0;
+    padding: 0;
+}
+
+.Dcardbg1 {
+  background: #ac39d426;
+   
+}
+.Dcardbg2 {
+  background: #3dc89f26;
+   
+}
+.Dcardbg3 {
+  background: #461ee126;
+   
+}
+.Dcardbg4 {
+  background: #1eaae733;
+   
+}
+

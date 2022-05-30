@@ -1,0 +1,16 @@
+::placeholder {
+  opacity: 1 !important; /* Firefox */
+  font-weight: bold !important;
+  font-size: 0.9rem !important;
+  line-height: 2rem !important;
+  color: #bfbfbf !important;
+}
+
+input{
+  color: #BFBFBF;
+}
+
+a{
+  text-decoration: none !important;
+}
+

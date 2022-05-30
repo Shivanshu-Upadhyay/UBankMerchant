@@ -1,0 +1,110 @@
+.Parent {
+  width: 100%;
+  height: 100%;
+}
+
+.child {
+  background: #ffffff;
+  -webkit-box-shadow: rgb(0 0 0 / 12%) 0px 1px 4px 1px;
+  box-shadow: rgb(0 0 0 / 12%) 0px 1px 4px 1px;
+  border: 1px solid #ced4da;
+  border-radius: 20px;
+  padding: 20px;
+  width: 100%;
+}
+
+.heading {
+   font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 43px;
+  color: #000000;
+}
+
+.imgdiv {
+  border: 2px solid #1eaae7;
+  padding: 2px;
+  border-radius: 50%;
+  position: relative;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+}
+
+.UploadImg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  border-radius: 50%;
+  object-fit: cover;
+  z-index: 0;
+  
+}
+
+.uploadtext {
+  color: #555 !important;
+  font-weight: 700;
+  font-size: 20px;
+  text-align: center;
+}
+
+.inputField {
+  background: #ffffff;
+  width: 90%;
+  border: 1px solid #c4c4c4;
+  text-align: left;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}
+
+
+.iconfix{
+  position: relative;
+}
+
+.eye{
+ position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 25px;
+  height: 25px;
+}
+
+.cancel{
+    background: #F4F5F9;
+    -webkit-box-shadow: 0px 0px 6px rgb(0 0 0 / 25%);
+    box-shadow: 0px 0px 6px rgb(0 0 0 / 25%);
+    border-radius: 30px;
+    font-family: 'Mulish';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 19px;
+    color: #969B9F;
+    width: 100px;
+    height: 50px;
+    margin: 0;
+    border: none;
+}
+
+.changepassBtn{
+    background: #1EAAE7;
+    border-radius: 30px;
+    width: 200px;
+    height: 50px;
+    margin: 0;
+    margin-left: 10px;
+    border: none;
+    color: #ffffff;
+}
+.file{
+    opacity: 0;
+    position: absolute;
+    top: 29px;
+    left: 0;
+    z-index: 999;
+    
+}

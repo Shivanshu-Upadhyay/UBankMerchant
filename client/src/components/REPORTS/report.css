@@ -1,0 +1,29 @@
+.containerShadow {
+  background: #ffffff;
+  -webkit-box-shadow: rgb(0 0 0 / 12%) 0px 1px 4px 1px;
+  box-shadow: rgb(0 0 0 / 12%) 0px 1px 4px 1px;
+  border: 1px solid #ced4da;
+  border-radius: 20px;
+  overflow-x: hidden;
+}
+.downloadbtn1{
+    background: #1EAAE7;
+    color: #FFFFFF;
+    border-radius: 50px;
+    padding: 15px 25px;
+    border: none;
+    font-size: 14px;
+   
+}
+.border {
+  border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+  margin-inline: 17px;
+}
+.heading {
+  font-family: "Mulish";
+  font-style: normal;
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 43px;
+  color: #000000;
+}

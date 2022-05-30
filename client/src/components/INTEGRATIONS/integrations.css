@@ -1,0 +1,38 @@
+.heading {
+  font-style: normal;
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 43px;
+  color: #000000;
+}
+
+.integrationBox {
+  background: #ffffff;
+  -webkit-box-shadow: rgb(0 0 0 / 12%) 0px 1px 4px 1px;
+  box-shadow: rgb(0 0 0 / 12%) 0px 1px 4px 1px;
+  border: 1px solid #ced4da;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.firstHeading{
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 39px;
+    color: #000000;
+}
+
+.secondBlock{
+        background: #f5fafe;
+        border-radius: 20px;
+}
+
+.pdfImg{
+    width: 80px;
+}
+
+a{
+    text-decoration: none;
+    font-weight: 700;
+}

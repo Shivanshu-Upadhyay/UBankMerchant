@@ -1,0 +1,102 @@
+.Baged {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 10px;
+  border-radius: 10px;
+  background-color: #ac39d4;
+  margin-right: 10px;
+  height: 4rem;
+  margin-left: 5px;
+}
+.heading{
+    font-family: 'Mulish';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 21px;
+    line-height: 26px;
+    color: #000000;
+}
+.maincontainer {
+  box-shadow: rgb(0 0 0 / 12%) 0px 1px 4px 1px;
+  border: 1px solid #ced4da;
+  border-radius: 20px;
+  width: 500px;
+}
+
+.text1 {
+  font-family: "Mulish";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 19px;
+  color: #000000;
+  margin: 0;
+  margin-bottom: 4px;
+}
+
+.text2 {
+  font-style: normal;
+  font-weight: 900;
+  font-size: 14px;
+  line-height: 21px;
+  color: #000000;
+  margin: 0;
+}
+
+.progressBlock {
+  background-color: #ac39d4;
+}
+
+.firstProgress {
+  padding: 15px;
+  width: 179.65px;
+  height: 179.65px;
+  background: #ac39d4;
+  border-radius: 30px;
+  margin-bottom: 24px;
+  max-width: 100%;
+}
+.secondProgress {
+  padding: 15px;
+  width: 179.65px;
+  height: 179.65px;
+  background: #41d4a8;
+  border-radius: 30px;
+  margin-bottom: 24px;
+  max-width: 100%;
+}
+.thirdProgress {
+  padding: 15px;
+  width: 179.65px;
+  height: 179.65px;
+  background: #ffffff;
+  border: 1px solid #1eb6e7;
+  border-radius: 30px;
+  margin-bottom: 24px;
+  max-width: 100%;
+}
+.foreProgress {
+  padding: 15px;
+  width: 179.65px;
+  height: 179.65px;
+  background: #471ee8;
+  border-radius: 30px;
+  margin-bottom: 24px;
+  max-width: 100%;
+}
+
+.downtext {
+  text-align: center;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  color: #ffffff;
+  margin-top: 10px;
+}
+
+.block2{
+   margin-left: 70px;
+   padding-top: 10px;
+}

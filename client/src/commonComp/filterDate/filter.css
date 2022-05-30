@@ -1,0 +1,40 @@
+.filterdate{
+    border-radius: 60px;
+    font-family: 'Mulish';
+    padding: 15px 5px;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 18px;
+    color: #9C9C9C;
+    border: none;
+    background: #FFFFFF;
+    width: 90%;
+   box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+   
+}
+
+.buttondate{
+    background: #1EAAE7;
+    color: #FFFFFF;
+    border-radius: 50px;
+    border: none;
+    padding: 10px 40px;
+    width: 100%;
+    font-weight: 600;
+}
+
+.lastbottonfilter{
+    background: #1EAAE7;
+    color: #FFFFFF;
+    border-radius: 50px;
+    border: none;
+    padding: 10px 40px;
+    width: 100%;
+    font-weight: 600;
+}
+
+.dateinput {
+border: 1px solid #8292a2;
+width: 250px;
+
+}

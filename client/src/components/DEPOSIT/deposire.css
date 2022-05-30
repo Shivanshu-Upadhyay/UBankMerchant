@@ -1,0 +1,45 @@
+.heading {
+  font-family: "Mulish";
+  font-style: normal;
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 43px;
+  color: #000000;
+}
+
+
+
+.tablecontainer{
+    background-color: #fff;
+    border-radius: 20px;
+}
+
+.downloadDeposite{
+   background: #1EAAE7;
+    color: #FFFFFF;
+    border-radius: 50px;
+    border: none;
+    padding: 10px 40px;
+     border-radius: 60px;
+    font-family: 'Mulish';
+    padding: 15px 10px;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 18px;
+    border: none;
+    width: 100%;
+   box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+/* @media only screen and (max-width: 992px) {
+  .col-3 {
+    width: 48%;
+    margin-bottom: 10px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .col-3 {
+    width: 98%;
+    margin-bottom: 10px;
+  }
+} */

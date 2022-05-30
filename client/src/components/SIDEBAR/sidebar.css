@@ -1,0 +1,119 @@
+.appBar {
+  border: 1px solid #ced4da;
+  -webkit-box-shadow: none;
+  box-shadow: none !important;
+  background-color: #f9f9f9 !important;
+}
+.appBarcom {
+  display: flex;
+  justify-content: space-between;
+}
+
+.css-1hsz34s-MuiDrawer-docked .MuiDrawer-paper {
+  background-color: #f9f9f9 !important;
+}
+
+.navLeft {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  color: black;
+}
+
+.username {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.sidebarcontainer {
+  display: flex;
+  align-items: center;
+}
+
+.linkNAme {
+  font-family: "Mulish";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 24px;
+  color: #bfbfbf;
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.linkNAme:hover {
+  color: #000 !important;
+  font-family: "Mulish";
+  font-style: normal;
+  font-weight: 800;
+  font-size: 16px;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+.marginleft {
+  margin-left: 20px;
+  margin-right: 5px;
+}
+.iconstyle {
+  width: 20px;
+}
+.iconcontainer {
+  padding: 8px 10px;
+  padding: 8px 10px;
+  border-radius: 50%;
+}
+
+.iconActive {
+  background: #1eaae7;
+}
+
+.activeClass {
+  color: #000 !important;
+  font-family: "Mulish";
+  font-style: normal;
+  font-weight: 800;
+  font-size: 16px;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+.openClose {
+  
+  position: absolute;
+  top: 20rem;
+  z-index: 9999;
+  left: 215px;
+  
+  
+}
+.openClose2 {
+  
+  position: absolute;
+  top: 20rem;
+  z-index: 9999;
+  left: 45px;
+  
+  
+}
+
+.parentAll{
+    position: relative;
+}
+
+
+.bgcolor{
+   background-color: #f9f9f9 !important;
+}
+
+
+
+/* width */
+.css-1hsz34s-MuiDrawer-docked .MuiDrawer-paper::-webkit-scrollbar {
+  width: 0px !important;
+}
+/* width */
+.css-2dum1v-MuiDrawer-docked .MuiDrawer-paper::-webkit-scrollbar {
+  width: 0px !important;
+}

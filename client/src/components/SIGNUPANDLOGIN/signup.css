@@ -1,0 +1,306 @@
+.main {
+  background: #1caae8;
+  padding: 20px 20px 40px 20px;
+  position: relative;
+  border-radius: 0px;
+}
+
+
+.ubank {
+  background: #fff;
+  margin: 10px 0 10px 0;
+  width: 166px !important;
+}
+
+.text1 {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 28px;
+  color: #ffffff;
+}
+a {
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 28px;
+}
+
+.button1 {
+  padding: 5px 20px 5px 20px !important;
+  height: 40px;
+  background: #ffffff;
+  border-radius: 10px;
+  border: none;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 28px;
+  color: #1caae8;
+  margin-left: 20px;
+}
+.secondblock {
+  width: 90%;
+  height: 80vh;
+  padding: 20px;
+  margin-top: 20px;
+  background: #fff;
+  border-radius: 30px;
+  margin-top: 30px;
+}
+.learnMoreSign {
+  border: 1px solid #1eaae7;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border-radius: 5px;
+  font-family: "Mulish";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 19px;
+  color: #1eaae7;
+  margin-bottom: 20px;
+  background-color: #fff;
+  padding: 8px;
+}
+.button2 {
+  width: 35%;
+  padding: 5px 40px 5px 40px;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #1eaae7;
+  box-sizing: border-box;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 19px;
+  color: #1eaae7;
+  margin: 15px 0 40px 0;
+}
+
+.firstline {
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 30px;
+  margin-bottom: 20px;
+  color: #000000;
+}
+.secondline {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 28px;
+  color: #000000;
+}
+.logindash {
+  position: absolute;
+  right: 8rem;
+  top: 6.6rem;
+  padding: 20px 15px 20px 15px;
+  height: 88vh;
+  width: 29vw;
+  background: #ffffff;
+  box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+  overflow-y: scroll;
+  z-index: 9999;
+}
+
+.next {
+  width: 100%;
+  border: none;
+  background: #1caae8;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 28px;
+  color: #ffffff;
+  padding: 8px 25px 8px 25px;
+}
+
+.googlebtn {
+  width: 100%;
+  border: 1px solid #1caae8;
+  box-sizing: border-box;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 28px;
+  color: #1caae8;
+}
+.logintext {
+  font-weight: 800;
+  font-size: 17px;
+  line-height: 28px;
+  color: #000000;
+}
+.loginlable {
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 28px;
+  color: #000000;
+  margin: 0;
+}
+
+.inputField2 {
+  width: 100%;
+  height: 35px;
+}
+.imhgoogle {
+  width: 1.6rem;
+  margin-right: 40px;
+}
+
+/* business */
+
+.businesstype {
+  height: 27px;
+}
+.Nextbtn {
+  background: #1caae8;
+  border-radius: 10px;
+  padding: 0px 40px 0px 40px;
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 28px;
+  float: right;
+  color: #ffffff;
+}
+.Nextbtn2 {
+  background: #1caae8;
+  border-radius: 10px;
+  padding: 0px 40px 0px 40px;
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 28px;
+  color: #ffffff;
+}
+
+.back {
+  background: #fff;
+  border-radius: 10px;
+  padding: 0px 40px 0px 40px;
+  border: 1px solid #1caae8;
+  box-sizing: border-box;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 28px;
+  margin-right: 10px;
+  color: #1caae8;
+}
+
+
+
+
+/* Director */
+
+.director {
+  font-weight: 900;
+  font-size: 15px;
+  margin-top: 7px;
+}
+
+.samedirector {
+  font-weight: 900;
+  font-size: 12px;
+  margin-top: 10px;
+}
+.hrstyle {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Solution Applying For */
+
+.boldOption {
+  font-weight: 800;
+  font-size: 13px;
+  margin-top: 7px;
+}
+
+/* contact */
+
+.getacc {
+  font-size: 12px;
+  font-weight: 700;
+  color: #bfbfbf;
+}
+
+@media only screen and (max-width: 1200px) {
+  .logindash {
+    top: 6rem;
+    right: 5rem !important;
+    height: 84vh;
+  }
+}
+@media only screen and (max-width: 1100px) {
+  .googlebtn {
+    width: 100%;
+    font-size: 80%;
+  }
+  .imhgoogle {
+    width: 1rem;
+    margin-right: 10px;
+  }
+  .back,
+  .Nextbtn2 {
+    padding: 0 25px 0 25px;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .logindash {
+    z-index: 0;
+    position: static;
+    width: 100%;
+    height: 100%;
+    margin-top: 20px;
+  }
+  form {
+    width: 100%;
+    height: 100%;
+  }
+  .secondblock {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.center1 {
+  position: relative;
+  top: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Header Com */
+
+.ubank-logo {
+  background-color: #fff;
+  width: 200px;
+  border-radius: 4px;
+}
+
+.ubank-logo img {
+  padding: 5px;
+  width: 190px;
+}
+
+/* Scrooll Bar Style  */
+
+form::-webkit-scrollbar {
+  width: 0px;
+}
+
+.borderlist {
+  border: 1px solid rgb(201, 172, 172);
+  border-radius: 2px;
+}
+
+.sighnContainer{
+  height: 100vh;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+}

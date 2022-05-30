@@ -1,0 +1,18 @@
+.search{
+    border-radius: 50px;
+    background: rgb(223, 217, 217);
+    width: 20rem;
+    padding-left: 50px !important;
+    color: black;
+    
+}
+
+.serachbox{
+    position: relative;
+}
+
+.icon{
+   position: absolute;
+   right: 89%;
+   top: 22%;
+}

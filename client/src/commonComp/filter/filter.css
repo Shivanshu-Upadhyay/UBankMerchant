@@ -1,0 +1,42 @@
+.filterdeposite{
+    background: #1EAAE7;
+    color: #FFFFFF;
+    border-radius: 50px;
+    border: none;
+    padding: 10px 40px;
+     border-radius: 60px;
+    font-family: 'Mulish';
+    padding: 15px 10px;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 18px;
+    border: none;
+    width: 100%;
+   box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+
+.boxcontainer{
+  width: 60vw;
+}
+
+.boxcontainer2{
+    height: 47vh;
+}
+
+.cheackboxlable{
+        font-family: 'Mulish';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 25px;
+    color: #000000;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    vertical-align: middle;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 2rem;
+    padding-left: 1rem;
+}

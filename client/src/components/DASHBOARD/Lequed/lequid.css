@@ -1,0 +1,38 @@
+
+
+.cup {
+  position: absolute;
+  top: 30%;
+  left: 38%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 320px;
+ 
+  border-top: 2px solid transparent;
+  border-radius: 15px;
+  background: url(https://image.ibb.co/fmHm66/wave.png);
+  background-position: 0px 350px;
+  background-repeat: repeat-x;
+  animation: filling 10s ease-in-out infinite;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.cup:before {
+  content: "";
+  position: absolute;
+  width: 50px;
+  height: 80px;
+ 
+  right: -57px;
+  top: 30px;
+  
+}
+
+@keyframes filling {
+  50% {
+    background-position: 3000px 0px;
+  }
+  100% {
+    background-position: 6000px 350px;
+  }
+}

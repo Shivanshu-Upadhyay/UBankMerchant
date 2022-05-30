@@ -1,0 +1,68 @@
+.buttonv2 {
+  background: #1eaae7;
+  color: #ffffff;
+  border-radius: 50px;
+  height: 100%;
+  border: none;
+  font-weight: 700;
+  padding: 10px 23px;
+  margin-right: 50px;
+  font-size: 14px;
+ 
+}
+
+.heading {
+  font-family: "Mulish";
+  font-style: normal;
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 43px;
+  color: #000000;
+}
+
+.dialogBlock1 {
+  background: #ffffff;
+  -webkit-box-shadow: rgb(0 0 0 / 12%) 0px 1px 4px 1px;
+  box-shadow: rgb(0 0 0 / 12%) 0px 1px 4px 1px;
+  border: 1px solid #ced4da;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+label {
+  font-family: "Mulish";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 18px;
+  color: rgba(0, 0, 0, 0.6);
+  padding-bottom: 4px;
+  margin-bottom: 0;
+}
+
+.input1 {
+  border: none;
+  text-align: center;
+  color: #000000 ;
+  font-weight: 700;
+  font-size: large;
+}
+input:focus {
+  outline: none;
+}
+
+select {
+  border: none;
+  text-align: center;
+  font-weight: 700;
+  width: 150px;
+}
+
+select:focus {
+  outline: none;
+}
+
+.checkbox1{
+  background-color: #1eaae7;
+  border: none !important;
+}
