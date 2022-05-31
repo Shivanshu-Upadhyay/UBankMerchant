@@ -1,6 +1,8 @@
 import React from 'react'
 import './search.css'
 function Search({ orderNumber, setorderNumber }) {
+  
+ 
   return (
     <>
       <div className="serachbox">
@@ -15,6 +17,7 @@ function Search({ orderNumber, setorderNumber }) {
           src="https://www.bankconnect.online/assets/merchants/img/search.svg"
           alt=""
           className="icon"
+          style={{ cursor: "pointer" }}
         />
       </div>
     </>

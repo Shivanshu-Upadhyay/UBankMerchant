@@ -103,7 +103,7 @@ export default function Sidebar() {
     {
       name: "Payout",
       iconUrl: "https://www.bankconnect.online/assets/merchants/img/payout.svg",
-      path: "/",
+      path: "/payout",
     },
     {
       name: "Settlement",
@@ -212,8 +212,7 @@ export default function Sidebar() {
               />
               <Badge badgeContent="!" color="error" className="mx-3">
                 <img
-                  src="https://www.bankconnect.online/assets/merchants/img/setting.svg
-"
+                  src="https://www.bankconnect.online/assets/merchants/img/setting.svg"
                   alt=""
                   width="40px"
                 />

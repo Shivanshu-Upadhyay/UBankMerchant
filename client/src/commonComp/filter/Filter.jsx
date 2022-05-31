@@ -20,7 +20,10 @@ function Filter({ methodPayment, setMethodPayment }) {
   const [show3, setShow3] = React.useState(true);
 
   // Cheak Value Status
-  const [UPI, setUPI] = useState("");
+  const [UPI, setUPI] = useState();
+  const [netBanking, setNetBanking] = useState();
+  const [card, setCard] = useState();
+  
 
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -41,13 +44,12 @@ function Filter({ methodPayment, setMethodPayment }) {
   };
 
 
-
-
   const cheakValue = (e) => {
     e.preventDefault();
-    setMethodPayment(UPI);
+    setMethodPayment([{UPI,netBanking,card}]);
+    // setMethodPayment(netBanking);
+    // setMethodPayment(card);
     console.log(methodPayment);
-   
   };
 
   return (
@@ -109,8 +111,16 @@ function Filter({ methodPayment, setMethodPayment }) {
                       value="UPI"
                       onChange={(e) => setUPI(e.target.value)}
                     />
-                    <CheakboxComp name="Net Banking" />
-                    <CheakboxComp name="Card" />
+                    <CheakboxComp
+                      name="Net Banking"
+                      value="NETBANKING"
+                      onChange={(e) => setNetBanking(e.target.value)}
+                    />
+                    <CheakboxComp
+                      name="Card"
+                      value="CARD"
+                      onChange={(e) => setCard(e.target.value)}
+                    />
                     <CheakboxComp name="E-Wallet" />
                   </>
                 ) : null}

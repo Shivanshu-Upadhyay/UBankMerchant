@@ -7,7 +7,8 @@ const cors = require("cors");
 // Cors error
  
 app.use(cors());
-
+app.use(express.urlencoded())
+app.use(express.json())
 
 // routing
 app.use(require('./route/route'));

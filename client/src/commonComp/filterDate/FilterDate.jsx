@@ -37,6 +37,7 @@ function FilterDate({ setDate, setTo, setFrom }) {
       (today.getMonth() + 1) +
       "-" +
       today.getDate();
+       console.log(year);
 
     setDate(year);
   };
@@ -45,6 +46,7 @@ function FilterDate({ setDate, setTo, setFrom }) {
     e.preventDefault();
     setTo(todate);
     setFrom(fromdate);
+    console.log(todate,fromdate);
     
   };
 

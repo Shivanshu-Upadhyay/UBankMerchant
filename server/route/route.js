@@ -100,13 +100,14 @@ route.get("/payout", uploads.none(), helper.verify, dashbordController.payout);
 
 //deposits controller
 
-route.post("/show_all", uploads.none(), helper.verify, depositsController.show);
 route.post(
-  "/show_by_order",
+  "/show_all",
   uploads.none(),
   helper.verify,
-  depositsController.searchByOrder
+  depositsController.defaultOrder
 );
+
+
 
 route.get(
   "/downloadReports",
@@ -127,5 +128,6 @@ route.post(
   helper.verify,
   depositsController.searchDateFilter
 );
+
 
 module.exports = route;

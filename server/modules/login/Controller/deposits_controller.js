@@ -8,54 +8,27 @@ let pagination = (total, page) => {
 
   return { limit, start, numOfPages };
 };
-
-module.exports.show = async function (req, res) {
-  let user = req.user;
-
-  try {
-    let sql =
-      "SELECT COUNT(*) as Total FROM tbl_merchant_transaction  where user_id = ?";
-
-    let result = await mysqlcon(sql, [user.id]);
-
-    let total = result[0].Total;
-
-    let Page = req.body.page ? Number(req.body.page) : 1;
-
-    let page = pagination(total, Page);
-
-    let sql1 =
-      "SELECT * FROM tbl_merchant_transaction WHERE user_id = ? LIMIT ?,?";
-
-    let result1 = await mysqlcon(sql1, [user.id, page.start, page.limit]);
-
-    return res.json(200, {
-      message: `All Deposits Transactions are ${total}`,
-
-      data: {
-        currentPage: Page,
-        totalPage: page.numOfPages,
-        deposits: result1,
-      },
-    });
-  } catch (error) {
-    console.log(error);
-    return res.json(500, {
-      message: "error occurered",
-      error: error,
-    });
-  }
-};
-
-module.exports.searchByOrder = async function (req, res) {
+module.exports.defaultOrder = async function (req, res) {
   let user = req.user;
   try {
     let { orderNumber } = req.body;
 
-    let sql =
-      "SELECT COUNT(*) as Total FROM tbl_merchant_transaction WHERE user_id = ? AND order_no LIKE ?";
+    let sql;
 
-    let result = await mysqlcon(sql, [user.id, orderNumber + "%"]);
+    if (orderNumber) {
+      sql =
+        "SELECT COUNT(*) as Total FROM tbl_merchant_transaction WHERE user_id = ? AND order_no LIKE ?";
+    } else {
+      sql =
+        "SELECT COUNT(*) as Total FROM tbl_merchant_transaction WHERE user_id = ?";
+    }
+
+    let result;
+    if (orderNumber) {
+      result = await mysqlcon(sql, [user.id, orderNumber + "%"]);
+    } else {
+      result = await mysqlcon(sql, [user.id]);
+    }
 
     let total = result[0].Total;
 
@@ -63,25 +36,50 @@ module.exports.searchByOrder = async function (req, res) {
 
     let page = pagination(total, Page);
 
-    let sql1 =
-      "SELECT * FROM tbl_merchant_transaction WHERE user_id = ? AND order_no LIKE ? LIMIT ?,?";
+    let sql1;
+    if (orderNumber) {
+      sql1 =
+        "SELECT * FROM tbl_merchant_transaction WHERE user_id = ? AND order_no LIKE ? ORDER BY (CASE WHEN txn_id IS NULL THEN order_no ELSE txn_id END) DESC LIMIT ?,?";
+    } else {
+      sql1 =
+        "SELECT * FROM tbl_merchant_transaction WHERE user_id = ? ORDER BY (CASE WHEN txn_id IS NULL THEN order_no ELSE txn_id END) DESC LIMIT ?,?";
+    }
 
-    let result1 = await mysqlcon(sql1, [
-      user.id,
-      orderNumber + "%",
-      page.start,
-      page.limit,
-    ]);
+    let result1;
+    if (orderNumber) {
+      result1 = await mysqlcon(sql1, [
+        user.id,
+        orderNumber + "%",
+        page.start,
+        page.limit,
+      ]);
+    } else {
+      result1 = await mysqlcon(sql1, [user.id, page.start, page.limit]);
+    }
 
     if (result1.length === 0) {
       res.status(201).json({ message: "No record found." });
     } else {
-      res.status(200).json({
-        message: "Record for order id " + orderNumber + " are " + `${total}`,
-        currentPage: Page,
-        totalPages: page.numOfPages,
-        data: result1,
-      });
+      if (orderNumber) {
+        return res.json(201, {
+          message: "Record for order id " + orderNumber + " are " + `${total}`,
+          data: {
+            currentPage: Page,
+            totalPages: page.numOfPages,
+            deposits: result1
+          },
+        });
+      } else {
+        return res.json(200, {
+          message: `All Deposits Transactions are ${total}`,
+
+          data: {
+            currentPage: Page,
+            totalPage: page.numOfPages,
+            deposits: result1,
+          },
+        });
+      }
     }
   } catch (error) {
     console.log(error);
@@ -235,8 +233,6 @@ module.exports.searchDateFilter = async function (req, res) {
   try {
     let { date, from, to } = req.body;
 
-    
-
     let sqld;
 
     if (!date) {
@@ -244,6 +240,64 @@ module.exports.searchDateFilter = async function (req, res) {
     } else {
       sqld = " AND DATE(created_on) = ?";
     }
+
+    // if (
+    //   req.body.methodPayment === undefined &&
+    //   req.body.status === undefined &&
+    //   req.body.currency === undefined
+    // ) {
+    //   //    return res.redirect('/deposits/show_all');
+
+    //   let sql =
+    //     "SELECT COUNT(*) as Total FROM tbl_merchant_transaction where user_id = '" +
+    //     user.id +
+    //     "'";
+
+    //   sql += sqld;
+
+    //   let result;
+
+    //   if (date) {
+    //     result = await mysqlcon(sql, [date]);
+    //   } else {
+    //     result = await mysqlcon(sql, [from, to]);
+    //   }
+
+    //   let total = result[0].Total;
+    //   let Page = req.body.page ? Number(req.body.page) : 1;
+
+    //   let page = pagination(total, Page);
+
+    //   let sql1 =
+    //     "SELECT order_no,user_id,updated_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction where user_id = '" +
+    //     user.id +
+    //     "'";
+
+    //   sql1 += sqld;
+    //   sql1 +=
+    //     " ORDER BY (CASE WHEN txn_id IS NULL THEN order_no ELSE txn_id END) DESC";
+    //   sql1 += " LIMIT ?,?";
+
+    //   let result1;
+
+    //   if (date) {
+    //     result1 = await mysqlcon(sql1, [date, page.start, page.limit]);
+    //   } else {
+    //     result1 = await mysqlcon(sql1, [from, to, page.start, page.limit]);
+    //   }
+
+    //   return res.json(200, {
+    //     message: `All Deposits Transactions are ${total} for date ${
+    //       date ? date : `from ${from} to ${to}`
+    //     } `,
+
+    //     data: {
+    //       currentPage: Page,
+    //       totalPage: page.numOfPages,
+    //       deposits: result1,
+    //     },
+    //   });
+    // }
 
     if (
       req.body.methodPayment === undefined &&
@@ -257,14 +311,18 @@ module.exports.searchDateFilter = async function (req, res) {
         user.id +
         "'";
 
-      sql += sqld;
+      if (date || from || to) {
+        sql += sqld;
+      }
 
       let result;
 
       if (date) {
         result = await mysqlcon(sql, [date]);
-      } else {
+      } else if (from !== undefined && to !== undefined) {
         result = await mysqlcon(sql, [from, to]);
+      } else {
+        result = await mysqlcon(sql);
       }
 
       let total = result[0].Total;
@@ -276,33 +334,57 @@ module.exports.searchDateFilter = async function (req, res) {
         "SELECT order_no,user_id,updated_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction where user_id = '" +
         user.id +
         "'";
-      sql1 += sqld;
+
+      if (date || from || to) {
+        sql1 += sqld;
+      }
+
+      sql1 +=
+        " ORDER BY (CASE WHEN txn_id IS NULL THEN order_no ELSE txn_id END) DESC";
       sql1 += " LIMIT ?,?";
+
       let result1;
 
       if (date) {
         result1 = await mysqlcon(sql1, [date, page.start, page.limit]);
-      } else {
+      } else if (from !== undefined && to !== undefined) {
         result1 = await mysqlcon(sql1, [from, to, page.start, page.limit]);
+      } else {
+        result1 = await mysqlcon(sql1, [page.start, page.limit]);
       }
 
-      return res.json(200, {
-        message: `All Deposits Transactions are ${total} for date ${
-          date ? date : `from ${from} to ${to}`
-        } `,
+      if (date || (from && to)) {
+        return res.json(200, {
+          message: `All Deposits Transactions are ${total} for date ${
+            date ? date : `from ${from} to ${to}`
+          } `,
 
-        data: {
-          currentPage: Page,
-          totalPage: page.numOfPages,
-          deposits: result1,
-        },
-      });
+          data: {
+            currentPage: Page,
+            totalPages: page.numOfPages,
+            deposits: result1,
+          },
+        });
+        
+      } else {
+        return res.json(200, {
+          message: `All Deposits Transactions are ${total} `,
+
+          data: {
+            currentPage: Page,
+            totalPages: page.numOfPages,
+            deposits: result1,
+          },
+        });
+      }
     }
 
-    let sql;
 
+
+    let sql;
     if (req.body.methodPayment !== undefined) {
       console.log(req.body.methodPayment.length);
+      console.log(req.body.methodPayment);
 
       if (typeof req.body.methodPayment === "string") {
         sql = "";
@@ -581,6 +663,8 @@ module.exports.searchDateFilter = async function (req, res) {
 
     if (date || from || to) {
       sql3 += sqld;
+      sql3 +=
+        " ORDER BY (CASE WHEN txn_id IS NULL THEN order_no ELSE txn_id END) DESC";
       sql3 += " LIMIT " + page.start + "," + page.limit + "";
 
       if (date) {
@@ -589,6 +673,8 @@ module.exports.searchDateFilter = async function (req, res) {
         result3 = await mysqlcon(sql3, [from, to]);
       }
     } else {
+      sql3 +=
+        " ORDER BY (CASE WHEN txn_id IS NULL THEN order_no ELSE txn_id END) DESC";
       sql3 += " LIMIT " + page.start + "," + page.limit + "";
       result3 = await mysqlcon(sql3);
     }
@@ -597,10 +683,12 @@ module.exports.searchDateFilter = async function (req, res) {
       message: `Total Records are ${total} for date ${
         date ? date : `from ${from} to ${to}`
       } are ${total}`,
-      currentPage: Page,
-      totalPages: page.numOfPages,
-      sql3: sql3,
-      data: result3,
+      data: {
+        currentPage: Page,
+        totalPages: page.numOfPages,
+        sql3: sql3,
+        deposits: result3,
+      },
     });
   } catch (error) {
     console.log(error);
@@ -610,3 +698,5 @@ module.exports.searchDateFilter = async function (req, res) {
     });
   }
 };
+
+

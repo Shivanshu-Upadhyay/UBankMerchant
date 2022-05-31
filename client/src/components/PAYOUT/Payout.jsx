@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./deposire.css";
+import "../DEPOSIT/deposire.css";
 import axios from "axios";
 import TableComp from "../../commonComp/Table/TableCom";
 import Pagination from "@mui/material/Pagination";
@@ -8,8 +8,9 @@ import FilterDate from "../../commonComp/filterDate/FilterDate";
 import Filter from "../../commonComp/filter/Filter";
 import Card from "../../commonComp/Card/Card";
 import baseUrl from "../../components/config/baseUrl";
-import * as XLSX from "xlsx"
-const Footer = ({ setPage, page, totalPage }) => {
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+const Footer = ({ setPage, page }) => {
   const pageNumber = (e, p) => {
     setPage(p);
     console.log(p);
@@ -22,7 +23,7 @@ const Footer = ({ setPage, page, totalPage }) => {
         </div>
         <div className="col-4">
           <Pagination
-            count={totalPage}
+            count={10}
             page={page}
             defaultPage={5}
             siblingCount={0}
@@ -46,17 +47,23 @@ const SecondBlock = ({
   setMethodPayment,
   tableBodyData,
 }) => {
-  const downloadExl = () => {
-    const workSheet = XLSX.utils.json_to_sheet(tableBodyData);
-    const workBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workBook, workSheet, "Deposit");
-    // Buffer
-    let buf = XLSX.write(workBook, { bookType: "xlsx", type: "buffer" });
-    // Binary String
-    XLSX.write(workBook, { bookType: "xlsx", type: "binary" });
-    // Download
-    XLSX.writeFile(workBook, "Deposit.xlsx");
-   
+  const downloadPdf = () => {
+    const doc = new jsPDF();
+    // doc.text("Deposit Data", 100, 10)
+    doc.autoTable({
+      theme: "grid",
+      columns: [
+        { header: "Order Id", dataKey: "order_no" },
+        { header: "Date", dataKey: "created_on" },
+        { header: "Customer Name", dataKey: "i_flname" },
+        { header: "Amount", dataKey: "ammount" },
+        { header: "Currency", dataKey: "ammount_type" },
+        { header: "Method", dataKey: "payment_type" },
+        { header: "Settled Amount", dataKey: "settle_amount" },
+      ],
+      body: tableBodyData,
+    });
+    doc.save("table.pdf");
   };
   return (
     <>
@@ -67,14 +74,9 @@ const SecondBlock = ({
         <div className="col-3 ">
           <FilterDate setDate={setDate} setFrom={setFrom} setTo={setTo} />
         </div>
-        <div className="col-2 ">
-          <Filter
-            methodPayment={methodPayment}
-            setMethodPayment={setMethodPayment}
-          />
-        </div>
+        
         <div className="col-3 ">
-          <button className="downloadDeposite" onClick={downloadExl}>
+          <button className="downloadDeposite" onClick={downloadPdf}>
             <img
               src="https://www.bankconnect.online/assets/merchants/img/download-white.svg"
               alt=""
@@ -89,10 +91,9 @@ const SecondBlock = ({
   );
 };
 
-function Deposit() {
-  // CARD DATA
+function Payout() {
+  // CARD DATa
   const [cardData, setCardData] = useState([]);
-  const [totalPage,setTotalPage]=useState(1)
   useEffect(() => {
     const auth = localStorage.getItem("user");
     let formData = new FormData();
@@ -135,34 +136,30 @@ function Deposit() {
 
       let result = await axios.post(`${baseUrl}/show_all`, formData, config);
       setTableBodyData(result.data.data.deposits);
-      setTotalPage(result.data.data.totalPage);
     } catch (error) {
       console.log(error);
     }
   };
 
+  console.log(tableBodyData);
   // Today Yesterday Customise filter
-  const [date, setDate] = useState();
-  const [from, setFrom] = useState();
-  const [to, setTo] = useState();
+  const [date, setDate] = useState("");
+  const [tabledata2, settableData2] = useState("");
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
 
   //Filter CheackBox
 
-  let [methodPayment, setMethodPayment] = useState([]);
-  console.log(methodPayment);
+  const [methodPayment, setMethodPayment] = useState("");
 
   useEffect(() => {
     const auth = localStorage.getItem("user");
-    let formData = new FormData();
 
-   if(date||(from && to)||methodPayment.length>1){
-     formData.append("date", date);
-     formData.append("to", to);
-     formData.append("from", from);
-     formData.append("page", page);
-     formData.append("methodPayment", methodPayment);
-   }
-    
+    let formData = new FormData();
+    formData.append("date", date);
+    formData.append("to", to);
+    formData.append("from", from);
+    // formData.append("methodPayment", methodPayment);
 
     const config = {
       headers: {
@@ -174,17 +171,12 @@ function Deposit() {
     axios
       .post(`${baseUrl}/searchDateFilter`, formData, config)
       .then((res) => {
-        setTotalPage(res.data.data.totalPages);
-        console.log(res);
-        setTableBodyData((pre) => (pre = res.data.data.deposits));
+        settableData2((pre) => (pre = res.data.data.deposits));
       })
       .catch((err) => console.log(err));
-  }, [date, to, from, methodPayment,page]);
+  }, [date, to, from]);
 
-// Search
-
-
-
+  // Search
 
   return (
     <>
@@ -202,23 +194,19 @@ function Deposit() {
             setTo={setTo}
             methodPayment={methodPayment}
             setMethodPayment={setMethodPayment}
-            tableBodyData={
-              tableBodyData
-            }
+            tableBodyData={date || to || from ? tabledata2 : tableBodyData}
           />
         </div>
         <div className="col-12">
           <TableComp
-            tableBodyData={
-             tableBodyData
-            }
+            tableBodyData={date || to || from ? tabledata2 : tableBodyData}
           />
         </div>
       </div>
 
-      <Footer setPage={setPage} page={page} totalPage={totalPage} />
+      <Footer setPage={setPage} page={page} />
     </>
   );
 }
 
-export default Deposit;
+export default Payout;

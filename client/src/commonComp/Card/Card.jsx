@@ -10,6 +10,7 @@ const Card = ({carddata}) => {
           return (
             <div
               className={
+                
                 index === 0
                   ? "cardbox Dcardbg1 col-lg-3 col-md-6 col-sm-12 "
                   : index === 1

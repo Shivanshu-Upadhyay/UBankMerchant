@@ -12,6 +12,7 @@ import ChangePassword from "../CHANGEPASSWORD/ChangePass";
 import InCompleteProfile from "../SIGNUPANDLOGIN/InCompleteProfile";
 import Login from "../SIGNUPANDLOGIN/Login";
 import SignUp from "../SIGNUPANDLOGIN/SignUp";
+import Payout from '../PAYOUT/Payout'
 import { useStateContext } from "../../context/ContextProvider";
 function Routers() {
   const { auth, setAuth } = useStateContext();
@@ -25,6 +26,7 @@ function Routers() {
           <Route path="/" element={<Sidebar />}>
             <Route path="/" element={"Dashboard"} />
             <Route path="/Deposit" element={<Deposit />} />
+            <Route path="/payout" element={<Payout />} />
             <Route path="/Reports" element={<Reports />} />
             <Route path="/Statements" element={<Statements />} />
             <Route path="/Virtual" element={<Virtual />} />
@@ -41,8 +43,13 @@ function Routers() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/InCompleteProfile/:key" element={<InCompleteProfile />} />
         {/* <Route path="*" element={<Error />} /> */}
-        
-        <Route path="*" element={auth || auth2 ?<Navigate to='/'/>:<Navigate to='/login'/>} />
+
+        <Route
+          path="*"
+          element={
+            auth || auth2 ? <Navigate to="/" /> : <Navigate to="/login" />
+          }
+        />
       </Routes>
     </>
   );
