@@ -8,7 +8,7 @@ import FilterDate from "../../commonComp/filterDate/FilterDate";
 import Filter from "../../commonComp/filter/Filter";
 import Card from "../../commonComp/Card/Card";
 import baseUrl from "../../components/config/baseUrl";
-import * as XLSX from "xlsx"
+import * as XLSX from "xlsx";
 const Footer = ({ setPage, page, totalPage }) => {
   const pageNumber = (e, p) => {
     setPage(p);
@@ -44,6 +44,10 @@ const SecondBlock = ({
   setTo,
   methodPayment,
   setMethodPayment,
+  currencyPayment,
+  setCurrencyPayment,
+  statusPayment,
+  setStatusPayment,
   tableBodyData,
 }) => {
   const downloadExl = () => {
@@ -56,7 +60,6 @@ const SecondBlock = ({
     XLSX.write(workBook, { bookType: "xlsx", type: "binary" });
     // Download
     XLSX.writeFile(workBook, "Deposit.xlsx");
-   
   };
   return (
     <>
@@ -71,6 +74,10 @@ const SecondBlock = ({
           <Filter
             methodPayment={methodPayment}
             setMethodPayment={setMethodPayment}
+            currencyPayment={currencyPayment}
+            setCurrencyPayment={setCurrencyPayment}
+            statusPayment={statusPayment}
+            setStatusPayment={setStatusPayment}
           />
         </div>
         <div className="col-3 ">
@@ -92,7 +99,7 @@ const SecondBlock = ({
 function Deposit() {
   // CARD DATA
   const [cardData, setCardData] = useState([]);
-  const [totalPage,setTotalPage]=useState(1)
+  const [totalPage, setTotalPage] = useState(1);
   useEffect(() => {
     const auth = localStorage.getItem("user");
     let formData = new FormData();
@@ -149,20 +156,46 @@ function Deposit() {
   //Filter CheackBox
 
   let [methodPayment, setMethodPayment] = useState([]);
-  console.log(methodPayment);
+  let [status, setStatusPayment] = useState([]);
+  let [currency, setCurrencyPayment] = useState([]);
+  // console.log(methodPayment);
+  console.log(date, from, to, methodPayment);
 
   useEffect(() => {
     const auth = localStorage.getItem("user");
     let formData = new FormData();
 
-   if(date||(from && to)||methodPayment.length>1){
-     formData.append("date", date);
-     formData.append("to", to);
-     formData.append("from", from);
-     formData.append("page", page);
-     formData.append("methodPayment", methodPayment);
-   }
-    
+    if (date) {
+      formData.append("date", date);
+    } else if (from && to) {
+      formData.append("from", from);
+      formData.append("to", to);
+    } else if (
+      methodPayment.length > 0 &&
+      status.length > 0 &&
+      currency.length > 0
+    ) {
+      formData.append("methodPayment[]", methodPayment);
+      formData.append("status[]", status);
+      formData.append("currency[]", currency);
+    } else if (methodPayment.length > 0 && status.length > 0) {
+      formData.append("methodPayment[]", methodPayment);
+      formData.append("status[]", status);
+    } else if (status.length > 0 && currency.length > 0) {
+      formData.append("status[]", status);
+      formData.append("currency[]", currency);
+    } else if (methodPayment.length > 0 && currency.length > 0) {
+      formData.append("methodPayment[]", methodPayment);
+      formData.append("currency[]", currency);
+    } else if (methodPayment.length > 0) {
+      formData.append("methodPayment[]", methodPayment);
+    } else if (status.length > 0) {
+      formData.append("status[]", status);
+    } else if (currency.length > 0) {
+      formData.append("currency[]", currency);
+    }else{
+
+    }
 
     const config = {
       headers: {
@@ -179,12 +212,9 @@ function Deposit() {
         setTableBodyData((pre) => (pre = res.data.data.deposits));
       })
       .catch((err) => console.log(err));
-  }, [date, to, from, methodPayment,page]);
+  }, [date, to, from, methodPayment, page, status, currency]);
 
-// Search
-
-
-
+  // Search
 
   return (
     <>
@@ -202,17 +232,15 @@ function Deposit() {
             setTo={setTo}
             methodPayment={methodPayment}
             setMethodPayment={setMethodPayment}
-            tableBodyData={
-              tableBodyData
-            }
+            currencyPayment={currency}
+            setCurrencyPayment={setCurrencyPayment}
+            statusPayment={status}
+            setStatusPayment={setStatusPayment}
+            tableBodyData={tableBodyData}
           />
         </div>
         <div className="col-12">
-          <TableComp
-            tableBodyData={
-             tableBodyData
-            }
-          />
+          <TableComp tableBodyData={tableBodyData} />
         </div>
       </div>
 

@@ -13,16 +13,27 @@ const CheakboxComp = ({ name,value,onChange }) => {
   );
 };
 
-function Filter({ methodPayment, setMethodPayment }) {
+function Filter({
+  methodPayment,
+  setMethodPayment,
+  currencyPayment,
+  setCurrencyPayment,
+  statusPayment,
+  setStatusPayment,
+}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [show1, setShow1] = React.useState(true);
   const [show2, setShow2] = React.useState(true);
   const [show3, setShow3] = React.useState(true);
 
   // Cheak Value Status
-  const [UPI, setUPI] = useState();
-  const [netBanking, setNetBanking] = useState();
-  const [card, setCard] = useState();
+  const [methordData,setMethordData] = useState([])
+  
+  // Status
+  const [statusData,setStatusData]=useState([])
+
+  // Currency
+  const [currencyData,setCurrencyData]=useState([])
   
 
   const open = Boolean(anchorEl);
@@ -43,13 +54,11 @@ function Filter({ methodPayment, setMethodPayment }) {
     setShow3(!show3);
   };
 
-
   const cheakValue = (e) => {
     e.preventDefault();
-    setMethodPayment([{UPI,netBanking,card}]);
-    // setMethodPayment(netBanking);
-    // setMethodPayment(card);
-    console.log(methodPayment);
+    setMethodPayment(methordData);
+    setStatusPayment(statusData);
+    setCurrencyPayment(currencyData);
   };
 
   return (
@@ -109,19 +118,31 @@ function Filter({ methodPayment, setMethodPayment }) {
                     <CheakboxComp
                       name="UPI / Other Methods"
                       value="UPI"
-                      onChange={(e) => setUPI(e.target.value)}
+                      onChange={(e) =>
+                        setMethordData([...methordData, e.target.value])
+                      }
                     />
                     <CheakboxComp
                       name="Net Banking"
                       value="NETBANKING"
-                      onChange={(e) => setNetBanking(e.target.value)}
+                      onChange={(e) =>
+                        setMethordData([...methordData, e.target.value])
+                      }
                     />
                     <CheakboxComp
                       name="Card"
                       value="CARD"
-                      onChange={(e) => setCard(e.target.value)}
+                      onChange={(e) =>
+                        setMethordData([...methordData, e.target.value])
+                      }
                     />
-                    <CheakboxComp name="E-Wallet" />
+                    <CheakboxComp
+                      name="E-Wallet"
+                      value="EWALLET"
+                      onChange={(e) =>
+                        setMethordData([...methordData, e.target.value])
+                      }
+                    />
                   </>
                 ) : null}
               </div>
@@ -129,24 +150,96 @@ function Filter({ methodPayment, setMethodPayment }) {
               <div className="col-4  ">
                 {show2 ? (
                   <>
-                    <CheakboxComp name="Success" />
-                    <CheakboxComp name="Waiting" />
-                    <CheakboxComp name="Pending" />
-                    <CheakboxComp name="Refund" />
-                    <CheakboxComp name="Failed" />
+                    <CheakboxComp
+                      name="Success"
+                      value={1}
+                      onChange={(e) =>
+                        setStatusData([...statusData, e.target.value])
+                      }
+                    />
+                    <CheakboxComp
+                      name="Waiting"
+                      value={2}
+                      onChange={(e) =>
+                        setStatusData([...statusData, e.target.value])
+                      }
+                    />
+                    <CheakboxComp
+                      name="Pending"
+                      value={3}
+                      onChange={(e) =>
+                        setStatusData([...statusData, e.target.value])
+                      }
+                    />
+                    <CheakboxComp
+                      name="Refund"
+                      value={4}
+                      onChange={(e) =>
+                        setStatusData([...statusData, e.target.value])
+                      }
+                    />
+                    <CheakboxComp
+                      name="Failed"
+                      value={0}
+                      onChange={(e) =>
+                        setStatusData([...statusData, e.target.value])
+                      }
+                    />
                   </>
                 ) : null}
               </div>
               <div className="col-4  ">
                 {show3 ? (
                   <>
-                    <CheakboxComp name="INR" />
-                    <CheakboxComp name="USD" />
-                    <CheakboxComp name="CNY" />
-                    <CheakboxComp name="MYR" />
-                    <CheakboxComp name="THB" />
-                    <CheakboxComp name="IDR" />
-                    <CheakboxComp name="VND" />
+                    <CheakboxComp
+                      name="INR"
+                      value="INR"
+                      onChange={(e) =>
+                        setCurrencyData([...currencyData, e.target.value])
+                      }
+                    />
+                    <CheakboxComp
+                      name="USD"
+                      value="USD"
+                      onChange={(e) =>
+                        setCurrencyData([...currencyData, e.target.value])
+                      }
+                    />
+                    <CheakboxComp
+                      name="CNY"
+                      value="CNY"
+                      onChange={(e) =>
+                        setCurrencyData([...currencyData, e.target.value])
+                      }
+                    />
+                    <CheakboxComp
+                      name="MYR"
+                      value="MYR"
+                      onChange={(e) =>
+                        setCurrencyData([...currencyData, e.target.value])
+                      }
+                    />
+                    <CheakboxComp
+                      name="THB"
+                      value="THB"
+                      onChange={(e) =>
+                        setCurrencyData([...currencyData, e.target.value])
+                      }
+                    />
+                    <CheakboxComp
+                      name="IDR"
+                      value="IDR"
+                      onChange={(e) =>
+                        setCurrencyData([...currencyData, e.target.value])
+                      }
+                    />
+                    <CheakboxComp
+                      name="VND"
+                      value="VND"
+                      onChange={(e) =>
+                        setCurrencyData([...currencyData, e.target.value])
+                      }
+                    />
                   </>
                 ) : null}
               </div>

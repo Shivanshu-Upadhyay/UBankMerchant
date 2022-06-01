@@ -96,7 +96,7 @@ module.exports.downloadReports = async function (req, res) {
   try {
     if (orderNumber != undefined) {
       let sql =
-        "SELECT order_no,updated_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE order_no in (?) AND user_id = ?";
+        "SELECT order_no,created_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE order_no in (?) AND user_id = ?";
       let result = await mysqlcon(sql, [orderNumber, user.id]);
 
       if (result.length === 0) {
@@ -109,7 +109,7 @@ module.exports.downloadReports = async function (req, res) {
       }
     } else {
       let sql =
-        "SELECT order_no,updated_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE user_id = ?";
+        "SELECT order_no,created_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE user_id = ?";
       let result = await mysqlcon(sql, [user.id]);
 
       if (result.length === 0) {
@@ -232,6 +232,7 @@ module.exports.searchDateFilter = async function (req, res) {
 
   try {
     let { date, from, to } = req.body;
+    console.log(date,from,to)
 
     let sqld;
 
@@ -241,63 +242,9 @@ module.exports.searchDateFilter = async function (req, res) {
       sqld = " AND DATE(created_on) = ?";
     }
 
-    // if (
-    //   req.body.methodPayment === undefined &&
-    //   req.body.status === undefined &&
-    //   req.body.currency === undefined
-    // ) {
-    //   //    return res.redirect('/deposits/show_all');
-
-    //   let sql =
-    //     "SELECT COUNT(*) as Total FROM tbl_merchant_transaction where user_id = '" +
-    //     user.id +
-    //     "'";
-
-    //   sql += sqld;
-
-    //   let result;
-
-    //   if (date) {
-    //     result = await mysqlcon(sql, [date]);
-    //   } else {
-    //     result = await mysqlcon(sql, [from, to]);
-    //   }
-
-    //   let total = result[0].Total;
-    //   let Page = req.body.page ? Number(req.body.page) : 1;
-
-    //   let page = pagination(total, Page);
-
-    //   let sql1 =
-    //     "SELECT order_no,user_id,updated_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction where user_id = '" +
-    //     user.id +
-    //     "'";
-
-    //   sql1 += sqld;
-    //   sql1 +=
-    //     " ORDER BY (CASE WHEN txn_id IS NULL THEN order_no ELSE txn_id END) DESC";
-    //   sql1 += " LIMIT ?,?";
-
-    //   let result1;
-
-    //   if (date) {
-    //     result1 = await mysqlcon(sql1, [date, page.start, page.limit]);
-    //   } else {
-    //     result1 = await mysqlcon(sql1, [from, to, page.start, page.limit]);
-    //   }
-
-    //   return res.json(200, {
-    //     message: `All Deposits Transactions are ${total} for date ${
-    //       date ? date : `from ${from} to ${to}`
-    //     } `,
-
-    //     data: {
-    //       currentPage: Page,
-    //       totalPage: page.numOfPages,
-    //       deposits: result1,
-    //     },
-    //   });
-    // }
+    console.log(req.body.methodPayment);
+    console.log(req.body.status);
+    console.log(req.body.currency);
 
     if (
       req.body.methodPayment === undefined &&
@@ -331,7 +278,7 @@ module.exports.searchDateFilter = async function (req, res) {
       let page = pagination(total, Page);
 
       let sql1 =
-        "SELECT order_no,user_id,updated_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction where user_id = '" +
+        "SELECT order_no,user_id,created_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction where user_id = '" +
         user.id +
         "'";
 
@@ -365,7 +312,6 @@ module.exports.searchDateFilter = async function (req, res) {
             deposits: result1,
           },
         });
-        
       } else {
         return res.json(200, {
           message: `All Deposits Transactions are ${total} `,
@@ -379,12 +325,10 @@ module.exports.searchDateFilter = async function (req, res) {
       }
     }
 
-
-
     let sql;
+
     if (req.body.methodPayment !== undefined) {
       console.log(req.body.methodPayment.length);
-      console.log(req.body.methodPayment);
 
       if (typeof req.body.methodPayment === "string") {
         sql = "";
@@ -403,9 +347,10 @@ module.exports.searchDateFilter = async function (req, res) {
           user.id +
           "' AND ";
         sql += "payment_type IN (";
-        for (let i = 0; i < req.body.methodPayment.length; i++) {
+        let methodR = req.body.methodPayment[0].split(",");
+        for (let i = 0; i < methodR.length; i++) {
           sql += "'";
-          sql += req.body.methodPayment[i];
+          sql += methodR[i];
           sql += "'";
           sql += ",";
         }
@@ -433,9 +378,10 @@ module.exports.searchDateFilter = async function (req, res) {
         if (sql !== undefined) {
           sql += " AND ";
           sql += "status IN (";
-          for (let i = 0; i < req.body.status.length; i++) {
+          let statusR = req.body.status[0].split(",");
+          for (let i = 0; i < statusR.length; i++) {
             sql += "'";
-            sql += req.body.status[i];
+            sql += statusR[i];
             sql += "'";
             sql += ",";
           }
@@ -448,9 +394,12 @@ module.exports.searchDateFilter = async function (req, res) {
             user.id +
             "' AND ";
           sql += "status IN (";
-          for (let i = 0; i < req.body.status.length; i++) {
+          // console.log(req.body.status[0]);
+          let statusR = req.body.status[0].split(",");
+          //  console.log(statusR);
+          for (let i = 0; i < statusR.length; i++) {
             sql += "'";
-            sql += req.body.status[i];
+            sql += statusR[i];
             sql += "'";
             sql += ",";
           }
@@ -483,9 +432,10 @@ module.exports.searchDateFilter = async function (req, res) {
         if (sql !== undefined) {
           sql += " AND ";
           sql += "ammount_type IN (";
-          for (let i = 0; i < req.body.currency.length; i++) {
+          let currencyR = req.body.currency[0].split(",");
+          for (let i = 0; i < currencyR.length; i++) {
             sql += "'";
-            sql += req.body.currency[i];
+            sql += currencyR[i];
             sql += "'";
             sql += ",";
           }
@@ -498,9 +448,10 @@ module.exports.searchDateFilter = async function (req, res) {
             user.id +
             "' AND ";
           sql += "ammount_type IN (";
-          for (let i = 0; i < req.body.currency.length; i++) {
+          let currencyR = req.body.currency[0].split(",");
+          for (let i = 0; i < currencyR.length; i++) {
             sql += "'";
-            sql += req.body.currency[i];
+            sql += currencyR[i];
             sql += "'";
             sql += ",";
           }
@@ -538,7 +489,7 @@ module.exports.searchDateFilter = async function (req, res) {
       if (typeof req.body.methodPayment === "string") {
         sql3 = "";
         sql3 +=
-          "SELECT order_no,updated_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE user_id = '" +
+          "SELECT order_no,created_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE user_id = '" +
           user.id +
           "' AND ";
         sql3 += "payment_type = ";
@@ -546,15 +497,17 @@ module.exports.searchDateFilter = async function (req, res) {
         sql3 += req.body.methodPayment;
         sql3 += "'";
       } else {
+        console.log(req.body.methodPayment);
         sql3 = "";
         sql3 +=
-          "SELECT order_no,updated_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE user_id = '" +
+          "SELECT order_no,created_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE user_id = '" +
           user.id +
           "' AND ";
         sql3 += "payment_type IN (";
-        for (let i = 0; i < req.body.methodPayment.length; i++) {
+        let methodPaymentR = req.body.methodPayment[0].split(",");
+        for (let i = 0; i < methodPaymentR.length; i++) {
           sql3 += "'";
-          sql3 += req.body.methodPayment[i];
+          sql3 += methodPaymentR[i];
           sql3 += "'";
           sql3 += ",";
         }
@@ -572,7 +525,7 @@ module.exports.searchDateFilter = async function (req, res) {
         } else {
           sql3 = "";
           sql3 +=
-            "SELECT order_no,updated_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE user_id = '" +
+            "SELECT order_no,created_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE user_id = '" +
             user.id +
             "' AND ";
           sql3 += "status = ";
@@ -582,9 +535,10 @@ module.exports.searchDateFilter = async function (req, res) {
         if (sql3 !== undefined) {
           sql3 += " AND ";
           sql3 += "status IN (";
-          for (let i = 0; i < req.body.status.length; i++) {
+          let statusR = req.body.status[0].split(",");
+          for (let i = 0; i < statusR.length; i++) {
             sql3 += "'";
-            sql3 += req.body.status[i];
+            sql3 += statusR[i];
             sql3 += "'";
             sql3 += ",";
           }
@@ -593,13 +547,14 @@ module.exports.searchDateFilter = async function (req, res) {
         } else {
           sql3 = "";
           sql3 +=
-            "SELECT order_no,updated_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE user_id = '" +
+            "SELECT order_no,created_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE user_id = '" +
             user.id +
             "' AND ";
           sql3 += "status IN (";
-          for (let i = 0; i < req.body.status.length; i++) {
+          let statusR = req.body.status[0].split(",");
+          for (let i = 0; i < statusR.length; i++) {
             sql3 += "'";
-            sql3 += req.body.status[i];
+            sql3 += statusR[i];
             sql3 += "'";
             sql3 += ",";
           }
@@ -620,7 +575,7 @@ module.exports.searchDateFilter = async function (req, res) {
         } else {
           sql3 = "";
           sql3 +=
-            "SELECT order_no,updated_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE user_id = '" +
+            "SELECT order_no,created_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE user_id = '" +
             user.id +
             "' AND ";
           sql3 += "ammount_type = ";
@@ -632,9 +587,10 @@ module.exports.searchDateFilter = async function (req, res) {
         if (sql3 !== undefined) {
           sql3 += " AND ";
           sql3 += "ammount_type IN (";
-          for (let i = 0; i < req.body.currency.length; i++) {
+          let currencyR = req.body.currency[0].split(",");
+          for (let i = 0; i < currencyR.length; i++) {
             sql3 += "'";
-            sql3 += req.body.currency[i];
+            sql3 += currencyR[i];
             sql3 += "'";
             sql3 += ",";
           }
@@ -643,13 +599,14 @@ module.exports.searchDateFilter = async function (req, res) {
         } else {
           sql3 = "";
           sql3 +=
-            "SELECT order_no,updated_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE user_id = '" +
+            "SELECT order_no,created_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE user_id = '" +
             user.id +
             "' AND ";
           sql3 += "ammount_type IN (";
-          for (let i = 0; i < req.body.currency.length; i++) {
+          let currencyR = req.body.currency[0].split(",");
+          for (let i = 0; i < currencyR.length; i++) {
             sql3 += "'";
-            sql3 += req.body.currency[i];
+            sql3 += currencyR[i];
             sql3 += "'";
             sql3 += ",";
           }
@@ -679,17 +636,29 @@ module.exports.searchDateFilter = async function (req, res) {
       result3 = await mysqlcon(sql3);
     }
 
-    return res.json(200, {
-      message: `Total Records are ${total} for date ${
-        date ? date : `from ${from} to ${to}`
-      } are ${total}`,
-      data: {
-        currentPage: Page,
-        totalPages: page.numOfPages,
-        sql3: sql3,
-        deposits: result3,
-      },
-    });
+    if (date || (from && to)) {
+      return res.json(200, {
+        message: `Total Records are ${total} for date ${
+          date ? date : `from ${from} to ${to}`
+        } are ${total}`,
+        data: {
+          currentPage: Page,
+          totalPages: page.numOfPages,
+          sql3: sql3,
+          deposits: result3,
+        },
+      });
+    } else {
+      return res.json(200, {
+        message: `Total Records are ${total}`,
+        data: {
+          currentPage: Page,
+          totalPages: page.numOfPages,
+          sql3: sql3,
+          deposits: result3,
+        },
+      });
+    }
   } catch (error) {
     console.log(error);
     return res.json(500, {

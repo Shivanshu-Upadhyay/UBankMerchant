@@ -44,8 +44,8 @@ function FilterDate({ setDate, setTo, setFrom }) {
 
   const filterFun = (e) => {
     e.preventDefault();
-    setTo(todate);
-    setFrom(fromdate);
+    setTo(fromdate);
+    setFrom(todate);
     console.log(todate,fromdate);
     
   };

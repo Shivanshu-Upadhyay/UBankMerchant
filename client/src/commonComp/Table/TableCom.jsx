@@ -1,7 +1,7 @@
+import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import React, { useState } from "react";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -28,20 +28,14 @@ const ButtonBox = ({name})=>{
 
 
 export default function TableComp({ tableBodyData }) {
-  const [selectall,setSelectAll]=useState(false);
-  // console.log("table"+tableBodyData);
+ 
   return (
     <TableContainer className="tablecontainer2 ">
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell>
-              <input
-                className="form-check-input"
-                type="checkbox"
-                value=""
-                onChange={() => setSelectAll(!selectall)}
-              />
+              <input className="form-check-input" type="checkbox" value="" />
             </TableCell>
             <TableCell>Order Id</TableCell>
             <TableCell> Date</TableCell>
@@ -64,8 +58,7 @@ export default function TableComp({ tableBodyData }) {
                   <input
                     className="form-check-input"
                     type="checkbox"
-                    value={item.order_no}
-                    checked={selectall}
+                    value=""
                   />
                 </TableCell>
                 <TableCell className="tablebold">{item.order_no}</TableCell>
@@ -97,7 +90,7 @@ export default function TableComp({ tableBodyData }) {
                     ) : (
                       <ButtonBox name="Refund" />
                     )}
-
+                    
                     <img
                       src="https://www.bankconnect.online/assets/merchants/img/more-v.svg"
                       alt=""
