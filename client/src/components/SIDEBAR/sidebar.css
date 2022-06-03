@@ -117,3 +117,7 @@
 .css-2dum1v-MuiDrawer-docked .MuiDrawer-paper::-webkit-scrollbar {
   width: 0px !important;
 }
+
+.mainBlockSideBar{
+  width: 80%
+}

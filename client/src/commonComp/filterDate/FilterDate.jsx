@@ -16,6 +16,8 @@ function FilterDate({ setDate, setTo, setFrom }) {
 
   const handleYesterday = () => {
     let today = new Date();
+    today.setDate(today.getDate()-1)
+   
     let year =
       today.getFullYear() +
       "-" +
@@ -44,8 +46,10 @@ function FilterDate({ setDate, setTo, setFrom }) {
 
   const filterFun = (e) => {
     e.preventDefault();
+    setDate((pre) => (pre = undefined));
     setTo(fromdate);
     setFrom(todate);
+
     console.log(todate,fromdate);
     
   };
@@ -94,7 +98,7 @@ function FilterDate({ setDate, setTo, setFrom }) {
             </button>
           </div>
           <div className="col-4">
-            <button className="buttondate" onClick={() => setShow(!show)}>
+            <button className="buttondate" onClick={() =>setShow(!show)}>
               Customize
             </button>
           </div>

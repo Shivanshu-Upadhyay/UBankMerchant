@@ -13,6 +13,7 @@ import InCompleteProfile from "../SIGNUPANDLOGIN/InCompleteProfile";
 import Login from "../SIGNUPANDLOGIN/Login";
 import SignUp from "../SIGNUPANDLOGIN/SignUp";
 import Payout from '../PAYOUT/Payout'
+import Settlement from "../SETTLEMENT/Settlement";
 import { useStateContext } from "../../context/ContextProvider";
 function Routers() {
   const { auth, setAuth } = useStateContext();
@@ -27,6 +28,7 @@ function Routers() {
             <Route path="/" element={"Dashboard"} />
             <Route path="/Deposit" element={<Deposit />} />
             <Route path="/payout" element={<Payout />} />
+            <Route path="/Settlement" element={<Settlement />} />
             <Route path="/Reports" element={<Reports />} />
             <Route path="/Statements" element={<Statements />} />
             <Route path="/Virtual" element={<Virtual />} />

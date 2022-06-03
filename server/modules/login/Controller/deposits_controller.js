@@ -66,7 +66,7 @@ module.exports.defaultOrder = async function (req, res) {
           data: {
             currentPage: Page,
             totalPages: page.numOfPages,
-            deposits: result1
+            deposits: result1,
           },
         });
       } else {
@@ -96,7 +96,7 @@ module.exports.downloadReports = async function (req, res) {
   try {
     if (orderNumber != undefined) {
       let sql =
-        "SELECT order_no,created_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE order_no in (?) AND user_id = ?";
+        "SELECT * FROM tbl_merchant_transaction WHERE order_no in (?) AND user_id = ?";
       let result = await mysqlcon(sql, [orderNumber, user.id]);
 
       if (result.length === 0) {
@@ -108,8 +108,7 @@ module.exports.downloadReports = async function (req, res) {
         });
       }
     } else {
-      let sql =
-        "SELECT order_no,created_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE user_id = ?";
+      let sql = "SELECT * FROM tbl_merchant_transaction WHERE user_id = ?";
       let result = await mysqlcon(sql, [user.id]);
 
       if (result.length === 0) {
@@ -232,7 +231,7 @@ module.exports.searchDateFilter = async function (req, res) {
 
   try {
     let { date, from, to } = req.body;
-    console.log(date,from,to)
+    console.log(date, from, to);
 
     let sqld;
 
@@ -278,7 +277,7 @@ module.exports.searchDateFilter = async function (req, res) {
       let page = pagination(total, Page);
 
       let sql1 =
-        "SELECT order_no,user_id,created_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction where user_id = '" +
+        "SELECT * FROM tbl_merchant_transaction where user_id = '" +
         user.id +
         "'";
 
@@ -489,7 +488,7 @@ module.exports.searchDateFilter = async function (req, res) {
       if (typeof req.body.methodPayment === "string") {
         sql3 = "";
         sql3 +=
-          "SELECT order_no,created_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE user_id = '" +
+          "SELECT * FROM tbl_merchant_transaction WHERE user_id = '" +
           user.id +
           "' AND ";
         sql3 += "payment_type = ";
@@ -500,7 +499,7 @@ module.exports.searchDateFilter = async function (req, res) {
         console.log(req.body.methodPayment);
         sql3 = "";
         sql3 +=
-          "SELECT order_no,created_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE user_id = '" +
+          "SELECT * FROM tbl_merchant_transaction WHERE user_id = '" +
           user.id +
           "' AND ";
         sql3 += "payment_type IN (";
@@ -525,7 +524,7 @@ module.exports.searchDateFilter = async function (req, res) {
         } else {
           sql3 = "";
           sql3 +=
-            "SELECT order_no,created_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE user_id = '" +
+            "SELECT * FROM tbl_merchant_transaction WHERE user_id = '" +
             user.id +
             "' AND ";
           sql3 += "status = ";
@@ -547,7 +546,7 @@ module.exports.searchDateFilter = async function (req, res) {
         } else {
           sql3 = "";
           sql3 +=
-            "SELECT order_no,created_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE user_id = '" +
+            "SELECT * FROM tbl_merchant_transaction WHERE user_id = '" +
             user.id +
             "' AND ";
           sql3 += "status IN (";
@@ -575,7 +574,7 @@ module.exports.searchDateFilter = async function (req, res) {
         } else {
           sql3 = "";
           sql3 +=
-            "SELECT order_no,created_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE user_id = '" +
+            "SELECT * FROM tbl_merchant_transaction WHERE user_id = '" +
             user.id +
             "' AND ";
           sql3 += "ammount_type = ";
@@ -599,7 +598,7 @@ module.exports.searchDateFilter = async function (req, res) {
         } else {
           sql3 = "";
           sql3 +=
-            "SELECT order_no,created_on,i_flname,ammount,ammount_type,payment_type,settle_amount,status FROM tbl_merchant_transaction WHERE user_id = '" +
+            "SELECT * FROM tbl_merchant_transaction WHERE user_id = '" +
             user.id +
             "' AND ";
           sql3 += "ammount_type IN (";
@@ -667,5 +666,3 @@ module.exports.searchDateFilter = async function (req, res) {
     });
   }
 };
-
-

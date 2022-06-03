@@ -20,6 +20,7 @@ function Filter({
   setCurrencyPayment,
   statusPayment,
   setStatusPayment,
+  setDate,
 }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [show1, setShow1] = React.useState(true);
@@ -27,14 +28,13 @@ function Filter({
   const [show3, setShow3] = React.useState(true);
 
   // Cheak Value Status
-  const [methordData,setMethordData] = useState([])
-  
+  const [methordData, setMethordData] = useState([]);
+
   // Status
-  const [statusData,setStatusData]=useState([])
+  const [statusData, setStatusData] = useState([]);
 
   // Currency
-  const [currencyData,setCurrencyData]=useState([])
-  
+  const [currencyData, setCurrencyData] = useState([]);
 
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -56,9 +56,11 @@ function Filter({
 
   const cheakValue = (e) => {
     e.preventDefault();
-    setMethodPayment(methordData);
-    setStatusPayment(statusData);
-    setCurrencyPayment(currencyData);
+    setDate((pre) => (pre = undefined));
+    setMethodPayment([...new Set(methordData)]);
+    console.log(methordData);
+    setStatusPayment([...new Set(statusData)]);
+    setCurrencyPayment([...new Set(currencyData)]);
   };
 
   return (
@@ -119,28 +121,36 @@ function Filter({
                       name="UPI / Other Methods"
                       value="UPI"
                       onChange={(e) =>
-                        setMethordData([...methordData, e.target.value])
+                        e.target.checked
+                          ? setMethordData([...methordData, e.target.value])
+                          : ""
                       }
                     />
                     <CheakboxComp
                       name="Net Banking"
                       value="NETBANKING"
                       onChange={(e) =>
-                        setMethordData([...methordData, e.target.value])
+                        e.target.checked
+                          ? setMethordData([...methordData, e.target.value])
+                          : ""
                       }
                     />
                     <CheakboxComp
                       name="Card"
                       value="CARD"
                       onChange={(e) =>
-                        setMethordData([...methordData, e.target.value])
+                        e.target.checked
+                          ? setMethordData([...methordData, e.target.value])
+                          : ""
                       }
                     />
                     <CheakboxComp
                       name="E-Wallet"
                       value="EWALLET"
                       onChange={(e) =>
-                        setMethordData([...methordData, e.target.value])
+                        e.target.checked
+                          ? setMethordData([...methordData, e.target.value])
+                          : ""
                       }
                     />
                   </>
@@ -154,35 +164,45 @@ function Filter({
                       name="Success"
                       value={1}
                       onChange={(e) =>
-                        setStatusData([...statusData, e.target.value])
+                        e.target.checked
+                          ? setStatusData([...statusData, e.target.value])
+                          : ""
                       }
                     />
                     <CheakboxComp
                       name="Waiting"
                       value={2}
                       onChange={(e) =>
-                        setStatusData([...statusData, e.target.value])
+                        e.target.checked
+                          ? setStatusData([...statusData, e.target.value])
+                          : ""
                       }
                     />
                     <CheakboxComp
                       name="Pending"
                       value={3}
                       onChange={(e) =>
-                        setStatusData([...statusData, e.target.value])
+                        e.target.checked
+                          ? setStatusData([...statusData, e.target.value])
+                          : ""
                       }
                     />
                     <CheakboxComp
                       name="Refund"
                       value={4}
                       onChange={(e) =>
-                        setStatusData([...statusData, e.target.value])
+                        e.target.checked
+                          ? setStatusData([...statusData, e.target.value])
+                          : ""
                       }
                     />
                     <CheakboxComp
                       name="Failed"
                       value={0}
                       onChange={(e) =>
-                        setStatusData([...statusData, e.target.value])
+                        e.target.checked
+                          ? setStatusData([...statusData, e.target.value])
+                          : ""
                       }
                     />
                   </>
@@ -195,49 +215,63 @@ function Filter({
                       name="INR"
                       value="INR"
                       onChange={(e) =>
-                        setCurrencyData([...currencyData, e.target.value])
+                        e.target.checked
+                          ? setCurrencyData([...currencyData, e.target.value])
+                          : ""
                       }
                     />
                     <CheakboxComp
                       name="USD"
                       value="USD"
                       onChange={(e) =>
-                        setCurrencyData([...currencyData, e.target.value])
+                        e.target.checked
+                          ? setCurrencyData([...currencyData, e.target.value])
+                          : ""
                       }
                     />
                     <CheakboxComp
                       name="CNY"
                       value="CNY"
                       onChange={(e) =>
-                        setCurrencyData([...currencyData, e.target.value])
+                        e.target.checked
+                          ? setCurrencyData([...currencyData, e.target.value])
+                          : ""
                       }
                     />
                     <CheakboxComp
                       name="MYR"
                       value="MYR"
                       onChange={(e) =>
-                        setCurrencyData([...currencyData, e.target.value])
+                        e.target.checked
+                          ? setCurrencyData([...currencyData, e.target.value])
+                          : ""
                       }
                     />
                     <CheakboxComp
                       name="THB"
                       value="THB"
                       onChange={(e) =>
-                        setCurrencyData([...currencyData, e.target.value])
+                        e.target.checked
+                          ? setCurrencyData([...currencyData, e.target.value])
+                          : ""
                       }
                     />
                     <CheakboxComp
                       name="IDR"
                       value="IDR"
                       onChange={(e) =>
-                        setCurrencyData([...currencyData, e.target.value])
+                        e.target.checked
+                          ? setCurrencyData([...currencyData, e.target.value])
+                          : ""
                       }
                     />
                     <CheakboxComp
                       name="VND"
                       value="VND"
                       onChange={(e) =>
-                        setCurrencyData([...currencyData, e.target.value])
+                        e.target.checked
+                          ? setCurrencyData([...currencyData, e.target.value])
+                          : ""
                       }
                     />
                   </>

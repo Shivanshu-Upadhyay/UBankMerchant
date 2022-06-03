@@ -109,7 +109,7 @@ export default function Sidebar() {
       name: "Settlement",
       iconUrl:
         "	https://www.bankconnect.online/assets/merchants/img/sattlement.svg",
-      path: "/",
+      path: "/Settlement",
     },
     {
       name: "Reports",
@@ -259,7 +259,7 @@ export default function Sidebar() {
         </List>
         <Divider />
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }} className="mainBlockSideBar">
         <DrawerHeader />
         <div className="bdcolor">
           <Outlet />

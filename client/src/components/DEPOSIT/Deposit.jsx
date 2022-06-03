@@ -12,7 +12,7 @@ import * as XLSX from "xlsx";
 const Footer = ({ setPage, page, totalPage }) => {
   const pageNumber = (e, p) => {
     setPage(p);
-    console.log(p);
+   
   };
   return (
     <>
@@ -49,9 +49,11 @@ const SecondBlock = ({
   statusPayment,
   setStatusPayment,
   tableBodyData,
+  xlData,
 }) => {
   const downloadExl = () => {
-    const workSheet = XLSX.utils.json_to_sheet(tableBodyData);
+    console.log(xlData);
+    const workSheet = XLSX.utils.json_to_sheet(xlData);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, "Deposit");
     // Buffer
@@ -78,6 +80,7 @@ const SecondBlock = ({
             setCurrencyPayment={setCurrencyPayment}
             statusPayment={statusPayment}
             setStatusPayment={setStatusPayment}
+            setDate={setDate}
           />
         </div>
         <div className="col-3 ">
@@ -97,9 +100,13 @@ const SecondBlock = ({
 };
 
 function Deposit() {
+  // Download Data
+  const [xlData,setXlData]= useState([])
+  
   // CARD DATA
   const [cardData, setCardData] = useState([]);
   const [totalPage, setTotalPage] = useState(1);
+   
   useEffect(() => {
     const auth = localStorage.getItem("user");
     let formData = new FormData();
@@ -122,7 +129,7 @@ function Deposit() {
   const [tableBodyData, setTableBodyData] = useState([]);
   const [page, setPage] = useState(1);
   const [orderNumber, setorderNumber] = useState("");
-  console.log(orderNumber);
+  
   useEffect(() => {
     tabledatafetch();
   }, [page, orderNumber]);
@@ -158,18 +165,21 @@ function Deposit() {
   let [methodPayment, setMethodPayment] = useState([]);
   let [status, setStatusPayment] = useState([]);
   let [currency, setCurrencyPayment] = useState([]);
-  // console.log(methodPayment);
-  console.log(date, from, to, methodPayment);
-
-  useEffect(() => {
+  
+  const fetchDatafilterall = () => {
     const auth = localStorage.getItem("user");
     let formData = new FormData();
 
     if (date) {
       formData.append("date", date);
+       formData.append("page", page);
+      
     } else if (from && to) {
+
       formData.append("from", from);
       formData.append("to", to);
+       formData.append("page", page);
+       
     } else if (
       methodPayment.length > 0 &&
       status.length > 0 &&
@@ -178,23 +188,32 @@ function Deposit() {
       formData.append("methodPayment[]", methodPayment);
       formData.append("status[]", status);
       formData.append("currency[]", currency);
+       formData.append("page", page);
     } else if (methodPayment.length > 0 && status.length > 0) {
       formData.append("methodPayment[]", methodPayment);
       formData.append("status[]", status);
+       formData.append("page", page);
     } else if (status.length > 0 && currency.length > 0) {
       formData.append("status[]", status);
       formData.append("currency[]", currency);
+       formData.append("page", page);
     } else if (methodPayment.length > 0 && currency.length > 0) {
       formData.append("methodPayment[]", methodPayment);
       formData.append("currency[]", currency);
+       formData.append("page", page);
     } else if (methodPayment.length > 0) {
       formData.append("methodPayment[]", methodPayment);
+       formData.append("page", page);
     } else if (status.length > 0) {
       formData.append("status[]", status);
+       formData.append("page", page);
     } else if (currency.length > 0) {
       formData.append("currency[]", currency);
-    }else{
+       formData.append("page", page);
 
+    } else {
+       formData.append("page", page);
+       
     }
 
     const config = {
@@ -208,10 +227,14 @@ function Deposit() {
       .post(`${baseUrl}/searchDateFilter`, formData, config)
       .then((res) => {
         setTotalPage(res.data.data.totalPages);
-        console.log(res);
         setTableBodyData((pre) => (pre = res.data.data.deposits));
       })
       .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    fetchDatafilterall();
+    
   }, [date, to, from, methodPayment, page, status, currency]);
 
   // Search
@@ -237,10 +260,15 @@ function Deposit() {
             statusPayment={status}
             setStatusPayment={setStatusPayment}
             tableBodyData={tableBodyData}
+            xlData={xlData}
           />
         </div>
         <div className="col-12">
-          <TableComp tableBodyData={tableBodyData} />
+          <TableComp
+            tableBodyData={tableBodyData}
+            setXlData={setXlData}
+            xlData={xlData}
+          />
         </div>
       </div>
 

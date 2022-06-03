@@ -45,7 +45,7 @@ label {
   text-align: center;
   color: #000000 ;
   font-weight: 700;
-  font-size: large;
+  font-size: 15px;
 }
 input:focus {
   outline: none;
