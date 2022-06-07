@@ -3,6 +3,7 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import "./diposite.css";
 function Diposite({ paymentData }) {
+  console.log(paymentData);
   return (
     <>
       <div className="row mx-3 pb-5 maincontainer">
@@ -11,26 +12,25 @@ function Diposite({ paymentData }) {
           <div className="Baged ">
             <span className="mx-3 textDepoDash">UPI/APM</span>
             <div className="mx-3 text-bottom text2">
-              
-              {/* {paymentData.upi.total?paymentData.upi.total:"00.00"} */}
+              {paymentData ? paymentData.upi.total : "00.00"}
             </div>
           </div>
           <div className="Baged my-3" style={{ background: "#41d4a8" }}>
             <span className="mx-3 textDepoDash">Net Banking</span>
             <div className="mx-3 text-bottom text2">
-              {/* {paymentData.netbanking.total?paymentData.netbanking.total:"00.00"} */}
+              {paymentData ? paymentData.netbanking.total : "00.00"}
             </div>
           </div>
           <div className="Baged my-3" style={{ background: "#1EB6E7" }}>
             <span className="mx-3 textDepoDash">Wallet</span>
             <div className="mx-3 text-bottom text2">
-              {/* {paymentData.wallet.total?paymentData.wallet.total:"00.00"} */}
+              {paymentData ? paymentData.wallet.total : "00.00"}
             </div>
           </div>
           <div className="Baged my-3" style={{ background: "#471EE8" }}>
             <span className="mx-3 textDepoDash">Card</span>
             <div className="mx-3 text-bottom text2">
-              {/* {paymentData.card.total?paymentData.card.total:"00.00"} */}
+              {paymentData ? paymentData.card.total : "00.00"}
             </div>
           </div>
         </div>
@@ -38,8 +38,8 @@ function Diposite({ paymentData }) {
           <div className="col-6 text-center">
             <div className="firstProgress">
               <CircularProgressbar
-                value={66}
-                text={"55%"}
+                value={paymentData ? paymentData.upi.percent : 0}
+                text={paymentData ? paymentData.upi.percent + "%" : "0%"}
                 styles={buildStyles({
                   textColor: "white",
                 })}
@@ -50,8 +50,8 @@ function Diposite({ paymentData }) {
           <div className="col-6  text-center">
             <div className="secondProgress">
               <CircularProgressbar
-                value={66}
-                text={"55%"}
+                value={paymentData ? paymentData.netbanking.percent : 0}
+                text={paymentData ? paymentData.netbanking.percent + "%" : "0%"}
                 styles={buildStyles({
                   textColor: "white",
                 })}
@@ -62,8 +62,8 @@ function Diposite({ paymentData }) {
           <div className="col-6 text-center">
             <div className="thirdProgress">
               <CircularProgressbar
-                value={66}
-                text={"55%"}
+                value={paymentData ? paymentData.wallet.percent : 0}
+                text={paymentData ? paymentData.wallet.percent + "%" : "0%"}
                 styles={buildStyles({
                   textColor: "black",
                 })}
@@ -76,8 +76,8 @@ function Diposite({ paymentData }) {
           <div className="col-6 text-center">
             <div className="foreProgress">
               <CircularProgressbar
-                value={66}
-                text={"55%"}
+                value={paymentData ? paymentData.card.percent : 0}
+                text={paymentData ? paymentData.card.percent + "%" : "0%"}
                 styles={buildStyles({
                   textColor: "white",
                 })}

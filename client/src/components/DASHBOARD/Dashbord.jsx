@@ -11,7 +11,7 @@ import "./style.css";
 function Dashbord() {
   const [success,setSuccess]=useState('')
   const [atmData,setAtmData] = useState([])
-  const [paymentData,setPaymentData] = useState([])
+  const [paymentData,setPaymentData] = useState()
   useEffect(() => {
     paymentType();
     cardDetails();
@@ -81,8 +81,8 @@ function Dashbord() {
         formData,
         config
       );
-      // console.log(result.data.data.upi.total);
-      setPaymentData(result.data.data);
+      console.log(result.data.data.upi.total);
+      setPaymentData((pre) => pre = result.data.data);
       
     } catch (error) {
       console.log(error);

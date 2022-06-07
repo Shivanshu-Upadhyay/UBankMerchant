@@ -127,7 +127,7 @@ const TableComp = () => {
           <TableBody>
             {tData.map((item, index) => {
               return (
-                <>
+               
                   <TableRow
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     key={index}
@@ -141,7 +141,7 @@ const TableComp = () => {
                     <TableCell>{item.Settlement}</TableCell>
                     <TableCell>{item.netbalance}</TableCell>
                   </TableRow>
-                </>
+                
               );
             })}
           </TableBody>
