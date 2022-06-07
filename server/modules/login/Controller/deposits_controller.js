@@ -12,7 +12,6 @@ module.exports.defaultOrder = async function (req, res) {
   let user = req.user;
   try {
     let { orderNumber } = req.body;
-
     let sql;
 
     if (orderNumber) {

@@ -1,0 +1,22 @@
+.liquedblock{
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border-radius: 20px;
+    height: 19.5rem;
+    width: 5.3rem;
+    background: #E8F3F9;
+    border-radius: 23px;
+    padding: 0%;
+    position: relative;
+   
+}
+
+
+.waveLiqued{
+    position: absolute;
+    background: rgb(116, 32, 169);
+    bottom: 0;
+    width: 100%;
+    margin: 0%;
+    border-radius: 0px 0px 23px 23px;
+}
+

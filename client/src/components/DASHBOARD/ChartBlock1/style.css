@@ -1,0 +1,7 @@
+.chartblockshdow{
+    background: #FFFFFF;
+    box-shadow: rgb(0 0 0 / 12%) 0px 1px 4px 1px;
+    border: 1px solid #ced4da;
+    border-radius: 20px;
+    padding: 20px;
+}

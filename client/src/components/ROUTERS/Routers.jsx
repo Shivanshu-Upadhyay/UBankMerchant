@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route,Navigate } from "react-router-dom";
+import Dashbord from "../DASHBOARD/Dashbord";
 import Deposit from "../DEPOSIT/Deposit";
 import Virtual from "../VIRTUAlTERMINAL/Virtual";
 import Sidebar from "../SIDEBAR/Sidebar";
@@ -25,7 +26,7 @@ function Routers() {
       <Routes>
         {auth ? (
           <Route path="/" element={<Sidebar />}>
-            <Route path="/" element={"Dashboard"} />
+            <Route path="/" element={<Dashbord/>} />
             <Route path="/Deposit" element={<Deposit />} />
             <Route path="/payout" element={<Payout />} />
             <Route path="/Settlement" element={<Settlement />} />

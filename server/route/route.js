@@ -1,6 +1,6 @@
 const loginController = require("../modules/login/Controller/loginController");
 const dashbordController = require("../modules/login/Controller/dashbordController");
-
+const payoutController = require("../modules/login/Controller/payoutController");
 const depositsController = require("../modules/login/Controller/deposits_controller");
 const route = require("express").Router();
 const path = require("path");
@@ -96,7 +96,32 @@ route.post("/sqltest", uploads.none(), helper.verify, loginController.testsql);
 
 // dashboard controller
 
-route.get("/payout", uploads.none(), helper.verify, dashbordController.payout);
+route.post(
+  "/top_transaction_today",
+  uploads.none(),
+  helper.verify,
+  dashbordController.top_transaction_today
+);
+route.post("/dpc", uploads.none(), helper.verify, dashbordController.dpc);
+route.post(
+  "/card_data",
+  uploads.none(),
+  helper.verify,
+  dashbordController.card_data
+);
+
+route.post(
+  "/success_rate",
+  uploads.none(),
+  helper.verify,
+  dashbordController.success_rate
+);
+route.post(
+  "/payment_type",
+  uploads.none(),
+  helper.verify,
+  dashbordController.payment_type
+);
 
 //deposits controller
 
@@ -128,6 +153,18 @@ route.post(
   helper.verify,
   depositsController.searchDateFilter
 );
+
+// Payout Router 
+
+route.post("/filter", uploads.none(), helper.verify, payoutController.filter);
+route.post(
+  "/payoutheader",
+  uploads.none(),
+  helper.verify,
+  payoutController.payoutheader
+);
+
+
 
 
 module.exports = route;

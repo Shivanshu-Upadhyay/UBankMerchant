@@ -2,19 +2,21 @@
   width: 24rem;
   height: 24rem;
   /* background-image: url("../../../../public/imges/atm1.svg"); */
-  background-repeat: no-repeat;
-  background-size: contain;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
   background-size: 100%;
   border: none;
   color: #fff;
-  position: relative;
- 
-  
+}
+
+.atmcard.card.aos-init.aos-animate {
+    background: #f9f9f9;
 }
 
 
-.main{
+.mainAtmDiv{
     position: relative;
+   
 }
 
 .changeatm{
@@ -25,8 +27,8 @@
 }
 .shadowimg{
     position: absolute;
-    bottom:4.6rem;
-    left: 1.5rem;
+    bottom:4.7rem;
+    left: 2%;
     width: 27vw;
 }
 

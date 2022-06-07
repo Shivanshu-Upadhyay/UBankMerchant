@@ -271,6 +271,7 @@ const loginCont = {
     let user = req.user;
     // res.send(users);
     var bconnect = {};
+    
     try {
       var request = req.body;
       console.log(request);

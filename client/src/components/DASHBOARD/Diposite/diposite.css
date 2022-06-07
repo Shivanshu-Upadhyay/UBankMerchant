@@ -9,7 +9,7 @@
   height: 4rem;
   margin-left: 5px;
 }
-.heading{
+.headingDepo{
     font-family: 'Mulish';
     font-style: normal;
     font-weight: 700;
@@ -18,13 +18,12 @@
     color: #000000;
 }
 .maincontainer {
-  box-shadow: rgb(0 0 0 / 12%) 0px 1px 4px 1px;
-  border: 1px solid #ced4da;
+ 
   border-radius: 20px;
-  width: 500px;
+  
 }
 
-.text1 {
+.textDepoDash {
   font-family: "Mulish";
   font-style: normal;
   font-weight: 700;

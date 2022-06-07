@@ -10,7 +10,6 @@ const Card = ({carddata}) => {
           return (
             <div
               className={
-                
                 index === 0
                   ? "cardbox Dcardbg1 col-lg-3 col-md-6 col-sm-12 "
                   : index === 1
@@ -22,37 +21,40 @@ const Card = ({carddata}) => {
               key={index}
             >
               <div className="d-flex align-items-center">
-                <Circul
-                  value={item.percentage}
-                  text={item.percentage + "%"}
-                  pathColor={
-                    index === 0
-                      ? "#AB38D3"
-                      : index === 1
-                      ? "#3BC69D"
-                      : index === 2
-                      ? "#471EE4"
-                      : "#1EAAE7"
-                  }
-                  textColor={
-                    index === 0
-                      ? "#AB38D3"
-                      : index === 1
-                      ? "#3BC69D"
-                      : index === 2
-                      ? "#471EE4"
-                      : "#1EAAE7"
-                  }
-                  trailColor={
-                    index === 0
-                      ? "#ab38d38c"
-                      : index === 1
-                      ? "#3bc69d59"
-                      : index === 2
-                      ? "#471ee480"
-                      : "#1eaae77d"
-                  }
-                />
+                {item.percentage ? (
+                    <Circul
+                      value={item.percentage}
+                      text={item.percentage + "%"}
+                      pathColor={
+                        index === 0
+                          ? "#AB38D3"
+                          : index === 1
+                          ? "#3BC69D"
+                          : index === 2
+                          ? "#471EE4"
+                          : "#1EAAE7"
+                      }
+                      textColor={
+                        index === 0
+                          ? "#AB38D3"
+                          : index === 1
+                          ? "#3BC69D"
+                          : index === 2
+                          ? "#471EE4"
+                          : "#1EAAE7"
+                      }
+                      trailColor={
+                        index === 0
+                          ? "#ab38d38c"
+                          : index === 1
+                          ? "#3bc69d59"
+                          : index === 2
+                          ? "#471ee480"
+                          : "#1eaae77d"
+                      }
+                    />
+                  ):""}
+
                 <div className="mx-2">
                   <div className="namedata">{item.name}</div>
                   <div className="numberData my-2">{item.amount}</div>

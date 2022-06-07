@@ -2,28 +2,36 @@ import React from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import "./diposite.css";
-function Diposite() {
-   
+function Diposite({ paymentData }) {
   return (
     <>
       <div className="row mx-3 pb-5 maincontainer">
         <div className="col-2">
-          <h4 className="heading my-3">Deposits</h4>
+          <h4 className="headingDepo my-3">Deposits</h4>
           <div className="Baged ">
-            <span className="mx-3 text1">UPI/APM</span>
-            <div className="mx-3 text-bottom text2">0</div>
+            <span className="mx-3 textDepoDash">UPI/APM</span>
+            <div className="mx-3 text-bottom text2">
+              
+              {/* {paymentData.upi.total?paymentData.upi.total:"00.00"} */}
+            </div>
           </div>
           <div className="Baged my-3" style={{ background: "#41d4a8" }}>
-            <span className="mx-3 text1">Net Banking</span>
-            <div className="mx-3 text-bottom text2">0</div>
+            <span className="mx-3 textDepoDash">Net Banking</span>
+            <div className="mx-3 text-bottom text2">
+              {/* {paymentData.netbanking.total?paymentData.netbanking.total:"00.00"} */}
+            </div>
           </div>
           <div className="Baged my-3" style={{ background: "#1EB6E7" }}>
-            <span className="mx-3 text1">Wallet</span>
-            <div className="mx-3 text-bottom text2">0</div>
+            <span className="mx-3 textDepoDash">Wallet</span>
+            <div className="mx-3 text-bottom text2">
+              {/* {paymentData.wallet.total?paymentData.wallet.total:"00.00"} */}
+            </div>
           </div>
           <div className="Baged my-3" style={{ background: "#471EE8" }}>
-            <span className="mx-3 text1">Card</span>
-            <div className="mx-3 text-bottom text2">0</div>
+            <span className="mx-3 textDepoDash">Card</span>
+            <div className="mx-3 text-bottom text2">
+              {/* {paymentData.card.total?paymentData.card.total:"00.00"} */}
+            </div>
           </div>
         </div>
         <div className="col-8 row  block2 align-items-center my-3 ">

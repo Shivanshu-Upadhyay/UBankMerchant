@@ -3,27 +3,25 @@ import "./atm.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-function Atm() {
+function Atm({ atmData }) {
   const [cardflip, setCardflip] = useState(0);
   useEffect(() => {
     AOS.init();
   }, [cardflip]);
 
   const changeFlip = () => {
-    if (cardflip === 5) {
+    if (cardflip === 6) {
       setCardflip(0);
     } else {
       setCardflip(cardflip + 1);
     }
-
-    console.log(cardflip);
   };
 
-  const AtmCard = ({ flip, bgImg, name }) => {
+  const AtmCard = ({ flip, bgImg, name,holderName ,date,amount}) => {
     return (
-      <div className="main">
+      <div className="mainAtmDiv">
         <div
-          className="atmcard card m-3 "
+          className="atmcard card"
           data-aos={flip}
           style={{
             backgroundImage: `url(${bgImg})`,
@@ -36,7 +34,7 @@ function Atm() {
             >
               {name}
             </h5>
-            <div style={{ fontSize: "1.2rem" }}>0.00</div>
+            <div style={{ fontSize: "1.2rem" }}>{amount}</div>
             <br />
             <br />
             <div
@@ -49,11 +47,11 @@ function Atm() {
             <div className="d-flex justify-content-between ">
               <div className="mx-3">
                 <div className="holdername">Month Date</div>
-                <div>05/22</div>
+                <div>{date}</div>
               </div>
               <div className="mx-5">
-                <div className="holdername">Month Date</div>
-                <div>Katerina Katerina</div>
+                <div className="holdername">Merchant Name</div>
+                <div>{holderName}</div>
               </div>
             </div>
           </div>
@@ -75,37 +73,77 @@ function Atm() {
   return (
     <div>
       {cardflip === 0 ? (
-        <AtmCard bgImg="./imges/atm1.svg" name="Deposits" flip="flip-up" />
+        <AtmCard
+          bgImg="./imges/greenAtm.svg"
+          name="Deposits"
+          flip="flip-up"
+          date={atmData.date}
+          holderName={atmData.i_flname}
+          amount={atmData.deposit}
+        />
       ) : cardflip === 1 ? (
-        <AtmCard flip="flip-up" bgImg="./imges/atm2.svg" name="Payouts" />
+        <AtmCard
+          flip="flip-up"
+          bgImg="./imges/orangAtm.svg"
+          name="Payouts"
+          date={atmData.date}
+          holderName={atmData.i_flname}
+          amount={atmData.payout}
+        />
       ) : cardflip === 2 ? (
-        <AtmCard flip="flip-up" bgImg="./imges/atm3.svg" name="Settelments" />
+        <AtmCard
+          flip="flip-up"
+          bgImg="./imges/darkBlue.svg"
+          name="Settelments"
+          date={atmData.date}
+          holderName={atmData.i_flname}
+          amount={atmData.settlement}
+        />
       ) : cardflip === 3 ? (
         <AtmCard
           flip="flip-up"
-          bgImg="./imges/atm4.svg"
+          bgImg="./imges/purpleAtm.svg"
           name="Comission & Charges"
+          date={atmData.date}
+          holderName={atmData.i_flname}
+          amount={atmData.charges}
         />
       ) : cardflip === 4 ? (
         <AtmCard
           flip="flip-up"
-          bgImg="./imges/atm5.svg"
+          bgImg="./imges/redAtm.svg"
           name="Rolling Resever"
+          date={atmData.date}
+          holderName={atmData.i_flname}
+          amount={atmData.roll_reverse}
         />
       ) : cardflip === 5 ? (
         <AtmCard
           flip="flip-up"
-          bgImg="./imges/atm6.svg"
+          bgImg="./imges/pinkAtm.svg"
           name="Refund and Checkback"
+          date={atmData.date}
+          holderName={atmData.i_flname}
+          amount='00.00'
         />
       ) : cardflip === 6 ? (
         <AtmCard
           flip="flip-up"
-          bgImg="./imges/atm7.svg"
+          bgImg="./imges/ligrtBlueAtm.svg"
           name="Available Balance"
+          date={atmData.date}
+          holderName={atmData.i_flname}
+          amount={atmData.avilable_amt}
         />
       ) : (
-        <AtmCard bgImg="./imges/atm1.svg" flip="flip-up" name="Deposits" />
+        <AtmCard
+          bgImg="./imges/atm1.svg"
+          flip="flip-up"
+          name="Deposits"
+          date={atmData.date}
+          holderName={atmData.i_flname}
+          amount={atmData.deposit}
+        />
       )}
     </div>
   );

@@ -12,8 +12,8 @@ function Currency() {
   return (
     <>
       <div className="mainblock ">
-        <div className="d-flex justify-content-between">
-          <h6 className="heading">Deposits By Currency</h6>
+        <div className="d-flex justify-content-between align-items-center">
+          <h6 className="headingDiposite">Deposits By Currency</h6>
           <div style={{ background: "#fff" }}>
             <button
               className={tab === 1 ? "btn1 active" : "btn1"}
@@ -112,7 +112,7 @@ const TableComp = () => {
 
   return (
     <>
-      <TableContainer>
+      <TableContainer className="tableblockdash">
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>

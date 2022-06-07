@@ -13,7 +13,9 @@ function Transition() {
     <div>
       <div className="mainblock ">
         <div className="d-flex justify-content-between">
-          <h6 className="heading">Top Transactions</h6>
+          <h6 className=" headingDiposite d-flex justify-content-between align-items-center">
+            Top Transactions
+          </h6>
           <div style={{ background: "#fff" }}>
             <button
               className={tab === 1 ? "btn1 active" : "btn1"}
@@ -112,13 +114,10 @@ const TableComp = () => {
 
   return (
     <>
-      <TableContainer>
+      <TableContainer className="tableblockdash">
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-             
-             
-             
               <TableCell></TableCell>
               <TableCell></TableCell>
               <TableCell></TableCell>
@@ -138,7 +137,6 @@ const TableComp = () => {
                     <TableCell>{item.Currency}</TableCell>
                     <TableCell>{item.Deposit}</TableCell>
                     <TableCell>{item.Payout}</TableCell>
-                    
                   </TableRow>
                 </>
               );
