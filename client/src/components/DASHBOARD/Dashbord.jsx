@@ -5,6 +5,11 @@ import Diposite from "./Diposite/Diposite";
 import Currency from "./Currency/Currency";
 import Transition from "./Transition/Transition";
 import baseUrl from "../../components/config/baseUrl";
+import WeeklyBarGraph from '../../components/REACTGRAPH/WeeklyBarGraph'
+
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MonthlyBarGraph from '../../components/REACTGRAPH/MonthlyBarGraph'
 import axios from "axios";
 import "./style.css";
 
@@ -12,6 +17,7 @@ function Dashbord() {
   const [success,setSuccess]=useState('')
   const [atmData,setAtmData] = useState([])
   const [paymentData,setPaymentData] = useState()
+  const[graphval,setGraphVal] = useState("month")
   useEffect(() => {
     paymentType();
     cardDetails();
@@ -89,6 +95,24 @@ function Dashbord() {
     }
 
   }
+  // dropdown
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => { 
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+    
+  };
+  const monthfun = ()=>{
+    setAnchorEl(null);
+    setGraphVal("month");
+  }
+  const weekfun = ()=>{
+    setAnchorEl(null);
+    setGraphVal("week");
+  }
   return (
     <>
       <div className="row justify-content-between">
@@ -117,7 +141,60 @@ function Dashbord() {
           <ChartBlock />
         </div>
         {/* Transaction Overview Deposits*/}
-        <div className="col-6 chartblockshdow" style={{ width: "49%" }}></div>
+        <div className="col-6 chartblockshdow" style={{ width: "49%" }}>
+          <div className="d-flex justify-content-between mb-5">
+            <h5 style={{ fontWeight: "600", fontSize: "18px" }}>
+              Transaction Overview
+            </h5>
+            <div>
+              <button
+                className="mx-2"
+                style={{
+                  border: "none",
+                  borderRadius: "20px",
+                  padding: "5px 10px",
+                }}
+              >
+                <img
+                  src="https://www.bankconnect.online/assets/merchants/img/download.svg"
+                  alt=""
+                />
+                Download Reports
+              </button>
+              <button
+                id="basic-button"
+                aria-controls={open ? "basic-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+                style={{
+                  border: "none",
+                  borderRadius: "20px",
+                  padding: "5px 10px",
+                }}
+              >
+                <img
+                  src="	https://www.bankconnect.online/assets/merchants/img/more.svg"
+                  alt=""
+                />
+              </button>
+
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
+              >
+                <MenuItem onClick={monthfun}>Monthly</MenuItem>
+                <MenuItem onClick={weekfun}>Weekly</MenuItem>
+              </Menu>
+            </div>
+          </div>
+          {graphval === "month" ? <MonthlyBarGraph /> : <WeeklyBarGraph />}
+        </div>
         <div className="col-6 chartblockshdow" style={{ width: "49%" }}>
           <Diposite paymentData={paymentData} />
         </div>

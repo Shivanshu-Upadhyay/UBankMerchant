@@ -83,7 +83,7 @@ const dashboardCount = {
   dpc: async function (req, res) {
     let user = req.user;
     let user_id = user.id;
-    console.log(user_id)
+    
 
     var d = new Date();
     let sdate1 = d.toLocaleString().slice(0, 10);
@@ -247,9 +247,9 @@ const dashboardCount = {
 
       // day
       if (today) {
-        sql =
-          "select i_flname,payment_type,currency,date_format(tbl_merchant_transaction.created_on,'%d %M, %Y') as date,date_format(tbl_merchant_transaction.created_on,'%h:%i') as time,ammount,tbl_icici_payout_transaction_response_details.status from tbl_merchant_transaction inner join tbl_icici_payout_transaction_response_details on tbl_merchant_transaction.user_id=tbl_icici_payout_transaction_response_details.users_id limit 20";
-        // sql = "select i_flname,payment_type,currency,tbl_merchant_transaction.created_on,ammount,tbl_icici_payout_transaction_response_details.status from tbl_merchant_transaction inner join tbl_icici_payout_transaction_response_details on tbl_merchant_transaction.user_id=tbl_icici_payout_transaction_response_details.users_id WHERE DATE(tbl_merchant_transaction.created_on) = ? AND user_id = ?"
+        // sql =
+        //   "select i_flname,payment_type,currency,date_format(tbl_merchant_transaction.created_on,'%d %M, %Y') as date,date_format(tbl_merchant_transaction.created_on,'%h:%i') as time,ammount,tbl_icici_payout_transaction_response_details.status from tbl_merchant_transaction inner join tbl_icici_payout_transaction_response_details on tbl_merchant_transaction.user_id=tbl_icici_payout_transaction_response_details.users_id limit 20";
+        sql = "select i_flname,payment_type,currency,tbl_merchant_transaction.created_on,ammount,tbl_icici_payout_transaction_response_details.status from tbl_merchant_transaction inner join tbl_icici_payout_transaction_response_details on tbl_merchant_transaction.user_id=tbl_icici_payout_transaction_response_details.users_id WHERE DATE(tbl_merchant_transaction.created_on) = ? AND tbl_merchant_transaction.user_id = ?"
 
         result = await mysqlcon(sql, [today, user_id]);
       }

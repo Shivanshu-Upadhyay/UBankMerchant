@@ -122,6 +122,30 @@ route.post(
   helper.verify,
   dashbordController.payment_type
 );
+route.post(
+  "/daily_sale_count_icon",
+  uploads.none(),
+  helper.verify,
+  dashbordController.daily_sale_count_icon
+);
+route.post(
+  "/payout_icon",
+  uploads.none(),
+  helper.verify,
+  dashbordController.payout_icon
+);
+route.post(
+  "/monthly_transaction",
+  uploads.none(),
+  helper.verify,
+  dashbordController.monthly_transaction
+);
+route.post(
+  "/weekly_transaction",
+  uploads.none(),
+  helper.verify,
+  dashbordController.weekly_transaction
+);
 
 //deposits controller
 
