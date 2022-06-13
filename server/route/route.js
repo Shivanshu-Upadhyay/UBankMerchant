@@ -2,6 +2,8 @@ const loginController = require("../modules/login/Controller/loginController");
 const dashbordController = require("../modules/login/Controller/dashbordController");
 const payoutController = require("../modules/login/Controller/payoutController");
 const depositsController = require("../modules/login/Controller/deposits_controller");
+const settlementController = require("../modules/login/Controller/settlementController")
+const teamsController = require("../modules/login/Controller/teamsController")
 const route = require("express").Router();
 const path = require("path");
 const multer = require("multer");
@@ -102,7 +104,7 @@ route.post(
   helper.verify,
   dashbordController.top_transaction_today
 );
-route.post("/dpc", uploads.none(), helper.verify, dashbordController.dpc);
+
 route.post(
   "/card_data",
   uploads.none(),
@@ -146,6 +148,14 @@ route.post(
   helper.verify,
   dashbordController.weekly_transaction
 );
+route.post(
+  "/dbycurrency",
+  uploads.none(),
+  helper.verify,
+  dashbordController.dbycurrency
+);
+
+
 
 //deposits controller
 
@@ -189,6 +199,21 @@ route.post(
 );
 
 
+// Settlement ___________________+++**&&*(())
 
-
+route.post(
+  "/settlemetnt_Trans",
+  uploads.none(),
+  helper.verify,
+  settlementController.settlemetnt_Trans
+);
+route.post(
+  "/requestSettlement",
+  uploads.none(),
+  helper.verify,
+  settlementController.requestSettlement
+);
+// teams controller ==============================
+route.post('/default',uploads.none(),helper.verify, teamsController.default);
+route.post('/createEmployee',uploads.none(),helper.verify, teamsController.createEmployee);
 module.exports = route;

@@ -5,7 +5,6 @@ let pagination = (total, page) => {
 
   let numOfPages = Math.ceil(total / limit);
   let start = page * limit - limit;
-
   return { limit, start, numOfPages };
 };
 module.exports.defaultOrder = async function (req, res) {

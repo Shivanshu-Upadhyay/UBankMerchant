@@ -1,14 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import baseUrl from "../../../components/config/baseUrl";
 import "../Currency/currency.css";
 import "./transition.css";
+import axios from "axios";
 function Transition() {
-    const [tab, setTab] = useState(3);
+  const [tab, setTab] = useState(3);
+  const [todayData, setTodayData] = useState([]);
+  
+  useEffect(() => {
+    todayApi();
+  }, [tab]);
+
+  const todayApi = async () => {
+    try {
+      const auth = localStorage.getItem("user");
+      let formData = new FormData();
+      if(tab===3){
+         formData.append("today", 1);
+      }else if(tab===2){
+        formData.append("week", 1);
+      }else{
+         formData.append("month", 1);
+      }
+     
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${auth}`,
+        },
+      };
+
+      let result = await axios.post(
+        `${baseUrl}/top_transaction_today`,
+        formData,
+        config
+      );
+      setTodayData(result.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <div className="mainblock ">
@@ -38,79 +76,14 @@ function Transition() {
           </div>
         </div>
 
-        <TableComp />
+        <TableComp todayData={todayData} />
       </div>
     </div>
   );
 }
 
-const TableComp = () => {
-  const tData = [
-    {
-      img: "https://www.bankconnect.online/assets/merchants/img/currency/rupee.png",
-      Currency: "INR",
-      Deposit: "11.00",
-      Payout: "0.00",
-      Settlement: "0.00",
-      netbalance: "11.00",
-    },
-    {
-      img: "https://www.bankconnect.online/assets/merchants/img/currency/CNY.jpeg",
-      Currency: "CNY",
-      Deposit: "11.00",
-      Payout: "0.00",
-      Settlement: "0.00",
-      netbalance: "11.00",
-    },
-    {
-      img: "	https://www.bankconnect.online/assets/merchants/img/currency/indo.png",
-      Currency: "IDR",
-      Deposit: "11.00",
-      Payout: "0.00",
-      Settlement: "0.00",
-      netbalance: "11.00",
-    },
-    {
-      img: "https://www.bankconnect.online/assets/merchants/img/currency/baht.png",
-      Currency: "THB",
-      Deposit: "11.00",
-      Payout: "0.00",
-      Settlement: "0.00",
-      netbalance: "11.00",
-    },
-    {
-      img: "	https://www.bankconnect.online/assets/merchants/img/currency/dong.png",
-      Currency: "VND",
-      Deposit: "11.00",
-      Payout: "0.00",
-      Settlement: "0.00",
-      netbalance: "11.00",
-    },
-    {
-      img: "https://www.bankconnect.online/assets/merchants/img/currency/dollar.png",
-      Currency: "USD",
-      Deposit: "11.00",
-      Payout: "0.00",
-      Settlement: "0.00",
-      netbalance: "11.00",
-    },
-    {
-      img: "https://www.bankconnect.online/assets/merchants/img/currency/php.png",
-      Currency: "PHP",
-      Deposit: "11.00",
-      Payout: "0.00",
-      Settlement: "0.00",
-      netbalance: "11.00",
-    },
-    {
-      img: "	https://www.bankconnect.online/assets/merchants/img/currency/myr.jpeg",
-      Currency: "MYR",
-      Deposit: "11.00",
-      Payout: "0.00",
-      Settlement: "0.00",
-      netbalance: "11.00",
-    },
-  ];
+const TableComp = ({ todayData }) => {
+  
 
   return (
     <>
@@ -118,36 +91,66 @@ const TableComp = () => {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
+              
+              
             </TableRow>
           </TableHead>
           <TableBody>
-            {tData.map((item, index) => {
-              return (
-               
+            {todayData.length >= 1 ? (
+              todayData.map((item, index) => {
+                return (
                   <TableRow
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     key={index}
                   >
                     <TableCell component="th" scope="row">
-                      <img src={item.img} alt="" width="60px" />
+                      <img
+                        src="https://www.bankconnect.online/assets/merchants/img/completed.svg"
+                        alt=""
+                        width="60px"
+                      />
                     </TableCell>
-                    <TableCell>{item.Currency}</TableCell>
-                    <TableCell>{item.Deposit}</TableCell>
-                    <TableCell>{item.Payout}</TableCell>
+                    <TableCell style={{ fontWeight: "600" }}>
+                      {item.name}
+                      <br />
+                      <span>{item.method}</span>
+                    </TableCell>
+                    <TableCell style={{ fontWeight: "600" }}>
+                      {item.dt}
+                      <br />
+                      <span>{item.time}</span>
+                    </TableCell>
+                    <TableCell>
+                      <span style={{ fontWeight: "600" }}>{item.amount}</span>
+                      <span
+                        className={
+                          item.status === "PENDING" || item.status === "3"
+                            ? "pendding mx-2"
+                            : item.status === "SUCCESS" || item.status === "1"
+                            ? "success mx-2"
+                            : "waiting mx-2"
+                        }
+                      >
+                        {item.status === "PENDING" || item.status === "3"
+                          ? "Pending "
+                          : item.status === "SUCCESS" || item.status === "1"
+                          ? "Success"
+                          : "Waiting"}
+                      </span>
+                    </TableCell>
                   </TableRow>
-                
-              );
-            })}
+                );
+              })
+            ) : (
+              <TableCell style={{ fontWeight: "600" }} align="center">
+                <h5>No Data Found</h5>
+              </TableCell>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
     </>
   );
 };
-
-
 
 export default Transition;

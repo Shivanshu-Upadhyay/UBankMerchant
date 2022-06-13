@@ -31,13 +31,11 @@ const dashboardCount = {
 
       let result = await mysqlcon(sql);
 
-      return res
-        .status(200)
-        .json({
-          status: true,
-          message: "data sent successfully",
-          data: result,
-        });
+      return res.status(200).json({
+        status: true,
+        message: "data sent successfully",
+        data: result,
+      });
     } catch (Error) {
       console.log(Error);
       res
@@ -64,13 +62,11 @@ const dashboardCount = {
         }
       }
       successPercent = Math.round((successCount / total) * 100);
-      res
-        .status(200)
-        .json({
-          status: true,
-          message: "data sent successfully",
-          data: successPercent,
-        });
+      res.status(200).json({
+        status: true,
+        message: "data sent successfully",
+        data: successPercent,
+      });
     } catch (Error) {
       console.log(Error);
       res
@@ -80,116 +76,51 @@ const dashboardCount = {
       console.log("Execution completed.");
     }
   },
-  dpc: async function (req, res) {
+  dbycurrency: async function (req, res) {
     let user = req.user;
-    let user_id = user.id;
-    
-
-    var d = new Date();
-    let sdate1 = d.toLocaleString().slice(0, 10);
-    let today =
-      sdate1.slice(6, 10) + "-" + sdate1.slice(3, 5) + "-" + sdate1.slice(0, 2);
-    // week
-    var d2 = new Date();
-    let sdate2 = d2.toLocaleString().slice(0, 10);
-    let start_week =
-      sdate2.slice(6, 10) + "-" + sdate2.slice(3, 5) + "-" + sdate2.slice(0, 2);
-    d2.setDate(d.getDate() - 6);
-    let s_week_date = d.toLocaleString().slice(0, 10);
-    let end_week =
-      s_week_date.slice(6, 10) +
-      "-" +
-      s_week_date.slice(3, 5) +
-      "-" +
-      s_week_date.slice(0, 2);
-
-    // month
-    var d3 = new Date();
-    let sdate3 = d.toLocaleString().slice(0, 10);
-    let start_month =
-      sdate3.slice(6, 10) + "-" + sdate3.slice(3, 5) + "-" + sdate3.slice(0, 2);
-    d.setDate(d.getDate() - 29);
-    let s_month_date = d3.toLocaleString().slice(0, 10);
-    let end_month =
-      s_month_date.slice(6, 10) +
-      "-" +
-      s_month_date.slice(3, 5) +
-      "-" +
-      s_month_date.slice(0, 2);
+    const { today, week, month } = req.body;
+    currencies = ["INR", "CNY", "IDR", "THB","VND", "USD", "PHP", "MYR"];
 
     try {
-      let result;
-
-      let todayy = req.body.today_;
-      let week = req.body.week_;
-      let month = req.body.month_;
-
-      // for day
-      if (todayy) {
+      let sql =
+        "SELECT id, name, IF(id, ?, ?) AS currency, (SELECT Sum(ammount) FROM  tbl_merchant_transaction WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 0 day AND status = 1 AND ammount_type = ? AND user_id = ?) AS deposite, (SELECT Sum(amount) FROM   tbl_icici_payout_transaction_response_details WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 0 day AND status = 'SUCCESS' AND currency = ? AND users_id = ?) AS payout, (SELECT Sum(settlementAmount) FROM   tbl_settlement WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 0 day AND status = 1 AND fromCurrency = ? AND user_id = ?)  AS settlement FROM tbl_user WHERE  id = ?";
+      let message = "Deposits By Currency - Today's data";
+      data = [];
+      if (today) {
         sql =
-          "select currency,ammount,ammount_type,settlementAmount,amount from tbl_merchant_transaction inner join tbl_settlement on tbl_merchant_transaction.user_id=tbl_settlement.user_id inner join tbl_icici_payout_transaction_response_details on tbl_settlement.user_id=tbl_icici_payout_transaction_response_details.users_id limit 10";
-        // sql = "select currency,ammount,ammount_type,settlementAmount,amount from tbl_merchant_transaction inner join tbl_settlement on tbl_merchant_transaction.user_id=tbl_settlement.user_id inner join tbl_icici_payout_transaction_response_details on tbl_settlement.user_id=tbl_icici_payout_transaction_response_details.users_id WHERE DATE(tbl_icici_payout_transaction_response_details.created_on) = ? AND tbl_icici_payout_transaction_response_details.users_id = 15"
-        console.log(user_id);
-
-        result = await mysqlcon(sql, [today]);
-        return res
-          .status(200)
-          .json({
-            status: true,
-            message: "data sent successfully",
-            data: result,
-          });
+          "SELECT id, name, IF(id, ?, ?) AS currency, (SELECT Sum(ammount) FROM  tbl_merchant_transaction WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 0 day AND status = 1 AND ammount_type = ? AND user_id = ?) AS deposite, (SELECT Sum(amount) FROM   tbl_icici_payout_transaction_response_details WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 0 day AND status = 'SUCCESS' AND currency = ? AND users_id = ?) AS payout, (SELECT Sum(settlementAmount) FROM   tbl_settlement WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 0 day AND status = 1 AND fromCurrency = ? AND user_id = ?)  AS settlement FROM tbl_user WHERE  id = ?";
+        message = "Deposits By Currency - Today's data";
       }
-
-      // week
       if (week) {
         sql =
-          "select tbl_icici_payout_transaction_response_details.created_on currency,ammount,ammount_type,settlementAmount,amount from tbl_merchant_transaction inner join tbl_settlement on tbl_merchant_transaction.user_id=tbl_settlement.user_id inner join tbl_icici_payout_transaction_response_details on tbl_settlement.user_id=tbl_icici_payout_transaction_response_details.users_id WHERE DATE(tbl_icici_payout_transaction_response_details.created_on) BETWEEN '" +
-          start_week +
-          "' AND '" +
-          end_week +
-          "' AND tbl_icici_payout_transaction_response_details.users_id = ? ";
-
-        result = await mysqlcon(sql, user_id);
-        return res
-          .status(200)
-          .json({
-            status: true,
-            message: "data sent successfully",
-            data: result,
-          });
+          "SELECT id, name, IF(id, ?, ?) AS currency, (SELECT Sum(ammount) FROM  tbl_merchant_transaction WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 6 day AND status = 1 AND ammount_type = ? AND user_id = ?) AS deposite, (SELECT Sum(amount) FROM   tbl_icici_payout_transaction_response_details WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 6 day AND status = 'SUCCESS' AND currency = ? AND users_id = ?) AS payout, (SELECT Sum(settlementAmount) FROM   tbl_settlement WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 6 day AND status = 1 AND fromCurrency = ? AND user_id = ?)  AS settlement FROM tbl_user WHERE  id = ?";
+        message = "Deposits By Currency - Weekly data";
       }
-
-      // month
       if (month) {
         sql =
-          "select tbl_icici_payout_transaction_response_details.created_on currency,ammount,ammount_type,settlementAmount,amount from tbl_merchant_transaction inner join tbl_settlement on tbl_merchant_transaction.user_id=tbl_settlement.user_id inner join tbl_icici_payout_transaction_response_details on tbl_settlement.user_id=tbl_icici_payout_transaction_response_details.users_id WHERE DATE(tbl_icici_payout_transaction_response_details.created_on) BETWEEN '" +
-          start_month +
-          "' AND '" +
-          end_month +
-          "' AND tbl_icici_payout_transaction_response_details.users_id = ?";
-
-        result = await mysqlcon(sql, user_id);
-        return res
-          .status(200)
-          .json({
-            status: true,
-            message: "data sent successfully",
-            data: result,
-          });
+          "SELECT id, name, IF(id, ?, ?) AS currency, (SELECT Sum(ammount) FROM  tbl_merchant_transaction WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 30 day AND status = 1 AND ammount_type = ? AND user_id = ?) AS deposite, (SELECT Sum(amount) FROM   tbl_icici_payout_transaction_response_details WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 30 day AND status = 'SUCCESS' AND currency = ? AND users_id = ?) AS payout, (SELECT Sum(settlementAmount) FROM   tbl_settlement WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 30 day AND status = 1 AND fromCurrency = ? AND user_id = ?)  AS settlement FROM tbl_user WHERE  id = ?";
+        message = "Deposits By Currency - Monthly data";
       }
+      for (let i = 0; i < currencies.length; i++) {
+        currency = currencies[i];
 
-      // console.log(result)
-
-      if (!result) {
-        return res
-          .status(201)
-          .json({
-            status: false,
-            message: "Something went wrong, try again later",
-            data: [],
-          });
+        let result = await mysqlcon(sql, [
+          currency,
+          currency,
+          currency,
+          user.id,
+          currency,
+          user.id,
+          currency,
+          user.id,
+          user.id,
+        ]);
+        result[0].net_balnce = result[0].deposite - result[0].payout;
+        await data.push(result[0]);
       }
+      return res
+        .status(200)
+        .json({ status: true, message: message, data: data }); //today: today, weekly: weekly, monthly: monthly });
     } catch (Error) {
       console.log(Error);
       res
@@ -201,92 +132,42 @@ const dashboardCount = {
   },
   top_transaction_today: async function (req, res) {
     let user = req.user;
-    let user_id = user.id;
-    console.log(1234567893435)
-
-    var d = new Date();
-    let sdate1 = d.toLocaleString().slice(0, 10);
-    let today =
-      sdate1.slice(6, 10) + "-" + sdate1.slice(3, 5) + "-" + sdate1.slice(0, 2);
-    // week
-    var d2 = new Date();
-    let sdate2 = d2.toLocaleString().slice(0, 10);
-    let start_week =
-      sdate2.slice(6, 10) + "-" + sdate2.slice(3, 5) + "-" + sdate2.slice(0, 2);
-    d2.setDate(d.getDate() - 6);
-    let s_week_date = d.toLocaleString().slice(0, 10);
-    let end_week =
-      s_week_date.slice(6, 10) +
-      "-" +
-      s_week_date.slice(3, 5) +
-      "-" +
-      s_week_date.slice(0, 2);
-
-    // month
-    var d3 = new Date();
-    let sdate3 = d.toLocaleString().slice(0, 10);
-    let start_month =
-      sdate3.slice(6, 10) + "-" + sdate3.slice(3, 5) + "-" + sdate3.slice(0, 2);
-    d.setDate(d.getDate() - 29);
-    let s_month_date = d3.toLocaleString().slice(0, 10);
-    let end_month =
-      s_month_date.slice(6, 10) +
-      "-" +
-      s_month_date.slice(3, 5) +
-      "-" +
-      s_month_date.slice(0, 2);
 
     try {
-      var request = req.body;
+      let { today, week, month } = req.body;
 
       let result;
 
-      let today = request.today_;
-      let week = request.week_;
-      let month = request.month_;
-
-      // day
+      let sql;
       if (today) {
-        // sql =
-        //   "select i_flname,payment_type,currency,date_format(tbl_merchant_transaction.created_on,'%d %M, %Y') as date,date_format(tbl_merchant_transaction.created_on,'%h:%i') as time,ammount,tbl_icici_payout_transaction_response_details.status from tbl_merchant_transaction inner join tbl_icici_payout_transaction_response_details on tbl_merchant_transaction.user_id=tbl_icici_payout_transaction_response_details.users_id limit 20";
-        sql = "select i_flname,payment_type,currency,tbl_merchant_transaction.created_on,ammount,tbl_icici_payout_transaction_response_details.status from tbl_merchant_transaction inner join tbl_icici_payout_transaction_response_details on tbl_merchant_transaction.user_id=tbl_icici_payout_transaction_response_details.users_id WHERE DATE(tbl_merchant_transaction.created_on) = ? AND tbl_merchant_transaction.user_id = ?"
-
-        result = await mysqlcon(sql, [today, user_id]);
+        sql =
+          "(SELECT x.id, x.name,x.dt,x.time,x.method,x.amount,x.status,'payout' as icon FROM (SELECT users_id as id,customer_name as name, DATE_FORMAT(created_on,'%D %M %Y') as dt,DATE_FORMAT(created_on,'%H:%i %p') as time,trx_type as method,amount as amount,status as status FROM tbl_icici_payout_transaction_response_details WHERE users_id = ? AND DATE(created_on) = DATE(NOW()) ORDER BY DATE(created_on) DESC) as x UNION ALL SELECT y.id,y.name,y.dt,y.time,y.method,y.amount,y.status,'deposit'as icon FROM (SELECT user_id as id,i_flname as name, DATE_FORMAT(created_on,'%D %M %Y') as dt,DATE_FORMAT(created_on,'%H:%i %p') as time,payment_type as method,ammount as amount,status as status FROM tbl_merchant_transaction WHERE user_id = ? AND  DATE(created_on) = DATE(NOW()) ORDER BY DATE(created_on) DESC) as y) ORDER BY DATE(dt) DESC";
       }
 
-      // weeks
+      //    let sql =  "(SELECT x.id, x.name,x.dt,x.amount,x.status,'payout' as icon FROM (SELECT users_id as id,customer_name as name, created_on as dt,amount as amount,status as status FROM tbl_icici_payout_transaction_response_details WHERE users_id =15 AND DATE(created_on) >= DATE_SUB(DATE(NOW()),INTERVAL 365 DAY) AND DATE(created_on) <= DATE(NOW()) ORDER BY DATE(created_on) DESC LIMIT 0,15) as x UNION ALL SELECT y.id,y.name,y.dt,y.amount,y.status,'deposit'as icon FROM (SELECT user_id as id,i_flname as name, created_on as dt,ammount as amount,status as status FROM tbl_merchant_transaction WHERE user_id =15 AND DATE(created_on) >= DATE_SUB(DATE(NOW()),INTERVAL 365 DAY) AND DATE(created_on) <= DATE(NOW()) ORDER BY DATE(created_on) DESC LIMIT 0,15) as y) ORDER BY DATE(dt) DESC";
+
       if (week) {
         sql =
-          "select i_flname,payment_type,currency,tbl_merchant_transaction.created_on,ammount,tbl_icici_payout_transaction_response_details.status from tbl_merchant_transaction inner join tbl_icici_payout_transaction_response_details on tbl_merchant_transaction.user_id=tbl_icici_payout_transaction_response_details.users_id WHERE DATE(tbl_merchant_transaction.created_on) BETWEEN ? AND ? AND user_id = ?";
-
-        result = await mysqlcon(sql, [start_week, end_week, user_id]);
+          "(SELECT x.id, x.name,x.dt,x.time,x.method,x.amount,x.status,'payout' as icon FROM (SELECT users_id as id,customer_name as name, DATE_FORMAT(created_on,'%D %M %Y') as dt,DATE_FORMAT(created_on,'%H:%i %p') as time,trx_type as method,amount as amount,status as status FROM tbl_icici_payout_transaction_response_details WHERE users_id = ? AND DATE(created_on) >= DATE_SUB(DATE(NOW()),INTERVAL 6 DAY) AND DATE(created_on) <= DATE(NOW()) ORDER BY DATE(created_on) DESC) as x UNION ALL SELECT y.id,y.name,y.dt,y.time,y.method,y.amount,y.status,'deposit'as icon FROM (SELECT user_id as id,i_flname as name,DATE_FORMAT(created_on,'%D %M %Y') as dt,DATE_FORMAT(created_on,'%H:%i %p') as time,payment_type as method,ammount as amount,status as status FROM tbl_merchant_transaction WHERE user_id = ? AND DATE(created_on) >= DATE_SUB(DATE(NOW()),INTERVAL 6 DAY) AND DATE(created_on) <= DATE(NOW()) ORDER BY DATE(created_on) DESC) as y) ORDER BY DATE(dt) DESC";
       }
 
-      //months
       if (month) {
         sql =
-          "select i_flname,payment_type,currency,tbl_merchant_transaction.created_on,ammount,tbl_icici_payout_transaction_response_details.status from tbl_merchant_transaction inner join tbl_icici_payout_transaction_response_details on tbl_merchant_transaction.user_id=tbl_icici_payout_transaction_response_details.users_id WHERE DATE(tbl_merchant_transaction.created_on) BETWEEN ? AND ? AND user_id = ?";
-
-        result = await mysqlcon(sql, [start_month, end_month, user_id]);
+          "(SELECT x.id, x.name,x.dt,x.time,x.method,x.amount,x.status,'payout' as icon FROM (SELECT users_id as id,customer_name as name,DATE_FORMAT(created_on,'%D %M %Y') as dt,DATE_FORMAT(created_on,'%H:%i %p') as time,trx_type as method,amount as amount,status as status FROM tbl_icici_payout_transaction_response_details WHERE users_id = ? AND DATE(created_on) >= DATE_SUB(DATE(NOW()),INTERVAL 30 DAY) AND DATE(created_on) <= DATE(NOW()) ORDER BY DATE(created_on) DESC) as x UNION ALL SELECT y.id,y.name,y.dt,y.time,y.method,y.amount,y.status,'deposit'as icon FROM (SELECT user_id as id,i_flname as name, DATE_FORMAT(created_on,'%D %M %Y') as dt,DATE_FORMAT(created_on,'%H:%i %p') as time,payment_type as method,ammount as amount,status as status FROM tbl_merchant_transaction WHERE user_id = ? AND DATE(created_on) >= DATE_SUB(DATE(NOW()),INTERVAL 30 DAY) AND DATE(created_on) <= DATE(NOW()) ORDER BY DATE(created_on) DESC) as y) ORDER BY DATE(dt) DESC";
       }
 
-      if (!result) {
-        return res
-          .status(201)
-          .json({
-            status: false,
-            message: "Something, try again later",
-            data: [],
-          });
-      }
+      result = await mysqlcon(sql, [user.id, user.id]);
 
-      return res
-        .status(200)
-        .json({
-          status: true,
-          message: "data recived successfully",
+      if (result) {
+        return res.json(200, {
+          message: "take transaction",
           data: result,
         });
+      } else {
+        return res.json(201, {
+          message: "No data Found",
+        });
+      }
     } catch (Error) {
       console.log(Error);
       res

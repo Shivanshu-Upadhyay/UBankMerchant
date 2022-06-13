@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -10,31 +10,52 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-
+import baseUrl from "../../components/config/baseUrl";
+import axios from 'axios'
 import "./team.css";
 function Team() {
+  const [page, setPage] = useState(1);
+  const [tableBodyData, setTableBodyData] = useState([]);
+  // const [totalPage, setTotalPage] = useState(1);
+  useEffect(() => {
+    tabledatafetch();
+  }, []);
+
+  const tabledatafetch = async () => {
+    try {
+      const auth = localStorage.getItem("user");
+      let formData = new FormData();
+      formData.append("page", page);
+      
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${auth}`,
+        },
+      };
+
+      let result = await axios.post(`${baseUrl}/default`, formData, config);
+      console.log(result.data.employee);
+      setTableBodyData(result.data.employee);
+      // setTotalPage(result.data.data.totalPage);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <h4 className="heading">Employee</h4>
       <div className="text-end mx-5 mb-4">
-        {/* <button className="button1">
-          <img
-            src="https://www.bankconnect.online/assets/merchants/img/plus.svg"
-            alt="Not Found"
-            height="18px"
-            className="mx-2"
-          />
-          Create Team
-        </button> */}
         <TableDialog />
       </div>
-      <TeamTable />
+      <TeamTable tableBodyData={tableBodyData} />
     </>
   );
 }
 
 const TableDialog = () => {
   const [open, setOpen] = React.useState(false);
+  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -46,12 +67,12 @@ const TableDialog = () => {
   return (
     <>
       <div>
-        <button className="button1" onClick={handleClickOpen}>
+        <button className="buttonteam1" onClick={handleClickOpen}>
           <img
             src="https://www.bankconnect.online/assets/merchants/img/plus.svg"
             alt="Not Found"
             height="18px"
-            className="mx-2"
+            className=" mx-2"
           />
           Create Team
         </button>
@@ -63,7 +84,6 @@ const TableDialog = () => {
           aria-describedby="alert-dialog-description"
           fullWidth={true}
           maxWidth="md"
-          
         >
           <DialogTitle>
             <h4 className="heading">Create Team</h4>
@@ -136,7 +156,7 @@ const TableDialog = () => {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <button className="button2" onClick={handleClose}>
+            <button className="buttonteam2" onClick={handleClose}>
               Create
             </button>
           </DialogActions>
@@ -146,55 +166,7 @@ const TableDialog = () => {
   );
 };
 
-const TeamTable = () => {
-  const tableData = [
-    {
-      EmployeeId: "1",
-      Name: "John Doe",
-      Email: "ABC@GMAIL.COM",
-      Phone: "1234567890",
-      Role: "Admin",
-      LastLogin: "12/12/2020",
-      Status: true,
-    },
-    {
-      EmployeeId: "1",
-      Name: "John Doe",
-      Email: "ABC@GMAIL.COM",
-      Phone: "1234567890",
-      Role: "Admin",
-      LastLogin: "12/12/2020",
-      Status: true,
-    },
-    {
-      EmployeeId: "1",
-      Name: "John Doe",
-      Email: "ABC@GMAIL.COM",
-      Phone: "1234567890",
-      Role: "Admin",
-      LastLogin: "12/12/2020",
-      Status: false,
-    },
-    {
-      EmployeeId: "1",
-      Name: "John Doe",
-      Email: "ABC@GMAIL.COM",
-      Phone: "1234567890",
-      Role: "Admin",
-      LastLogin: "12/12/2020",
-      Status: true,
-    },
-    {
-      EmployeeId: "1",
-      Name: "John Doe",
-      Email: "ABC@GMAIL.COM",
-      Phone: "1234567890",
-      Role: "Admin",
-      LastLogin: "12/12/2020",
-      Status: false,
-    },
-  ];
-
+const TeamTable = ({ tableBodyData }) => {
   return (
     <>
       <TableContainer className="tablecontainer">
@@ -211,22 +183,22 @@ const TeamTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {tableData.map((item, index) => {
+            {tableBodyData.map((item, index) => {
               return (
                 <TableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   key={index}
                 >
-                  <TableCell>{item.EmployeeId}</TableCell>
-                  <TableCell>{item.Name}</TableCell>
-                  <TableCell>{item.Email}</TableCell>
-                  <TableCell>{item.Phone}</TableCell>
-                  <TableCell style={{ fontWeight: "800" }}>
-                    {item.Role}
+                  <TableCell>{item.id}</TableCell>
+                  <TableCell>{item.name}</TableCell>
+                  <TableCell>{item.email}</TableCell>
+                  <TableCell>{item.mobile_no}</TableCell>
+                  <TableCell style={{ fontWeight: "600" }}>
+                    {item.role===1?"Administrator":item.role===2?"Manager":item.role===3?"Cashier":"Reporter"}
                   </TableCell>
-                  <TableCell>{item.LastLogin}</TableCell>
+                  <TableCell>{item.last_login}</TableCell>
                   <TableCell>
-                    {item.Status ? (
+                    {item.status ? (
                       <button className="enable">Enabled</button>
                     ) : (
                       <button className="disable">Disabled</button>

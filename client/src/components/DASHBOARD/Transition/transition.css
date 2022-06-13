@@ -1,0 +1,11 @@
+.pendding{
+    color: blue;
+}
+
+.success{
+    color:green
+}
+
+.waiting{
+    color: rgb(183, 183, 223);
+}

@@ -87,7 +87,7 @@ function Dashbord() {
         formData,
         config
       );
-      console.log(result.data.data.upi.total);
+      
       setPaymentData((pre) => pre = result.data.data);
       
     } catch (error) {

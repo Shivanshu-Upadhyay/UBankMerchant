@@ -88,6 +88,9 @@ function Payout() {
   const [totalPage, setTotalPage] = useState(1);
   const [xlData, setXlData] = useState([]);
   const[message,setMessage]=useState("")
+
+  console.log(cardData)
+  
   useEffect(() => {
     const auth = localStorage.getItem("user");
     let formData = new FormData();

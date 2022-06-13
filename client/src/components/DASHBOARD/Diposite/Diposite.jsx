@@ -3,7 +3,7 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import "./diposite.css";
 function Diposite({ paymentData }) {
-  console.log(paymentData);
+  
   return (
     <>
       <div className="row mx-3 pb-5 maincontainer">

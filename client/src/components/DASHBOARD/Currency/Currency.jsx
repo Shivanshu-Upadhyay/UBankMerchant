@@ -1,14 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-
+import baseUrl from "../../../components/config/baseUrl";
 import "./currency.css";
+import axios from "axios";
 function Currency() {
   const [tab, setTab] = useState(3);
+
+  const [todayData, setTodayData] = useState();
+  
+
+  useEffect(() => {
+    todayApi();
+  }, [tab]);
+  const todayApi = async () => {
+    try {
+      const auth = localStorage.getItem("user");
+      let formData = new FormData();
+
+      if (tab === 3) {
+        formData.append("today", 1);
+      } else if (tab === 2) {
+        formData.append("week", 1);
+      } else {
+        formData.append("month", 1);
+      }
+
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${auth}`,
+        },
+      };
+
+      let result = await axios.post(`${baseUrl}/dbycurrency`, formData, config);
+      console.log(result.data.data);
+     
+      if (tab === 3) {
+        setTodayData(result.data.today);
+      } else if (tab === 2) {
+        setTodayData(result.data.weekly);
+      } else {
+        setTodayData(result.data.monthly);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="mainblock ">
@@ -36,80 +79,17 @@ function Currency() {
           </div>
         </div>
 
-        <TableComp />
+        <TableComp
+          todayData={todayData}
+          
+        />
       </div>
     </>
   );
 }
 
-const TableComp = () => {
-  const tData = [
-    {
-      img: "https://www.bankconnect.online/assets/merchants/img/currency/rupee.png",
-      Currency: "INR",
-      Deposit: "11.00",
-      Payout: "0.00",
-      Settlement: "0.00",
-      netbalance: "11.00",
-    },
-    {
-      img: "https://www.bankconnect.online/assets/merchants/img/currency/CNY.jpeg",
-      Currency: "CNY",
-      Deposit: "11.00",
-      Payout: "0.00",
-      Settlement: "0.00",
-      netbalance: "11.00",
-    },
-    {
-      img: "	https://www.bankconnect.online/assets/merchants/img/currency/indo.png",
-      Currency: "IDR",
-      Deposit: "11.00",
-      Payout: "0.00",
-      Settlement: "0.00",
-      netbalance: "11.00",
-    },
-    {
-      img: "https://www.bankconnect.online/assets/merchants/img/currency/baht.png",
-      Currency: "THB",
-      Deposit: "11.00",
-      Payout: "0.00",
-      Settlement: "0.00",
-      netbalance: "11.00",
-    },
-    {
-      img: "	https://www.bankconnect.online/assets/merchants/img/currency/dong.png",
-      Currency: "VND",
-      Deposit: "11.00",
-      Payout: "0.00",
-      Settlement: "0.00",
-      netbalance: "11.00",
-    },
-    {
-      img: "https://www.bankconnect.online/assets/merchants/img/currency/dollar.png",
-      Currency: "USD",
-      Deposit: "11.00",
-      Payout: "0.00",
-      Settlement: "0.00",
-      netbalance: "11.00",
-    },
-    {
-      img: "https://www.bankconnect.online/assets/merchants/img/currency/php.png",
-      Currency: "PHP",
-      Deposit: "11.00",
-      Payout: "0.00",
-      Settlement: "0.00",
-      netbalance: "11.00",
-    },
-    {
-      img: "	https://www.bankconnect.online/assets/merchants/img/currency/myr.jpeg",
-      Currency: "MYR",
-      Deposit: "11.00",
-      Payout: "0.00",
-      Settlement: "0.00",
-      netbalance: "11.00",
-    },
-  ];
-
+const TableComp = ({ todayData }) => {
+  
   return (
     <>
       <TableContainer className="tableblockdash">
@@ -125,25 +105,45 @@ const TableComp = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {tData.map((item, index) => {
+            {todayData? todayData.map((item, index) => {
               return (
-               
-                  <TableRow
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    key={index}
-                  >
-                    <TableCell component="th" scope="row">
-                      <img src={item.img} alt="" width="60px" />
-                    </TableCell>
-                    <TableCell>{item.Currency}</TableCell>
-                    <TableCell>{item.Deposit}</TableCell>
-                    <TableCell>{item.Payout}</TableCell>
-                    <TableCell>{item.Settlement}</TableCell>
-                    <TableCell>{item.netbalance}</TableCell>
-                  </TableRow>
-                
+                <TableRow
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  key={index}
+                >
+                  <TableCell component="th" scope="row">
+                    <img
+                      src={
+                        index === 0
+                          ? "https://www.bankconnect.online/assets/merchants/img/currency/rupee.png"
+                          : index === 1
+                          ? "https://www.bankconnect.online/assets/merchants/img/currency/CNY.jpeg"
+                          : index === 2
+                          ? "https://www.bankconnect.online/assets/merchants/img/currency/indo.png"
+                          : index === 3
+                          ? "https://www.bankconnect.online/assets/merchants/img/currency/baht.png"
+                          : index === 4
+                          ? "https://www.bankconnect.online/assets/merchants/img/currency/dong.png"
+                          : index === 5
+                          ? "https://www.bankconnect.online/assets/merchants/img/currency/dollar.png"
+                          : index === 6
+                          ? "https://www.bankconnect.online/assets/merchants/img/currency/php.png"
+                          : index === 7
+                          ? "https://www.bankconnect.online/assets/merchants/img/currency/myr.jpeg"
+                          : ""
+                      }
+                      alt=""
+                      width="60px"
+                    />
+                  </TableCell>
+                  <TableCell>{item.currency}</TableCell>
+                  <TableCell>{item.deposite}</TableCell>
+                  <TableCell>{item.payout}</TableCell>
+                  <TableCell>{item.settlement}</TableCell>
+                  <TableCell>{item.net_balnce}</TableCell>
+                </TableRow>
               );
-            })}
+            }):""}
           </TableBody>
         </Table>
       </TableContainer>
