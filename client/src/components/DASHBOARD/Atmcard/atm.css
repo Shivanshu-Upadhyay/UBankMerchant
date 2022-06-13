@@ -10,33 +10,30 @@
 }
 
 .atmcard.card.aos-init.aos-animate {
-    background: #f9f9f9;
+  background: #f9f9f9;
 }
 
-
-.mainAtmDiv{
-    position: relative;
-   
+.mainAtmDiv {
+  position: relative;
 }
 
-.changeatm{
-    width: 3rem;
-    position: absolute;
-    bottom:4.9rem;
-    left: 11rem;
+.changeatm {
+  width: 3rem;
+  position: absolute;
+  bottom: 4.9rem;
+  left: 11rem;
 }
-.shadowimg{
-    position: absolute;
-    bottom:4.7rem;
-    left: 2%;
-    width: 27vw;
+.shadowimg {
+  position: absolute;
+  bottom: 4.7rem;
+  width: 25vw;
 }
 
-.holdername{
-    font-family: 'Arial';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 10px;
-    line-height: 15px;
-    color: rgba(255, 255, 255, 0.5);
+.holdername {
+  font-family: "Arial";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 15px;
+  color: rgba(255, 255, 255, 0.5);
 }
