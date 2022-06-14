@@ -49,8 +49,7 @@
 
 .firstProgress {
   padding: 15px;
-  width: 179.65px;
-  height: 179.65px;
+  width: 90%;
   background: #ac39d4;
   border-radius: 30px;
   margin-bottom: 24px;
@@ -58,8 +57,7 @@
 }
 .secondProgress {
   padding: 15px;
-  width: 179.65px;
-  height: 179.65px;
+  width: 90%;
   background: #41d4a8;
   border-radius: 30px;
   margin-bottom: 24px;
@@ -67,8 +65,7 @@
 }
 .thirdProgress {
   padding: 15px;
-  width: 179.65px;
-  height: 179.65px;
+  width: 90%;
   background: #ffffff;
   border: 1px solid #1eb6e7;
   border-radius: 30px;
@@ -77,8 +74,7 @@
 }
 .foreProgress {
   padding: 15px;
-  width: 179.65px;
-  height: 179.65px;
+  width: 90%;
   background: #471ee8;
   border-radius: 30px;
   margin-bottom: 24px;

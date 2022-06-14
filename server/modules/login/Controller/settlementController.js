@@ -89,7 +89,7 @@ const settlement = {
 
   // need to find exchange rate in databse in percentage
   requestSettlement: async (req, res) => {
-    let user = req.user;
+    let user = req;
     // user.fee_charge
     let user_id = user.id;
     let request = req.body;

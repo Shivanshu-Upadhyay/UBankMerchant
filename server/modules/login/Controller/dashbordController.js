@@ -76,60 +76,47 @@ const dashboardCount = {
       console.log("Execution completed.");
     }
   },
-  dbycurrency: async function (req, res) {
-    let user = req.user;
-    const { today, week, month } = req.body;
-    currencies = ["INR", "CNY", "IDR", "THB","VND", "USD", "PHP", "MYR"];
+  //   dbycurrency : async function (req, res) {
+  //     let user = req.user;
 
-    try {
-      let sql =
-        "SELECT id, name, IF(id, ?, ?) AS currency, (SELECT Sum(ammount) FROM  tbl_merchant_transaction WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 0 day AND status = 1 AND ammount_type = ? AND user_id = ?) AS deposite, (SELECT Sum(amount) FROM   tbl_icici_payout_transaction_response_details WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 0 day AND status = 'SUCCESS' AND currency = ? AND users_id = ?) AS payout, (SELECT Sum(settlementAmount) FROM   tbl_settlement WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 0 day AND status = 1 AND fromCurrency = ? AND user_id = ?)  AS settlement FROM tbl_user WHERE  id = ?";
-      let message = "Deposits By Currency - Today's data";
-      data = [];
-      if (today) {
-        sql =
-          "SELECT id, name, IF(id, ?, ?) AS currency, (SELECT Sum(ammount) FROM  tbl_merchant_transaction WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 0 day AND status = 1 AND ammount_type = ? AND user_id = ?) AS deposite, (SELECT Sum(amount) FROM   tbl_icici_payout_transaction_response_details WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 0 day AND status = 'SUCCESS' AND currency = ? AND users_id = ?) AS payout, (SELECT Sum(settlementAmount) FROM   tbl_settlement WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 0 day AND status = 1 AND fromCurrency = ? AND user_id = ?)  AS settlement FROM tbl_user WHERE  id = ?";
-        message = "Deposits By Currency - Today's data";
-      }
-      if (week) {
-        sql =
-          "SELECT id, name, IF(id, ?, ?) AS currency, (SELECT Sum(ammount) FROM  tbl_merchant_transaction WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 6 day AND status = 1 AND ammount_type = ? AND user_id = ?) AS deposite, (SELECT Sum(amount) FROM   tbl_icici_payout_transaction_response_details WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 6 day AND status = 'SUCCESS' AND currency = ? AND users_id = ?) AS payout, (SELECT Sum(settlementAmount) FROM   tbl_settlement WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 6 day AND status = 1 AND fromCurrency = ? AND user_id = ?)  AS settlement FROM tbl_user WHERE  id = ?";
-        message = "Deposits By Currency - Weekly data";
-      }
-      if (month) {
-        sql =
-          "SELECT id, name, IF(id, ?, ?) AS currency, (SELECT Sum(ammount) FROM  tbl_merchant_transaction WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 30 day AND status = 1 AND ammount_type = ? AND user_id = ?) AS deposite, (SELECT Sum(amount) FROM   tbl_icici_payout_transaction_response_details WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 30 day AND status = 'SUCCESS' AND currency = ? AND users_id = ?) AS payout, (SELECT Sum(settlementAmount) FROM   tbl_settlement WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 30 day AND status = 1 AND fromCurrency = ? AND user_id = ?)  AS settlement FROM tbl_user WHERE  id = ?";
-        message = "Deposits By Currency - Monthly data";
-      }
-      for (let i = 0; i < currencies.length; i++) {
-        currency = currencies[i];
+  //     let today = Number(req.body.today); //? Number(req.body.today) : 1
+  //     currencies = ['INR','CNY','IDR','THB','VND','USD','PHP','MYR']
 
-        let result = await mysqlcon(sql, [
-          currency,
-          currency,
-          currency,
-          user.id,
-          currency,
-          user.id,
-          currency,
-          user.id,
-          user.id,
-        ]);
-        result[0].net_balnce = result[0].deposite - result[0].payout;
-        await data.push(result[0]);
-      }
-      return res
-        .status(200)
-        .json({ status: true, message: message, data: data }); //today: today, weekly: weekly, monthly: monthly });
-    } catch (Error) {
-      console.log(Error);
-      res
-        .status(500)
-        .json({ status: false, message: "Error to complete task.", Error });
-    } finally {
-      console.log("Execution completed.");
-    }
-  },
+  //     try {
+  //         let sql;
+  //         let message;
+  //         // let sql = "SELECT id, name, IF(id, ?, ?) AS currency, (SELECT Sum(ammount) FROM  tbl_merchant_transaction WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 0 day AND status = 1 AND ammount_type = ? AND user_id = ?) AS deposite, (SELECT Sum(amount) FROM   tbl_icici_payout_transaction_response_details WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 0 day AND status = 'SUCCESS' AND currency = ? AND users_id = ?) AS payout, (SELECT Sum(settlementAmount) FROM   tbl_settlement WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 0 day AND status = 1 AND fromCurrency = ? AND user_id = ?)  AS settlement FROM tbl_user WHERE  id = ?";
+  //         // let message = "Deposits By Currency - Today's data";
+  //         data = [];
+  //         if (today === 1){
+  //             sql = "SELECT id, name, IF(id, ?, ?) AS currency, (SELECT Sum(ammount) FROM  tbl_merchant_transaction WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 0 day AND status = 1 AND ammount_type = ? AND user_id = ?) AS deposite, (SELECT Sum(amount) FROM   tbl_icici_payout_transaction_response_details WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 0 day AND status = 'SUCCESS' AND currency = ? AND users_id = ?) AS payout, (SELECT Sum(settlementAmount) FROM   tbl_settlement WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 0 day AND status = 1 AND fromCurrency = ? AND user_id = ?)  AS settlement FROM tbl_user WHERE  id = ?";
+  //             message = "Deposits By Currency - Today's data";
+  //         }
+  //         if (today === 2){
+  //             sql = "SELECT id, name, IF(id, ?, ?) AS currency, (SELECT Sum(ammount) FROM  tbl_merchant_transaction WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 6 day AND status = 1 AND ammount_type = ? AND user_id = ?) AS deposite, (SELECT Sum(amount) FROM   tbl_icici_payout_transaction_response_details WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 6 day AND status = 'SUCCESS' AND currency = ? AND users_id = ?) AS payout, (SELECT Sum(settlementAmount) FROM   tbl_settlement WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 6 day AND status = 1 AND fromCurrency = ? AND user_id = ?)  AS settlement FROM tbl_user WHERE  id = ?";
+  //             message = "Deposits By Currency - Weekly data";
+  //         }
+  //         if (today === 3){
+  //             sql = "SELECT id, name, IF(id, ?, ?) AS currency, (SELECT Sum(ammount) FROM  tbl_merchant_transaction WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 30 day AND status = 1 AND ammount_type = ? AND user_id = ?) AS deposite, (SELECT Sum(amount) FROM   tbl_icici_payout_transaction_response_details WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 30 day AND status = 'SUCCESS' AND currency = ? AND users_id = ?) AS payout, (SELECT Sum(settlementAmount) FROM   tbl_settlement WHERE  DATE(created_on) >= DATE(Now()) - INTERVAL 30 day AND status = 1 AND fromCurrency = ? AND user_id = ?)  AS settlement FROM tbl_user WHERE  id = ?";
+  //             message = "Deposits By Currency - Monthly data";
+  //         }
+  //         for (let x = 0; x < currencies.length; x++) {
+  //             currency = currencies[x];
+
+  //             let result = await mysqlcon(sql, [currency, currency, currency, user.id, currency, user.id, currency, user.id, user.id]);
+  //             result[0].net_balnce = result[0].deposite - result[0].payout;
+  //             await data.push(result[0]);
+  //         }
+  //         return res.status(200).json({ status: true, message: message, data:data});
+  //     }
+  //     catch (Error) {
+  //         console.log(Error)
+  //         res.status(500).json({ status: false, message: 'Error to complete task.', Error });
+  //     }
+  //     finally {
+  //         console.log("Execution completed.");
+  //     }
+  // },
   top_transaction_today: async function (req, res) {
     let user = req.user;
 
@@ -363,6 +350,128 @@ const dashboardCount = {
         .status(200)
         .json({ status: true, message: "data sent successfully", data: data });
     } catch (Error) {
+      res
+        .status(500)
+        .json({ status: false, message: "Error to complete task.", Error });
+    } finally {
+      console.log("Execution completed.");
+    }
+  },
+  dbycurrency: async function (req, res) {
+    let user = req.user;
+
+    let curr = ["INR", "CNY", "IDR", "THB", "VND", "USD", "PHP", "MYR"];
+
+    try {
+      let { today, week, month } = req.body;
+
+      let sql;
+
+      let output = [];
+
+      if (today) {
+        for (let i = 0; i < curr.length; i++) {
+          sql =
+            "SELECT (SELECT COALESCE(SUM(ammount),0) FROM tbl_merchant_transaction WHERE user_id = ? AND ammount_type = ? AND DATE(created_on) = DATE(NOW())) as depositSum , (SELECT COALESCE(SUM(amount),0) FROM tbl_icici_payout_transaction_response_details WHERE users_id = ? AND currency = ? AND DATE(created_on) = DATE(NOW())) as payoutSum, (SELECT COALESCE(SUM(settlementAmount),0) FROM tbl_settlement WHERE user_id = ? AND fromCurrency = ? AND DATE(created_on) = DATE(NOW())) as settlementSum";
+
+          let result = await mysqlcon(sql, [
+            user.id,
+            curr[i],
+            user.id,
+            curr[i],
+            user.id,
+            curr[i],
+          ]);
+
+          if (result.length !== 0) {
+            output.push({
+              currency: curr[i],
+              depositSum: result[0].depositSum,
+              payoutSum: result[0].payoutSum,
+              settlementSum: result[0].settlementSum,
+              net:
+                result[0].depositSum +
+                result[0].settlementSum -
+                result[0].payoutSum,
+            });
+          }
+        }
+
+        return res.json(200, {
+          message: "Today data",
+          data: output,
+        });
+      }
+
+      if (week) {
+        for (let i = 0; i < curr.length; i++) {
+          sql =
+            "SELECT (SELECT COALESCE(SUM(ammount),0) FROM tbl_merchant_transaction WHERE user_id = ? AND ammount_type = ? AND DATE(created_on) >= DATE_SUB(DATE(NOW()),INTERVAL 6 DAY)) as depositSum , (SELECT COALESCE(SUM(amount),0) FROM tbl_icici_payout_transaction_response_details WHERE users_id = ? AND currency = ? AND DATE(created_on) >= DATE_SUB(DATE(NOW()),INTERVAL 6 DAY)) as payoutSum, (SELECT COALESCE(SUM(settlementAmount),0) FROM tbl_settlement WHERE user_id = ? AND fromCurrency = ? AND DATE(created_on) >= DATE_SUB(DATE(NOW()),INTERVAL 6 DAY)) as settlementSum";
+
+          let result = await mysqlcon(sql, [
+            user.id,
+            curr[i],
+            user.id,
+            curr[i],
+            user.id,
+            curr[i],
+          ]);
+
+          if (result.length !== 0) {
+            output.push({
+              currency: curr[i],
+              depositSum: result[0].depositSum,
+              payoutSum: result[0].payoutSum,
+              settlementSum: result[0].settlementSum,
+              net:
+                result[0].depositSum +
+                result[0].settlementSum -
+                result[0].payoutSum,
+            });
+          }
+        }
+
+        return res.json(200, {
+          message: "Weekly data",
+          data: output,
+        });
+      }
+
+      if (month) {
+        for (let i = 0; i < curr.length; i++) {
+          sql =
+            "SELECT (SELECT COALESCE(SUM(ammount),0) FROM tbl_merchant_transaction WHERE user_id = ? AND ammount_type = ? AND DATE(created_on) >= DATE_SUB(DATE(NOW()),INTERVAL 30 DAY)) as depositSum , (SELECT COALESCE(SUM(amount),0) FROM tbl_icici_payout_transaction_response_details WHERE users_id = ? AND currency = ? AND DATE(created_on) >= DATE_SUB(DATE(NOW()),INTERVAL 30 DAY)) as payoutSum, (SELECT COALESCE(SUM(settlementAmount),0) FROM tbl_settlement WHERE user_id = ? AND fromCurrency = ? AND DATE(created_on) >= DATE_SUB(DATE(NOW()),INTERVAL 30 DAY)) as settlementSum";
+
+          let result = await mysqlcon(sql, [
+            user.id,
+            curr[i],
+            user.id,
+            curr[i],
+            user.id,
+            curr[i],
+          ]);
+
+          if (result.length !== 0) {
+            output.push({
+              currency: curr[i],
+              depositSum: result[0].depositSum,
+              payoutSum: result[0].payoutSum,
+              settlementSum: result[0].settlementSum,
+              net:
+                result[0].depositSum +
+                result[0].settlementSum -
+                result[0].payoutSum,
+            });
+          }
+        }
+
+        return res.json(200, {
+          message: "Monthly data",
+          data: output,
+        });
+      }
+    } catch (Error) {
+      console.log(Error);
       res
         .status(500)
         .json({ status: false, message: "Error to complete task.", Error });

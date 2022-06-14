@@ -121,7 +121,9 @@ function Dashbord() {
         </div>
         <div className="col-1 d-flex  flex-column">
           <div className="liquedblock">
-            <div className="waveLiqued" style={{ height: `${success}%` }}></div>
+            <div className="waveLiqued" style={{ height: `${success}%` }}>
+              <div className="shape"></div>
+            </div>
           </div>
           <div className="text-center">
             <h6

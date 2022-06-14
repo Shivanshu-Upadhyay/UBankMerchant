@@ -11,8 +11,7 @@ import axios from "axios";
 function Currency() {
   const [tab, setTab] = useState(3);
 
-  const [todayData, setTodayData] = useState();
-  
+  const [todayData, setTodayData] = useState([]);
 
   useEffect(() => {
     todayApi();
@@ -25,9 +24,9 @@ function Currency() {
       if (tab === 3) {
         formData.append("today", 1);
       } else if (tab === 2) {
-        formData.append("week", 1);
+        formData.append("today", 2);
       } else {
-        formData.append("month", 1);
+        formData.append("today", 3);
       }
 
       const config = {
@@ -39,19 +38,14 @@ function Currency() {
 
       let result = await axios.post(`${baseUrl}/dbycurrency`, formData, config);
       console.log(result.data.data);
-     
-      if (tab === 3) {
-        setTodayData(result.data.today);
-      } else if (tab === 2) {
-        setTodayData(result.data.weekly);
-      } else {
-        setTodayData(result.data.monthly);
-      }
+      setTodayData(result.data.data);
+
     } catch (error) {
       console.log(error);
     }
   };
 
+  console.log(todayData);
   return (
     <>
       <div className="mainblock ">
@@ -79,17 +73,13 @@ function Currency() {
           </div>
         </div>
 
-        <TableComp
-          todayData={todayData}
-          
-        />
+        <TableComp todayData={todayData} />
       </div>
     </>
   );
 }
 
 const TableComp = ({ todayData }) => {
-  
   return (
     <>
       <TableContainer className="tableblockdash">
@@ -105,45 +95,47 @@ const TableComp = ({ todayData }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {todayData? todayData.map((item, index) => {
-              return (
-                <TableRow
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  key={index}
-                >
-                  <TableCell component="th" scope="row">
-                    <img
-                      src={
-                        index === 0
-                          ? "https://www.bankconnect.online/assets/merchants/img/currency/rupee.png"
-                          : index === 1
-                          ? "https://www.bankconnect.online/assets/merchants/img/currency/CNY.jpeg"
-                          : index === 2
-                          ? "https://www.bankconnect.online/assets/merchants/img/currency/indo.png"
-                          : index === 3
-                          ? "https://www.bankconnect.online/assets/merchants/img/currency/baht.png"
-                          : index === 4
-                          ? "https://www.bankconnect.online/assets/merchants/img/currency/dong.png"
-                          : index === 5
-                          ? "https://www.bankconnect.online/assets/merchants/img/currency/dollar.png"
-                          : index === 6
-                          ? "https://www.bankconnect.online/assets/merchants/img/currency/php.png"
-                          : index === 7
-                          ? "https://www.bankconnect.online/assets/merchants/img/currency/myr.jpeg"
-                          : ""
-                      }
-                      alt=""
-                      width="60px"
-                    />
-                  </TableCell>
-                  <TableCell>{item.currency}</TableCell>
-                  <TableCell>{item.deposite}</TableCell>
-                  <TableCell>{item.payout}</TableCell>
-                  <TableCell>{item.settlement}</TableCell>
-                  <TableCell>{item.net_balnce}</TableCell>
-                </TableRow>
-              );
-            }):""}
+            {todayData
+              ? todayData.map((item, index) => {
+                  return (
+                    <TableRow
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                      key={index}
+                    >
+                      <TableCell component="th" scope="row">
+                        <img
+                          src={
+                            item.currency === "INR"
+                              ? "https://www.bankconnect.online/assets/merchants/img/currency/rupee.png"
+                              : item.currency === "CNY"
+                              ? "https://www.bankconnect.online/assets/merchants/img/currency/CNY.jpeg"
+                              : item.currency === "IDR"
+                              ? "https://www.bankconnect.online/assets/merchants/img/currency/indo.png"
+                              : item.currency === "THB"
+                              ? "https://www.bankconnect.online/assets/merchants/img/currency/baht.png"
+                              : item.currency === "VND"
+                              ? "https://www.bankconnect.online/assets/merchants/img/currency/dong.png"
+                              : item.currency === "USD"
+                              ? "https://www.bankconnect.online/assets/merchants/img/currency/dollar.png"
+                              : item.currency === "PHP"
+                              ? "https://www.bankconnect.online/assets/merchants/img/currency/php.png"
+                              : item.currency === "MYR"
+                              ? "https://www.bankconnect.online/assets/merchants/img/currency/myr.jpeg"
+                              : ""
+                          }
+                          alt=""
+                          width="60px"
+                        />
+                      </TableCell>
+                      <TableCell>{item.currency}</TableCell>
+                      <TableCell>{item.depositSum}</TableCell>
+                      <TableCell>{item.payoutSum}</TableCell>
+                      <TableCell>{item.settlementSum}</TableCell>
+                      <TableCell>{item.net}</TableCell>
+                    </TableRow>
+                  );
+                })
+              : ""}
           </TableBody>
         </Table>
       </TableContainer>

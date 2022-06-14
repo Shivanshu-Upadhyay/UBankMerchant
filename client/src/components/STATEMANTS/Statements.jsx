@@ -84,7 +84,7 @@ const Month = ({ name }) => {
 const Block2 = () => {
   return (
     <>
-      <div className="containerShadow mx-3 my-4">
+      <div className="containerShadow ">
         <Month name="January" />
         <Month name="February" />
         <Month name="March" />

@@ -14,7 +14,8 @@
   border: 1px solid #ced4da;
   border-radius: 20px;
   overflow-x: hidden;
-  width: 76vw;
+  position: relative;
+  
 }
 
 .yearblock {
@@ -22,20 +23,21 @@
   color: #000;
   padding: 15px 40px;
   margin-inline: 30px;
-  position: relative;
+  
 }
 
 .firstArr {
   position: absolute;
-  top:  13%;
-  left: 19.5%;
+  top:  13.5%;
   z-index: 999;
+  cursor: pointer;
 }
 .secondArr {
   position: absolute;
-  top: 13%;
-  right: 2%;
+  top: 13.5%;
+  right: 0%;
   z-index: 999;
+  cursor: pointer;
 }
 
 .active {

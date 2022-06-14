@@ -28,7 +28,7 @@ const ButtonBox = ({ name }) => {
   );
 };
 
-export default function PayoutTable({ tableBodyData, xlData, setXlData }) {
+export default function SettlementTable({ tableBodyData, xlData, setXlData }) {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function PayoutTable({ tableBodyData, xlData, setXlData }) {
       setXlData(tempUser);
     } else {
       let tempUser = users.map((user) =>
-        user.uniqueid === name ? { ...user, isChecked: checked } : user
+        user.settlementId === name ? { ...user, isChecked: checked } : user
       );
       setUsers(tempUser);
       setXlData(tempUser.filter((item) => item.isChecked));
@@ -69,13 +69,15 @@ export default function PayoutTable({ tableBodyData, xlData, setXlData }) {
                   onChange={handleChange}
                 />
               </TableCell>
-              <TableCell> Transfer ID</TableCell>
-              <TableCell> Initiated At</TableCell>
-              <TableCell>UTR No/Ref Id</TableCell>
-              <TableCell>Account No</TableCell>
-              <TableCell>Bank Name</TableCell>
-              <TableCell align="center">Amount</TableCell>
-              <TableCell align="center">Status</TableCell>
+              <TableCell> 	Settlement Id</TableCell>
+              <TableCell> From Currency</TableCell>
+              <TableCell>Settlement Request</TableCell>
+              <TableCell>Rate/Fee Applied</TableCell>
+              <TableCell>Settlement Fee</TableCell>
+              <TableCell>Amount Sent</TableCell>
+              <TableCell>To Currency</TableCell>
+              <TableCell>Amount Recieved</TableCell>
+              <TableCell>Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -89,27 +91,27 @@ export default function PayoutTable({ tableBodyData, xlData, setXlData }) {
                     <input
                       className="form-check-input"
                       type="checkbox"
-                      name={item.uniqueid}
+                      name={item.settlementId}
                       checked={item?.isChecked || false}
                       onChange={handleChange}
                     />
                   </TableCell>
-                  <TableCell className="tablebold">{item.uniqueid}</TableCell>
-                  <TableCell>{item.created_on}</TableCell>
-                  <TableCell className="tablebold">{item.utrnumber}</TableCell>
-                  <TableCell align="center" className="tablebold">
-                    {item.creditacc}
+                  <TableCell className="tablebold">{item.settlementId}</TableCell>
+                  <TableCell>{item.fromCurrency}</TableCell>
+                  <TableCell className="tablebold">{item.requestedAmount}</TableCell>
+                  <TableCell className="tablebold">
+                    {item.exchangeRate}
                   </TableCell>
 
-                  <TableCell className="tablebold">{item.bank_name}</TableCell>
-                  <TableCell align="center">{item.amount}</TableCell>
+                  <TableCell className="tablebold">{item.charges}</TableCell>
+                  <TableCell>{item.settlementAmount}</TableCell>
+                  <TableCell>{item.toCurrency}</TableCell>
+                  <TableCell>{item.settlementAmount}</TableCell>
                   <TableCell className="statusblock">
                     <div className="d-flex justify-content-between">
-                      {item.status === "FAILURE" ? (
-                        <ButtonBox name="Failed" />
-                      ) : item.status === "SUCCESS" ? (
+                      { item.status === 1 ? (
                         <ButtonBox name="Success" />
-                      ) : item.status === "PENDING" ? (
+                      ) : item.status === 3 ? (
                         <ButtonBox name="Pending" />
                       ) : (
                         <ButtonBox name="Failed" />
