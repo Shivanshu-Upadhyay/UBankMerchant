@@ -6,9 +6,12 @@ const StateContext = createContext();
 
 function ContextProvider({children}) {
     const [auth,setAuth] = useState('')
+    const [downloadStatement, setDownloadStatement] = useState([]);
   return( <StateContext.Provider value={{
       auth,
-      setAuth
+      setAuth,
+      downloadStatement,
+      setDownloadStatement
   }}>
 {children}
   </StateContext.Provider>)

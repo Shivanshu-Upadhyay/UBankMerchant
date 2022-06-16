@@ -58,3 +58,20 @@
     font-size: 14px;
    
 }
+
+/* Download Statement  */
+
+.printbuttonstatement{
+  border: 2px dotted red;
+  background: #fff;
+  padding: 5px 15px;
+  font-size: 20px;
+}
+
+.containerdownlodSett{
+  width: 80%;
+}
+
+.theaddownload{
+  font-weight: 700 !important;
+}

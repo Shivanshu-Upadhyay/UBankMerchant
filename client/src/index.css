@@ -2,13 +2,11 @@
 
 body {
   margin: 0;
-  font-family: 'Mulish', sans-serif;
+  font-family: 'Mulish', sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #f9f9f9 !important;
   
 }
 
-code {
-  font-family: 'Mulish', sans-serif;
-}
+

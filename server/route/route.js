@@ -4,6 +4,7 @@ const payoutController = require("../modules/login/Controller/payoutController")
 const depositsController = require("../modules/login/Controller/deposits_controller");
 const settlementController = require("../modules/login/Controller/settlementController")
 const teamsController = require("../modules/login/Controller/teamsController")
+const statementController = require("../modules/login/Controller/statementController")
 const route = require("express").Router();
 const path = require("path");
 const multer = require("multer");
@@ -213,7 +214,14 @@ route.post(
   helper.verify,
   settlementController.requestSettlement
 );
+
+// Statement Rout hai bahanchod????????????????????????????
+
+route.post('/statement',uploads.none(),helper.verify,statementController.statement);
+
+
 // teams controller ==============================
 route.post('/default',uploads.none(),helper.verify, teamsController.default);
 route.post('/createEmployee',uploads.none(),helper.verify, teamsController.createEmployee);
 module.exports = route;
+

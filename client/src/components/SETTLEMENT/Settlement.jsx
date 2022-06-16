@@ -97,12 +97,20 @@ const SecondBlock = ({
   );
 };
 
-
-
 // Dialog +++++++++++++++++++++++++++++++++++++++++++++=
 
 const DialogOpenModel = () => {
   const [open, setOpen] = React.useState(false);
+  const [settleType, setSettleType] = React.useState("");
+  const [requestedAmount, setRequestedAmount] = React.useState("");
+  const [fees, setFees] = React.useState("0");
+  const [totalCharges, setTotalCharges] = React.useState("");
+  const [netAmount, setNetAmount] = React.useState("");
+  const [exchnageRate, setExchnageRate] = React.useState("");
+
+  
+
+  console.log(requestedAmount);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -115,15 +123,15 @@ const DialogOpenModel = () => {
     <>
       <div>
         <button className="downloadDeposite" onClick={handleClickOpen}>
-            <img
-              src="https://www.bankconnect.online/assets/merchants/img/sattlement.svg"
-              alt=""
-              width="20px"
-              className="mx-2"
-            />
-            Request a Settlement
-          </button> 
-        
+          <img
+            src="https://www.bankconnect.online/assets/merchants/img/sattlement.svg"
+            alt=""
+            width="20px"
+            className="mx-2"
+          />
+          Request a Settlement
+        </button>
+
         <Dialog
           open={open}
           onClose={handleClose}
@@ -136,165 +144,208 @@ const DialogOpenModel = () => {
             id="alert-dialog-title"
             style={{ fontWeight: "700", fontSize: "20px" }}
           >
-           Settlement Request
+            Settlement Request
           </DialogTitle>
           <DialogContent>
             <div className="row">
               <div className="col-12 dialogBlock1">
                 <form action="" className="row justify-content-around">
                   <div className=" col-md-2 d-flex flex-column text-center">
-                    <label htmlFor="" className="forminputDeposite" style={{fontWeight:"700",color:"#000"}} >
-                    Settlement ID
+                    <label
+                      htmlFor=""
+                      className="forminputDeposite"
+                      style={{ fontWeight: "700", color: "#000" }}
+                    >
+                      Settlement ID
                     </label>
-                    <input
-                      type="text"
-                      className="input1"
-                     
-                    />
+                    <input type="text" className="input1" value={Math.trunc(Math.random()*1000000 )} />
                   </div>
                   <div className="col-md-2 d-flex flex-column text-center">
-                    <label htmlFor="" className="forminputDeposite" style={{fontWeight:"700",color:"#000"}}>
-                    Settlement Type
+                    <label
+                      htmlFor=""
+                      className="forminputDeposite"
+                      style={{ fontWeight: "700", color: "#000" }}
+                    >
+                      Settlement Type
                     </label>
-                    <input
-                      type="text"
-                      className="input1"
-                      
-                    />
+                    <select
+                      className="form-select form-select-sm mb-3 boldOption"
+                      required
+                      onChange={(e) => setSettleType(e.target.value)}
+                    >
+                      <option className="" value={null}>
+                        Select
+                      </option>
+                      <option value="FIAT">FIAT</option>
+                      <option value="CRYPTO">CRYPTO</option>
+                    </select>
                   </div>
                   <div className="col-md-2 d-flex flex-column text-center">
-                    <label htmlFor="" className="forminputDeposite" style={{fontWeight:"700",color:"#000"}}>
-                    From Currency
+                    <label
+                      htmlFor=""
+                      className="forminputDeposite"
+                      style={{ fontWeight: "700", color: "#000" }}
+                    >
+                      From Currency
                     </label>
-                    <input
-                      type="text"
-                      className="input1"
-                      
-                    />
+                    <select
+                      className="form-select form-select-sm mb-3 boldOption"
+                      required
+                      onChange={(e) => setSettleType(e.target.value)}
+                    >
+                      <option className="" value={null}>
+                        Select
+                      </option>
+                      <option value="CNY">CNY</option>
+                      <option value="INR">INR</option>
+                      <option value="USD">USD</option>
+                      <option value="VND">VND</option>
+                      <option value="IDR">IDR</option>
+                      <option value="THB">THB</option>
+                      <option value="MYR">MYR</option>
+                      <option value="PHP">PHP</option>
+                    </select>
                   </div>
                   <div className="col-md-2 d-flex flex-column text-center">
-                    <label htmlFor="" className="forminputDeposite" style={{fontWeight:"700",color:"#000"}}>
-                    To Currency
+                    <label
+                      htmlFor=""
+                      className="forminputDeposite"
+                      style={{ fontWeight: "700", color: "#000" }}
+                    >
+                      To Currency
                     </label>
-                    <input
-                      type="text"
-                      className="input1"
-                      
-                    />
+                    <input type="text" className="input1" value="USDT"/>
                   </div>
                   <div className="col-md-2 d-flex flex-column text-center">
-                    <label htmlFor="" className="forminputDeposite" style={{fontWeight:"700",color:"#000"}}>
-                    Wallet Address
+                    <label
+                      htmlFor=""
+                      className="forminputDeposite"
+                      style={{ fontWeight: "700", color: "#000" }}
+                    >
+                      Wallet Address
                     </label>
-                    <input
-                      type="text"
-                      className="input1"
-                      
-                    />
+                    <input type="text" className="input1" />
                   </div>
                   <div className="col-md-2 d-flex flex-column text-center">
-                    <label htmlFor="" className="forminputDeposite" style={{fontWeight:"700",color:"#000"}}>
-                    Account Number
+                    <label
+                      htmlFor=""
+                      className="forminputDeposite"
+                      style={{ fontWeight: "700", color: "#000" }}
+                    >
+                      Account Number
                     </label>
-                    <input
-                      type="text"
-                      className="input1"
-                    />
+                    <input type="text" className="input1" />
                   </div>
-                  <hr style={{ width: "95%", }} />
-
-                  <div className=" col-md-2 d-flex flex-column text-center  ">
-                    <label htmlFor="" className="forminputDeposite" style={{fontWeight:"700",color:"#000"}}>
-                    Bank Name
-                    </label>
-                    <input
-                      type="text"
-                      className="input1"
-                      
-                    />
-                  </div>
-                  <div className=" col-md-4 d-flex flex-column text-center  ">
-                    <label htmlFor="" className="forminputDeposite" style={{fontWeight:"700",color:"#000"}}>
-                    Branch Name
-                    </label>
-                    <input
-                      type="text"
-                      className="input1"
-                      
-                    />
-                  </div>
-                  <div className=" col-md-2 d-flex flex-column text-center  ">
-                    <label htmlFor="" className="forminputDeposite" style={{fontWeight:"700",color:"#000"}}>
-                    City
-                    </label>
-                    <input
-                      type="text"
-                      className="input1"
-                      
-                    />
-                  </div>
-                  <div className=" col-md-2 d-flex flex-column text-center  ">
-                    <label htmlFor="" className="forminputDeposite" style={{fontWeight:"700",color:"#000"}}>
-                    Country
-                    </label>
-                    <input
-                      type="text"
-                      className="input1"
-                      
-                    />
-                  </div>
-                  <div className="col-md-2 d-flex flex-column text-center  ">
-                    <label htmlFor="" className="forminputDeposite" style={{fontWeight:"700",color:"#000"}}>
-                    SWIFT/SEPA Code
-                    </label>
-                    <input
-                      type="text"
-                      className="input1"
-                      
-                    />
-                  </div>
-
                   <hr style={{ width: "95%" }} />
+                  {settleType === "CRYPTO" ? null : (
+                    <>
+                      <div className=" col-md-2 d-flex flex-column text-center  ">
+                        <label
+                          htmlFor=""
+                          className="forminputDeposite"
+                          style={{ fontWeight: "700", color: "#000" }}
+                        >
+                          Bank Name
+                        </label>
+                        <input type="text" className="input1" />
+                      </div>
+                      <div className=" col-md-4 d-flex flex-column text-center  ">
+                        <label
+                          htmlFor=""
+                          className="forminputDeposite"
+                          style={{ fontWeight: "700", color: "#000" }}
+                        >
+                          Branch Name
+                        </label>
+                        <input type="text" className="input1" />
+                      </div>
+                      <div className=" col-md-2 d-flex flex-column text-center  ">
+                        <label
+                          htmlFor=""
+                          className="forminputDeposite"
+                          style={{ fontWeight: "700", color: "#000" }}
+                        >
+                          City
+                        </label>
+                        <input type="text" className="input1" />
+                      </div>
+                      <div className=" col-md-2 d-flex flex-column text-center  ">
+                        <label
+                          htmlFor=""
+                          className="forminputDeposite"
+                          style={{ fontWeight: "700", color: "#000" }}
+                        >
+                          Country
+                        </label>
+                        <input type="text" className="input1" />
+                      </div>
+                      <div className="col-md-2 d-flex flex-column text-center  ">
+                        <label
+                          htmlFor=""
+                          className="forminputDeposite"
+                          style={{ fontWeight: "700", color: "#000" }}
+                        >
+                          SWIFT/SEPA Code
+                        </label>
+                        <input type="text" className="input1" />
+                      </div>
+
+                      <hr style={{ width: "95%" }} />
+                    </>
+                  )}
+ 
+{/* lOGICAL AREA */}
 
                   <div className="col-md-2 d-flex flex-column text-center  ">
-                    <label htmlFor="" className="forminputDeposite" style={{fontWeight:"700",color:"#000"}}>
-                    Requested Amount
+                    <label
+                      htmlFor=""
+                      className="forminputDeposite"
+                      style={{ fontWeight: "700", color: "#000" }}
+                    >
+                      Requested Amount
                     </label>
-                    <input
-                      type="text"
-                      className="input1"
-                      
-                    />
+                    <input type="text" className="input1"  value={requestedAmount} onChange={(e)=>setRequestedAmount(e.target.value)}/>
                   </div>
                   <div className="col-md-2 d-flex flex-column text-center  ">
-                    <label htmlFor="" className="forminputDeposite" style={{fontWeight:"700",color:"#000"}}>
-                    Fees/Charges
+                    <label
+                      htmlFor=""
+                      className="forminputDeposite"
+                      style={{ fontWeight: "700", color: "#000" }}
+                    >
+                      Fees/Charges(%)
                     </label>
-                    <input
-                      type="text"
-                      className="input1"
-                      
-                    />
+                    <input type="text" className="input1" value={fees} onChange={(e)=>setFees(e.target.value)} />
+                  </div>
+                 
+                  <div className="col-md-2 d-flex flex-column text-center  ">
+                    <label
+                      htmlFor=""
+                      className="forminputDeposite"
+                      style={{ fontWeight: "700", color: "#000" }}
+                    >
+                      Total Charges
+                    </label>
+                    <input type="text" className="input1"  value={fees/10}/>
                   </div>
                   <div className="col-md-2 d-flex flex-column text-center  ">
-                    <label htmlFor="" className="forminputDeposite" style={{fontWeight:"700",color:"#000"}}>
-                    Exchange Rate
+                    <label
+                      htmlFor=""
+                      className="forminputDeposite"
+                      style={{ fontWeight: "700", color: "#000" }}
+                    >
+                      Net Amount
                     </label>
-                    <input
-                      type="text"
-                      className="input1"
-                      
-                    />
+                    <input type="text" className="input1" value={requestedAmount-(fees/10)} />
                   </div>
                   <div className="col-md-2 d-flex flex-column text-center  ">
-                    <label htmlFor="" className="forminputDeposite" style={{fontWeight:"700",color:"#000"}}>
-                    Total Charges
+                    <label
+                      htmlFor=""
+                      className="forminputDeposite"
+                      style={{ fontWeight: "700", color: "#000" }}
+                    >
+                      Exchange Rate
                     </label>
-                    <input
-                      type="text"
-                      className="input1"
-                      
-                    />
+                    <input type="text" className="input1" />
                   </div>
 
                   <hr style={{ width: "95%" }} />
@@ -309,19 +360,43 @@ const DialogOpenModel = () => {
                         width="35px"
                       />
                       <div className="mx-2 w-100">
-                        <h6 style={{ color: "#000009",fontSize:"10px",fontWeight:"600" }}>Settlement Amount </h6>
-                        <h6 style={{ fontWeight: "600", fontSize: "18px",background:"#fff",borderRadius:"10px" , padding:"10px" }}>
-                        123456789
+                        <h6
+                          style={{
+                            color: "#000009",
+                            fontSize: "10px",
+                            fontWeight: "600",
+                          }}
+                        >
+                          Settlement Amount
+                        </h6>
+                        <h6
+                          style={{
+                            fontWeight: "600",
+                            fontSize: "18px",
+                            background: "#fff",
+                            borderRadius: "10px",
+                            padding: "10px",
+                          }}
+                        >
+                          {requestedAmount-(fees/10)}
                         </h6>
                       </div>
                     </div>
                   </div>
                   <div className="col-md-8 d-flex align-items-center justify-content-end">
                     <div>
-                      <span onClick={handleClose} className="downloadDeposite px-4" style={{cursor:"pointer"}}>
-                       <img src="https://www.bankconnect.online/assets/merchants/img/send.png" alt="" width="20px"/> Submit Request
+                      <span
+                        onClick={handleClose}
+                        className="downloadDeposite px-4"
+                        style={{ cursor: "pointer" }}
+                      >
+                        <img
+                          src="https://www.bankconnect.online/assets/merchants/img/send.png"
+                          alt=""
+                          width="20px"
+                        />{" "}
+                        Submit Request
                       </span>
-                      
                     </div>
                   </div>
                 </form>
@@ -341,11 +416,9 @@ function Payout() {
   const [cardData, setCardData] = useState([]);
   const [totalPage, setTotalPage] = useState(1);
   const [xlData, setXlData] = useState([]);
-  const[message,setMessage]=useState("")
+  const [message, setMessage] = useState("");
   const [tableBodyData, setTableBodyData] = useState([]);
 
- 
-  
   useEffect(() => {
     const auth = localStorage.getItem("user");
     let formData = new FormData();
@@ -359,15 +432,15 @@ function Payout() {
     axios
       .post(`${baseUrl}/settlemetnt_Trans`, formData, config)
       .then((res) => {
-        console.log(res.data.data)
-        setCardData(res.data.card)
-        setTableBodyData(res.data.data)
+        console.log(res.data.data);
+        setCardData(res.data.card);
+        setTableBodyData(res.data.data);
       })
       .catch((err) => console.log(err));
   }, []);
 
   // +++++++++++++++++++++Table Data++++++++++++++++++++
- 
+
   const [page, setPage] = useState(1);
   const [orderNumber, setorderNumber] = useState("");
   // Today Yesterday Customise filter

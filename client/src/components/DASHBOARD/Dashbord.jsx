@@ -13,6 +13,8 @@ import MonthlyBarGraph from '../../components/REACTGRAPH/MonthlyBarGraph'
 import axios from "axios";
 import "./style.css";
 
+import Wave from "react-wavify"
+
 function Dashbord() {
   const [success,setSuccess]=useState('')
   const [atmData,setAtmData] = useState([])
@@ -121,9 +123,20 @@ function Dashbord() {
         </div>
         <div className="col-1 d-flex  flex-column">
           <div className="liquedblock">
-            <div className="waveLiqued" style={{ height: `${success}%` }}>
-              <div className="shape"></div>
-            </div>
+          <Wave
+              fill="#1caae8"
+              paused={false}
+              options={{
+                amplitude: 10,
+                speed: 0.5,
+                points: 3,
+              }}
+              style={{
+                position: "relative",
+                height: `${success}%`,
+                top: `${100 - (success)}%`,
+              }}
+            />
           </div>
           <div className="text-center">
             <h6

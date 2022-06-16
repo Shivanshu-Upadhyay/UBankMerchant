@@ -43,7 +43,6 @@ const LogIn = () => {
         if (response.data.is_complete === 1) {
           localStorage.setItem("user", Token);
           setAuth(localStorage.getItem("user"))
-
           natigate("/");
           console.log("success");
           console.log(auth);

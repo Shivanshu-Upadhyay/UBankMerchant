@@ -18,6 +18,13 @@ a{
   left: 1310px !important;
 }
 
+
+select.form-select.form-select-sm.mb-3.boldOption {
+  border: none;
+}
+select.form-select.form-select-sm.mb-3.boldOption:focus{
+ box-shadow: none;
+}
 /*++++++++++++++++++++++++++++ Settlement Styling ++++++++++++++++++++++++++ */
 
 
