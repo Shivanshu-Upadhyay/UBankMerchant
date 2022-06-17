@@ -61,6 +61,7 @@ function Filter({
     console.log(methordData);
     setStatusPayment([...new Set(statusData)]);
     setCurrencyPayment([...new Set(currencyData)]);
+    handleClose();
   };
 
   return (

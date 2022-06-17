@@ -37,15 +37,12 @@ function Currency() {
       };
 
       let result = await axios.post(`${baseUrl}/dbycurrency`, formData, config);
-      console.log(result.data.data);
       setTodayData(result.data.data);
-
     } catch (error) {
       console.log(error);
     }
   };
 
-  console.log(todayData);
   return (
     <>
       <div className="mainblock ">

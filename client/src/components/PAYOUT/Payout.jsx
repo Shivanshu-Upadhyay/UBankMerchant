@@ -136,10 +136,10 @@ function Payout() {
       if (orderNumber) {
         formData.append("filterType", 2);
       }
-      if (date) {
+      else if (date) {
         formData.append("filterType", 3);
       }
-      if (to && from) {
+      else if (to && from) {
         formData.append("filterType", 4);
       }
 

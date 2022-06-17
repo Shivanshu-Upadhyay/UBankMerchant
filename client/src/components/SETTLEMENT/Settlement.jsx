@@ -57,7 +57,7 @@ const SecondBlock = ({
     // Binary String
     XLSX.write(workBook, { bookType: "xlsx", type: "binary" });
     // Download
-    XLSX.writeFile(workBook, "Payout.xlsx");
+    XLSX.writeFile(workBook, "Settlement.xlsx");
   };
   return (
     <>
@@ -70,15 +70,6 @@ const SecondBlock = ({
         </div>
 
         <div className="col-3 ">
-          {/* <button className="downloadDeposite">
-            <img
-              src="https://www.bankconnect.online/assets/merchants/img/sattlement.svg"
-              alt=""
-              width="20px"
-              className="mx-2"
-            />
-            Request a Settlement
-          </button> */}
           <DialogOpenModel />
         </div>
         <div className="col-3 ">
@@ -101,16 +92,21 @@ const SecondBlock = ({
 
 const DialogOpenModel = () => {
   const [open, setOpen] = React.useState(false);
+  const [settelmentId, setSettelmentId] = React.useState(
+    Math.trunc(Math.random() * 1000000)
+  );
   const [settleType, setSettleType] = React.useState("");
+  const [fromCurrency, setFromCurrency] = React.useState("");
+  const [toCurrency, setToCurrency] = React.useState("USDT");
+  const [walletAdd, setWalletAdd] = React.useState("");
+  const [accountN, setAccountN] = React.useState("");
+  const [bankName, setBankName] = React.useState("");
+  const [branchName, setBranchName] = React.useState("");
+  const [city, setCity] = React.useState("");
+  const [country, setCountry] = React.useState("");
+  const [swift, setSwift] = React.useState("");
   const [requestedAmount, setRequestedAmount] = React.useState("");
-  const [fees, setFees] = React.useState("0");
-  const [totalCharges, setTotalCharges] = React.useState("");
-  const [netAmount, setNetAmount] = React.useState("");
-  const [exchnageRate, setExchnageRate] = React.useState("");
-
-  
-
-  console.log(requestedAmount);
+  const [fees, setFees] = React.useState(0);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -119,6 +115,45 @@ const DialogOpenModel = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const RequestSettlement = async () => {
+    try {
+      const auth = localStorage.getItem("user");
+      let formData = new FormData();
+      formData.append("settelmentId", settelmentId);
+      formData.append("settleType", settleType);
+      formData.append("currency", fromCurrency);
+      formData.append("toCurrency", toCurrency);
+      formData.append("walletAddress", walletAdd);
+      formData.append("accountNumber", accountN);
+      formData.append("bankName", bankName);
+      formData.append("branchName", branchName);
+      formData.append("city", city);
+      formData.append("country", country);
+      formData.append("swiftCode", swift);
+      formData.append("requestedAmount", requestedAmount);
+      formData.append("fees", fees);
+
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${auth}`,
+        },
+      };
+
+       await axios.post(
+        `${baseUrl}/requestSettlement`,
+        formData,
+        config
+      );
+
+      handleClose();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+ 
   return (
     <>
       <div>
@@ -158,7 +193,14 @@ const DialogOpenModel = () => {
                     >
                       Settlement ID
                     </label>
-                    <input type="text" className="input1" value={Math.trunc(Math.random()*1000000 )} />
+                    <input
+                      type="text"
+                      className="input1"
+                      value={settelmentId}
+                      onChange={(e) => {
+                        setSettelmentId(e.target.value);
+                      }}
+                    />
                   </div>
                   <div className="col-md-2 d-flex flex-column text-center">
                     <label
@@ -171,9 +213,10 @@ const DialogOpenModel = () => {
                     <select
                       className="form-select form-select-sm mb-3 boldOption"
                       required
+                      defaultValue={"default"}
                       onChange={(e) => setSettleType(e.target.value)}
                     >
-                      <option className="" value={null}>
+                      <option value={"default"} disabled>
                         Select
                       </option>
                       <option value="FIAT">FIAT</option>
@@ -191,9 +234,10 @@ const DialogOpenModel = () => {
                     <select
                       className="form-select form-select-sm mb-3 boldOption"
                       required
-                      onChange={(e) => setSettleType(e.target.value)}
+                      defaultValue={"default"}
+                      onChange={(e) => setFromCurrency(e.target.value)}
                     >
-                      <option className="" value={null}>
+                      <option value={"default"} disabled>
                         Select
                       </option>
                       <option value="CNY">CNY</option>
@@ -214,7 +258,12 @@ const DialogOpenModel = () => {
                     >
                       To Currency
                     </label>
-                    <input type="text" className="input1" value="USDT"/>
+                    <input
+                      type="text"
+                      className="input1"
+                      value={toCurrency}
+                      disabled
+                    />
                   </div>
                   <div className="col-md-2 d-flex flex-column text-center">
                     <label
@@ -224,7 +273,12 @@ const DialogOpenModel = () => {
                     >
                       Wallet Address
                     </label>
-                    <input type="text" className="input1" />
+                    <input
+                      type="text"
+                      className="input1"
+                      value={walletAdd}
+                      onChange={(e) => setWalletAdd(e.target.value)}
+                    />
                   </div>
                   <div className="col-md-2 d-flex flex-column text-center">
                     <label
@@ -234,7 +288,12 @@ const DialogOpenModel = () => {
                     >
                       Account Number
                     </label>
-                    <input type="text" className="input1" />
+                    <input
+                      type="text"
+                      className="input1"
+                      value={accountN}
+                      onChange={(e) => setAccountN(e.target.value)}
+                    />
                   </div>
                   <hr style={{ width: "95%" }} />
                   {settleType === "CRYPTO" ? null : (
@@ -247,7 +306,12 @@ const DialogOpenModel = () => {
                         >
                           Bank Name
                         </label>
-                        <input type="text" className="input1" />
+                        <input
+                          type="text"
+                          className="input1"
+                          value={bankName}
+                          onChange={(e) => setBankName(e.target.value)}
+                        />
                       </div>
                       <div className=" col-md-4 d-flex flex-column text-center  ">
                         <label
@@ -257,7 +321,12 @@ const DialogOpenModel = () => {
                         >
                           Branch Name
                         </label>
-                        <input type="text" className="input1" />
+                        <input
+                          type="text"
+                          className="input1"
+                          value={branchName}
+                          onChange={(e) => setBranchName(e.target.value)}
+                        />
                       </div>
                       <div className=" col-md-2 d-flex flex-column text-center  ">
                         <label
@@ -267,7 +336,12 @@ const DialogOpenModel = () => {
                         >
                           City
                         </label>
-                        <input type="text" className="input1" />
+                        <input
+                          type="text"
+                          className="input1"
+                          value={city}
+                          onChange={(e) => setCity(e.target.value)}
+                        />
                       </div>
                       <div className=" col-md-2 d-flex flex-column text-center  ">
                         <label
@@ -277,7 +351,12 @@ const DialogOpenModel = () => {
                         >
                           Country
                         </label>
-                        <input type="text" className="input1" />
+                        <input
+                          type="text"
+                          className="input1"
+                          value={country}
+                          onChange={(e) => setCountry(e.target.value)}
+                        />
                       </div>
                       <div className="col-md-2 d-flex flex-column text-center  ">
                         <label
@@ -287,14 +366,19 @@ const DialogOpenModel = () => {
                         >
                           SWIFT/SEPA Code
                         </label>
-                        <input type="text" className="input1" />
+                        <input
+                          type="text"
+                          className="input1"
+                          value={swift}
+                          onChange={(e) => setSwift(e.target.value)}
+                        />
                       </div>
 
                       <hr style={{ width: "95%" }} />
                     </>
                   )}
- 
-{/* lOGICAL AREA */}
+
+                  {/* lOGICAL AREA */}
 
                   <div className="col-md-2 d-flex flex-column text-center  ">
                     <label
@@ -304,7 +388,12 @@ const DialogOpenModel = () => {
                     >
                       Requested Amount
                     </label>
-                    <input type="text" className="input1"  value={requestedAmount} onChange={(e)=>setRequestedAmount(e.target.value)}/>
+                    <input
+                      type="text"
+                      className="input1"
+                      value={requestedAmount}
+                      onChange={(e) => setRequestedAmount(e.target.value)}
+                    />
                   </div>
                   <div className="col-md-2 d-flex flex-column text-center  ">
                     <label
@@ -314,9 +403,14 @@ const DialogOpenModel = () => {
                     >
                       Fees/Charges(%)
                     </label>
-                    <input type="text" className="input1" value={fees} onChange={(e)=>setFees(e.target.value)} />
+                    <input
+                      type="text"
+                      className="input1"
+                      value={fees}
+                      onChange={(e) => setFees(e.target.value)}
+                    />
                   </div>
-                 
+
                   <div className="col-md-2 d-flex flex-column text-center  ">
                     <label
                       htmlFor=""
@@ -325,7 +419,7 @@ const DialogOpenModel = () => {
                     >
                       Total Charges
                     </label>
-                    <input type="text" className="input1"  value={fees/10}/>
+                    <input type="text" className="input1" value={fees / 10} />
                   </div>
                   <div className="col-md-2 d-flex flex-column text-center  ">
                     <label
@@ -335,7 +429,11 @@ const DialogOpenModel = () => {
                     >
                       Net Amount
                     </label>
-                    <input type="text" className="input1" value={requestedAmount-(fees/10)} />
+                    <input
+                      type="text"
+                      className="input1"
+                      value={requestedAmount - fees / 10}
+                    />
                   </div>
                   <div className="col-md-2 d-flex flex-column text-center  ">
                     <label
@@ -351,7 +449,7 @@ const DialogOpenModel = () => {
                   <hr style={{ width: "95%" }} />
                   <div className="col-md-3">
                     <div
-                      onClick={handleClose}
+                      
                       className="dilogfirstbutton d-flex  align-items-center justify-content-center"
                     >
                       <img
@@ -378,7 +476,7 @@ const DialogOpenModel = () => {
                             padding: "10px",
                           }}
                         >
-                          {requestedAmount-(fees/10)}
+                          {requestedAmount - fees / 10}
                         </h6>
                       </div>
                     </div>
@@ -386,7 +484,10 @@ const DialogOpenModel = () => {
                   <div className="col-md-8 d-flex align-items-center justify-content-end">
                     <div>
                       <span
-                        onClick={handleClose}
+                        onClick={() => {
+                          RequestSettlement();
+                          
+                        }}
                         className="downloadDeposite px-4"
                         style={{ cursor: "pointer" }}
                       >
@@ -394,7 +495,8 @@ const DialogOpenModel = () => {
                           src="https://www.bankconnect.online/assets/merchants/img/send.png"
                           alt=""
                           width="20px"
-                        />{" "}
+                          className="mx-2"
+                        />
                         Submit Request
                       </span>
                     </div>
@@ -417,79 +519,57 @@ function Payout() {
   const [totalPage, setTotalPage] = useState(1);
   const [xlData, setXlData] = useState([]);
   const [message, setMessage] = useState("");
-  const [tableBodyData, setTableBodyData] = useState([]);
-
-  useEffect(() => {
-    const auth = localStorage.getItem("user");
-    let formData = new FormData();
-    const config = {
-      headers: {
-        "content-type": "multipart/form-data",
-        Authorization: `Bearer ${auth}`,
-      },
-    };
-
-    axios
-      .post(`${baseUrl}/settlemetnt_Trans`, formData, config)
-      .then((res) => {
-        console.log(res.data.data);
-        setCardData(res.data.card);
-        setTableBodyData(res.data.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  // +++++++++++++++++++++Table Data++++++++++++++++++++
-
   const [page, setPage] = useState(1);
   const [orderNumber, setorderNumber] = useState("");
   // Today Yesterday Customise filter
   const [date, setDate] = useState("");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  const [tableBodyData, setTableBodyData] = useState([]);
 
-  console.log(orderNumber);
-  // useEffect(() => {
-  //   tabledatafetch();
-  // }, [page, orderNumber, date, to, from]);
+  // +++++++++++++++++++++Table Data++++++++++++++++++++
 
-  // const tabledatafetch = async () => {
-  //   try {
-  //     const auth = localStorage.getItem("user");
-  //     let formData = new FormData();
-  //     formData.append("page", page);
-  //     formData.append("uniqueid", orderNumber);
-  //     formData.append("Date", date);
-  //     formData.append("to", to);
-  //     formData.append("from", from);
+  useEffect(() => {
+    tabledatafetch();
+  }, [page, orderNumber, date, to, from]);
 
-  //     if (orderNumber) {
-  //       formData.append("filterType", 2);
-  //     }
-  //     if (date) {
-  //       formData.append("filterType", 3);
-  //     }
-  //     if (to && from) {
-  //       formData.append("filterType", 4);
-  //     }
+  const tabledatafetch = async () => {
+    try {
+      const auth = localStorage.getItem("user");
+      let formData = new FormData();
+      if (date) {
+        formData.append("date", date);
+        formData.append("page", page);
+      } else if (from && to) {
+        formData.append("from", from);
+        formData.append("to", to);
+        formData.append("page", page);
+      } else if (orderNumber) {
+        formData.append("settlementId", orderNumber);
+        formData.append("page", page);
+      }
 
-  //     const config = {
-  //       headers: {
-  //         "content-type": "multipart/form-data",
-  //         Authorization: `Bearer ${auth}`,
-  //       },
-  //     };
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${auth}`,
+        },
+      };
 
-  //     let result = await axios.post(`${baseUrl}/filter`, formData, config);
-  //     setTableBodyData(result.data.data);
-  //     setTotalPage(result.data.totalPage);
-  //     setMessage(result.data.message)
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+      let result = await axios.post(
+        `${baseUrl}/settlemetnt_Trans`,
+        formData,
+        config
+      );
 
-  // console.log(tableBodyData);
+      setCardData(result.data.card);
+      setTableBodyData(result.data.data);
+      setTotalPage(result.data.totalPage);
+      setMessage(result.data.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>

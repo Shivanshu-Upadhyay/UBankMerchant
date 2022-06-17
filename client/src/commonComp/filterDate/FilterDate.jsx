@@ -16,7 +16,7 @@ function FilterDate({ setDate, setTo, setFrom }) {
 
   const handleYesterday = () => {
     let today = new Date();
-    today.setDate(today.getDate()-1)
+    today.setDate(today.getDate())
    
     let year =
       today.getFullYear() +
@@ -26,8 +26,8 @@ function FilterDate({ setDate, setTo, setFrom }) {
       "-" +
       (today.getDate() - 1);
     console.log(year);
-
     setDate(year);
+    handleClose();
   };
 
   const handleToday = () => {
@@ -42,6 +42,7 @@ function FilterDate({ setDate, setTo, setFrom }) {
        console.log(year);
 
     setDate(year);
+    handleClose();
   };
 
   const filterFun = (e) => {
@@ -51,6 +52,7 @@ function FilterDate({ setDate, setTo, setFrom }) {
     setFrom(todate);
 
     console.log(todate,fromdate);
+    handleClose();
     
   };
 

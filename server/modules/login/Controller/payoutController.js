@@ -24,6 +24,7 @@ const payoutMethods = {
     let arr = [],
       arr1 = [];
 
+    console.log(filterType);
     if (filterType === 1) {
       // 1 Default Page
       sql =

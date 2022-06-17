@@ -19,7 +19,7 @@ import DownloadRep from "../STATEMANTS/DownloadRep";
 import { useStateContext } from "../../context/ContextProvider";
 function Routers() {
   const { auth, setAuth } = useStateContext();
-  setAuth((pre) => (pre = localStorage.getItem("user")));
+  setAuth(localStorage.getItem("user"));
   const auth2 = localStorage.getItem("user");
   console.log(auth);
   return (

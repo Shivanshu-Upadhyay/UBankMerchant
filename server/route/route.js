@@ -202,18 +202,17 @@ route.post(
 
 // Settlement ___________________+++**&&*(())
 
-route.post(
-  "/settlemetnt_Trans",
-  uploads.none(),
-  helper.verify,
-  settlementController.settlemetnt_Trans
-);
-route.post(
-  "/requestSettlement",
-  uploads.none(),
-  helper.verify,
-  settlementController.requestSettlement
-);
+route.post("/settlemetnt_Trans",
+    uploads.none(),
+    helper.verify,
+    settlementController.settlemetnt_Trans
+  );
+  route.post(
+    "/requestSettlement",
+    uploads.none(),
+    helper.verify,
+    settlementController.requestSettlement
+  );
 
 // Statement Rout hai bahanchod????????????????????????????
 
