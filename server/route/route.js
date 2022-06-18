@@ -5,6 +5,7 @@ const depositsController = require("../modules/login/Controller/deposits_control
 const settlementController = require("../modules/login/Controller/settlementController")
 const teamsController = require("../modules/login/Controller/teamsController")
 const statementController = require("../modules/login/Controller/statementController")
+const reportsController = require("../modules/login/Controller/reportsController")
 const route = require("express").Router();
 const path = require("path");
 const multer = require("multer");
@@ -224,3 +225,5 @@ route.post('/default',uploads.none(),helper.verify, teamsController.default);
 route.post('/createEmployee',uploads.none(),helper.verify, teamsController.createEmployee);
 module.exports = route;
 
+// Reports Controller
+route.post('/accountSummary',uploads.none(), helper.verify, reportsController.accountSummary)
