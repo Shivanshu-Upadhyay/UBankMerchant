@@ -44,10 +44,8 @@ export default function TableComp({ tableBodyData, xlData, setXlData }) {
         return { ...user, isChecked: checked };
       });
       setUsers(tempUser);
-      console.log(tempUser)
+      console.log(tempUser);
       setXlData(tempUser);
-     
-      
     } else {
       let tempUser = users.map((user) =>
         user.order_no === name ? { ...user, isChecked: checked } : user
@@ -56,10 +54,6 @@ export default function TableComp({ tableBodyData, xlData, setXlData }) {
       setXlData(tempUser.filter((item) => item.isChecked));
       console.log(xlData);
     }
-
-   
-      
-
   };
 
   return (
@@ -110,7 +104,7 @@ export default function TableComp({ tableBodyData, xlData, setXlData }) {
                     {item.ammount}
                   </TableCell>
                   <TableCell align="center">{item.ammount_type}</TableCell>
-                  <TableCell className="tablebold">
+                  <TableCell className="tablebold" align="center">
                     <img
                       src="https://www.bankconnect.online/assets/merchants/img/green-down.svg"
                       alt=""
@@ -185,7 +179,6 @@ const PopUp = ({ formData }) => {
             vertical: "center",
             horizontal: "left",
           }}
-          
         >
           <div style={{ padding: "10px 20px" }}>
             <DialogOpenModel formData={formData} />

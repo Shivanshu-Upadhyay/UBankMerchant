@@ -4,10 +4,12 @@ import Chart from "react-apexcharts";
 import './styles.css'
 import axios from "axios";
 
+
 export default class SparkLineGraph extends React.Component {
+   
     constructor(props) {
         super(props);
-
+        
         this.state = {
             base_url: "http://localhost:9240/",
             // formData: new FormData(),
@@ -26,6 +28,7 @@ export default class SparkLineGraph extends React.Component {
     }
 
   graphData() {
+    
     axios.post(this.state.base_url + "payout_icon", {type:"deposit"}, this.state.header).then((res) => {
         let temp = res.data.data[0];
         // let deta = [10, 20, 8, 15, 30, 12]

@@ -73,7 +73,7 @@ export default function PayoutTable({ tableBodyData, xlData, setXlData }) {
               <TableCell> Transfer ID</TableCell>
               <TableCell> Initiated At</TableCell>
               <TableCell>UTR No/Ref Id</TableCell>
-              <TableCell>Account No</TableCell>
+              <TableCell align="center">Account No</TableCell>
               <TableCell>Bank Name</TableCell>
               <TableCell align="center">Amount</TableCell>
               <TableCell align="center">Status</TableCell>

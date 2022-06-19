@@ -83,9 +83,11 @@ const Drawer = styled(MuiDrawer, {
 export default function Sidebar() {
   const [open, setOpen] = React.useState(true);
   const {  active, setActive } = useStateContext();
+  const { setIsLoginUser } = useStateContext();
 
   const logout = () => {
     localStorage.clear("user");
+    setIsLoginUser(false);
   };
 
   const sidebarLink = [
@@ -179,7 +181,8 @@ export default function Sidebar() {
           src="	https://www.bankconnect.online/assets/merchants/img/quick-previous.svg"
           alt=""
           width="40px"
-          style={{ position: "fixed" }}
+          style={{ position: "fixed",cursor:"pointer" }}
+         
         />
       </div>
       <CssBaseline />
