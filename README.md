@@ -33,10 +33,10 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### Folder Structure  
+## Folder Structure  
 <!-- Img -->
 
 ![foder img](./imgDoc/folder.png)
 
-- commonComp
+- #### `commonComp`
 Here All the common files Like  `Card` `Table` is here
