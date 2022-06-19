@@ -44,4 +44,15 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 Here All the common files Like  `Card` `Table` is here
 - ### `Components`
 Here All the Components files are here
-   - Deposite
+  - Dashboard
+  - Deposite
+  - Payout
+  - Settelment
+  - Reports
+  - Statements
+  - Invoice
+  - Teams
+  - Business Settings
+  - Integrations
+  - Change Password
+  - Logout
