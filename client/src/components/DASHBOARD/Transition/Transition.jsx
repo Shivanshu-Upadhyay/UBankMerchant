@@ -142,9 +142,11 @@ const TableComp = ({ todayData }) => {
                 );
               })
             ) : (
+              <TableRow>
               <TableCell style={{ fontWeight: "600" }} align="center">
                 <h5>No Data Found</h5>
               </TableCell>
+            </TableRow>
             )}
           </TableBody>
         </Table>

@@ -7,6 +7,7 @@ import Search from "../../commonComp/SearchBox/Search";
 import FilterDate from "../../commonComp/filterDate/FilterDate";
 import Card from "../../commonComp/Card/Card";
 import baseUrl from "../../components/config/baseUrl";
+import { useStateContext } from "../../context/ContextProvider";
 import * as XLSX from "xlsx";
 const Footer = ({ setPage, page, totalPage, message }) => {
   const pageNumber = (e, p) => {
@@ -88,10 +89,12 @@ function Payout() {
   const [totalPage, setTotalPage] = useState(1);
   const [xlData, setXlData] = useState([]);
   const[message,setMessage]=useState("")
+  const { setActive } = useStateContext();
 
   console.log(cardData)
   
   useEffect(() => {
+    setActive(2);
     const auth = localStorage.getItem("user");
     let formData = new FormData();
     const config = {

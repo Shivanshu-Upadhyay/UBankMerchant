@@ -17,10 +17,9 @@ const LogIn = () => {
   const [password, setPassword] = useState("");
   let [Token, setToken] = useState();
   let [message, setMessage] = useState("");
-  const {auth,setAuth} = useStateContext();
+  const { setIsLoginUser } = useStateContext();
 
   const natigate = useNavigate();
- 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,11 +41,9 @@ const LogIn = () => {
 
         if (response.data.is_complete === 1) {
           localStorage.setItem("user", Token);
-          setAuth(localStorage.getItem("user"))
+          setIsLoginUser(true);
           natigate("/");
           console.log("success");
-          console.log(auth);
-
           
         } else if (response.data.is_complete === 2) {
           toast.error(message, {

@@ -10,6 +10,7 @@ import baseUrl from "../../components/config/baseUrl";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import { useStateContext } from "../../context/ContextProvider";
 import * as XLSX from "xlsx";
 const Footer = ({ setPage, page, totalPage, message }) => {
   const pageNumber = (e, p) => {
@@ -513,7 +514,7 @@ const DialogOpenModel = () => {
 
 // Dialog +++++++++++++++++++++++++++++++++++++++++++++= End+++++++
 
-function Payout() {
+function Settlement() {
   // CARD DATa
   const [cardData, setCardData] = useState([]);
   const [totalPage, setTotalPage] = useState(1);
@@ -526,11 +527,13 @@ function Payout() {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [tableBodyData, setTableBodyData] = useState([]);
+  const { setActive } = useStateContext();
 
   // +++++++++++++++++++++Table Data++++++++++++++++++++
 
   useEffect(() => {
     tabledatafetch();
+    setActive(3)
   }, [page, orderNumber, date, to, from]);
 
   const tabledatafetch = async () => {
@@ -609,4 +612,4 @@ function Payout() {
   );
 }
 
-export default Payout;
+export default Settlement;

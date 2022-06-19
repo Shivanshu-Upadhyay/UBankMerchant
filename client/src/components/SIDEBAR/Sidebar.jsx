@@ -11,6 +11,7 @@ import Divider from "@mui/material/Divider";
 import MailIcon from "@mui/icons-material/Mail";
 import Badge from "@mui/material/Badge";
 import { Link, Outlet } from "react-router-dom";
+import { useStateContext } from "../../context/ContextProvider";
 import "./sidebar.css";
 
 const drawerWidth = 240;
@@ -81,7 +82,7 @@ const Drawer = styled(MuiDrawer, {
 
 export default function Sidebar() {
   const [open, setOpen] = React.useState(true);
-  const [active, setActive] = React.useState(0);
+  const {  active, setActive } = useStateContext();
 
   const logout = () => {
     localStorage.clear("user");

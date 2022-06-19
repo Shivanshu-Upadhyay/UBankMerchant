@@ -5,26 +5,26 @@ import Diposite from "./Diposite/Diposite";
 import Currency from "./Currency/Currency";
 import Transition from "./Transition/Transition";
 import baseUrl from "../../components/config/baseUrl";
-import WeeklyBarGraph from '../../components/REACTGRAPH/WeeklyBarGraph'
-
+import WeeklyBarGraph from "../../components/REACTGRAPH/WeeklyBarGraph";
+import Loader from "../../components/Loader/Loader";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import MonthlyBarGraph from '../../components/REACTGRAPH/MonthlyBarGraph'
+import MonthlyBarGraph from "../../components/REACTGRAPH/MonthlyBarGraph";
 import axios from "axios";
 import "./style.css";
 
-import Wave from "react-wavify"
+import Wave from "react-wavify";
 
 function Dashbord() {
-  const [success,setSuccess]=useState('')
-  const [atmData,setAtmData] = useState([])
-  const [paymentData,setPaymentData] = useState()
-  const[graphval,setGraphVal] = useState("month")
+  const [success, setSuccess] = useState("");
+  const [atmData, setAtmData] = useState([]);
+  const [paymentData, setPaymentData] = useState();
+  const [graphval, setGraphVal] = useState("month");
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     paymentType();
     cardDetails();
     successRate();
-    
   }, []);
 
   const successRate = async () => {
@@ -44,14 +44,15 @@ function Dashbord() {
         formData,
         config
       );
-      
+
       setSuccess(result.data.data);
+      setLoading(false)
     } catch (error) {
       console.log(error);
     }
   };
 
-  const cardDetails = async()=>{
+  const cardDetails = async () => {
     try {
       const auth = localStorage.getItem("user");
       let formData = new FormData();
@@ -64,15 +65,15 @@ function Dashbord() {
       };
 
       let result = await axios.post(`${baseUrl}/card_data`, formData, config);
-      
+
       setAtmData(result.data.data[0]);
       
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  const paymentType = async()=>{
+  const paymentType = async () => {
     try {
       const auth = localStorage.getItem("user");
       let formData = new FormData();
@@ -89,31 +90,33 @@ function Dashbord() {
         formData,
         config
       );
-      
-      setPaymentData((pre) => pre = result.data.data);
+
+      setPaymentData((pre) => (pre = result.data.data));
       
     } catch (error) {
       console.log(error);
     }
-
-  }
+  };
   // dropdown
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event) => { 
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
-    
   };
-  const monthfun = ()=>{
+  const monthfun = () => {
     setAnchorEl(null);
     setGraphVal("month");
-  }
-  const weekfun = ()=>{
+  };
+  const weekfun = () => {
     setAnchorEl(null);
     setGraphVal("week");
+  };
+
+  if (loading) {
+    return <Loader />;
   }
   return (
     <>
@@ -123,7 +126,7 @@ function Dashbord() {
         </div>
         <div className="col-1 d-flex  flex-column">
           <div className="liquedblock">
-          <Wave
+            <Wave
               fill="#1caae8"
               paused={false}
               options={{
@@ -134,7 +137,7 @@ function Dashbord() {
               style={{
                 position: "relative",
                 height: `${success}%`,
-                top: `${100 - (success)}%`,
+                top: `${100 - success}%`,
               }}
             />
           </div>

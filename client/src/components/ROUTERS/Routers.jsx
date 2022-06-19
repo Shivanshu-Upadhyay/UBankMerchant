@@ -17,15 +17,16 @@ import Payout from "../PAYOUT/Payout";
 import Settlement from "../SETTLEMENT/Settlement";
 import DownloadRep from "../STATEMANTS/DownloadRep";
 import { useStateContext } from "../../context/ContextProvider";
+const auth = localStorage.getItem("user");
 function Routers() {
-  const { auth, setAuth } = useStateContext();
-  setAuth(localStorage.getItem("user"));
-  const auth2 = localStorage.getItem("user");
+  const { isLoginUser } = useStateContext();
+  
+  
   console.log(auth);
   return (
     <>
       <Routes>
-        {auth ? (
+        {isLoginUser || auth ? (
           <>
             <Route path="/" element={<Sidebar />}>
               <Route path="/" element={<Dashbord />} />
@@ -54,7 +55,7 @@ function Routers() {
         <Route
           path="*"
           element={
-            auth || auth2 ? <Navigate to="/" /> : <Navigate to="/login" />
+            isLoginUser || auth ? <Navigate to="/" /> : <Navigate to="/login" />
           }
         />
       </Routes>

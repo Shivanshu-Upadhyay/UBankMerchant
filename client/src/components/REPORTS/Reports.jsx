@@ -4,7 +4,7 @@ import Menu from "@mui/material/Menu";
 import baseUrl from "../../components/config/baseUrl";
 import axios from "axios";
 import * as XLSX from "xlsx";
-
+import { useStateContext } from "../../context/ContextProvider";
 function Reports() {
   const [todate, SetToDate] = useState("");
   const [fromdate, SetToFromDate] = useState("");
@@ -138,10 +138,13 @@ const Section1 = ({
 const Block2 = ({ todate, fromdate }) => {
   const [downloadApi, setDownloadApi] = useState(1);
   const [data, setData] = useState([]);
+  const { setActive } = useStateContext();
+  
   console.log(downloadApi);
 
   useEffect(() => {
     fetchData();
+    setActive(4)
   }, [downloadApi]);
 
   const fetchData = async () => {

@@ -9,6 +9,7 @@ import Filter from "../../commonComp/filter/Filter";
 import Card from "../../commonComp/Card/Card";
 import baseUrl from "../../components/config/baseUrl";
 import * as XLSX from "xlsx";
+import { useStateContext } from "../../context/ContextProvider";
 const Footer = ({ setPage, page, totalPage }) => {
   const pageNumber = (e, p) => {
     setPage(p);
@@ -102,12 +103,14 @@ const SecondBlock = ({
 function Deposit() {
   // Download Data
   const [xlData,setXlData]= useState([])
+  const { setActive } = useStateContext();
   
   // CARD DATA
   const [cardData, setCardData] = useState([]);
   const [totalPage, setTotalPage] = useState(1);
    
   useEffect(() => {
+    setActive(1);
     const auth = localStorage.getItem("user");
     let formData = new FormData();
     const config = {
