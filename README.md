@@ -40,9 +40,9 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ![foder img](./imgDoc/folder.png)
 
-- ### `commonComp`
+### `CommonComp`
 Here All the common files Like  `Card` `Table` is here
-- ### `Components`
+### `Components`
 Here All the Components files are here
   - Dashboard
   - Deposite
@@ -58,5 +58,5 @@ Here All the Components files are here
   - Logout
 
 
-- ### `Router`
+### `Router`
 All  route is Define in Router folder
