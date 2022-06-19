@@ -35,5 +35,5 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ### Folder Structure  
 
-* commonComp
+- commonComp
 Here All the common files Like  `Card` `Table` is here
