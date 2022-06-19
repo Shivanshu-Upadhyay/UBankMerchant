@@ -56,3 +56,7 @@ Here All the Components files are here
   - Integrations
   - Change Password
   - Logout
+
+
+- ### `Router`
+All  route is Define in Router folder
