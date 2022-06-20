@@ -82,14 +82,20 @@ const Drawer = styled(MuiDrawer, {
 
 export default function Sidebar() {
   const [open, setOpen] = React.useState(true);
-  const {  active, setActive } = useStateContext();
+  const { active, setActive } = useStateContext();
   const { setIsLoginUser } = useStateContext();
+  
 
   const logout = () => {
     localStorage.clear("user");
     setIsLoginUser(false);
   };
 
+  setTimeout(() => {
+    localStorage.clear("user");
+    setIsLoginUser(false);
+  }, 1000 * 60 * 60);
+  
   const sidebarLink = [
     {
       name: "Dashboard",
@@ -181,8 +187,7 @@ export default function Sidebar() {
           src="	https://www.bankconnect.online/assets/merchants/img/quick-previous.svg"
           alt=""
           width="40px"
-          style={{ position: "fixed",cursor:"pointer" }}
-         
+          style={{ position: "fixed", cursor: "pointer" }}
         />
       </div>
       <CssBaseline />
@@ -221,7 +226,6 @@ export default function Sidebar() {
                   width="40px"
                 />
               </Badge>
-              
             </div>
           </div>
         </Toolbar>
@@ -263,7 +267,11 @@ export default function Sidebar() {
         </List>
         <Divider />
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }} className="mainBlockSideBar">
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, p: 3 }}
+        className="mainBlockSideBar"
+      >
         <DrawerHeader />
         <div className="bdcolor">
           <Outlet />
