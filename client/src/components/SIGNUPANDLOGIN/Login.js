@@ -11,13 +11,15 @@ import { useStateContext } from "../../context/ContextProvider.jsx";
 const LogIn = () => {
   useEffect(() => {
     AOS.init();
+    setActive(0)
   }, []);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   let [Token, setToken] = useState();
   let [message, setMessage] = useState("");
-  const { setIsLoginUser } = useStateContext();
+  const { setIsLoginUser,setActive } = useStateContext();
+
 
   const natigate = useNavigate();
 

@@ -15,7 +15,9 @@ import Login from "../SIGNUPANDLOGIN/Login";
 import SignUp from "../SIGNUPANDLOGIN/SignUp";
 import Payout from "../PAYOUT/Payout";
 import Settlement from "../SETTLEMENT/Settlement";
+import Invoice from "../INVOICE/Invoice";
 import DownloadRep from "../STATEMANTS/DownloadRep";
+import CreateInvoice from '../INVOICE/CreateInvoice'
 import { useStateContext } from "../../context/ContextProvider";
 const auth = localStorage.getItem("user");
 function Routers() {
@@ -35,11 +37,13 @@ function Routers() {
               <Route path="/Settlement" element={<Settlement />} />
               <Route path="/Reports" element={<Reports />} />
               <Route path="/Statements" element={<Statements />} />
+              <Route path="/Invoice" element={<Invoice />} />
               <Route path="/Virtual" element={<Virtual />} />
               <Route path="/Teams" element={<Teams />} />
               <Route path="/BusinessSetting" element={<BusinessSetting />} />
               <Route path="/Integrations" element={<Integrations />} />
               <Route path="/ChangePassword" element={<ChangePassword />} />
+              <Route path="/CreateInvoice" element={<CreateInvoice />} />
             </Route>
             <Route path="/DownloadRep" element={<DownloadRep />} />
           </>

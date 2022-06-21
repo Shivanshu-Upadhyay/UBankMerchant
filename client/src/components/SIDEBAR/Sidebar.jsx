@@ -91,10 +91,7 @@ export default function Sidebar() {
     setIsLoginUser(false);
   };
 
-  setTimeout(() => {
-    localStorage.clear("user");
-    setIsLoginUser(false);
-  }, 1000 * 60 * 60);
+  
   
   const sidebarLink = [
     {
@@ -137,7 +134,7 @@ export default function Sidebar() {
       name: "Invoice",
       iconUrl:
         "	https://www.bankconnect.online/assets/merchants/img/billing.svg",
-      path: "/Statements",
+      path: "/Invoice",
     },
     {
       name: "Virtual Terminal",

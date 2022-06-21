@@ -2,10 +2,12 @@ const loginController = require("../modules/login/Controller/loginController");
 const dashbordController = require("../modules/login/Controller/dashbordController");
 const payoutController = require("../modules/login/Controller/payoutController");
 const depositsController = require("../modules/login/Controller/deposits_controller");
-const settlementController = require("../modules/login/Controller/settlementController")
-const teamsController = require("../modules/login/Controller/teamsController")
-const statementController = require("../modules/login/Controller/statementController")
-const reportsController = require("../modules/login/Controller/reportsController")
+const settlementController = require("../modules/login/Controller/settlementController");
+const teamsController = require("../modules/login/Controller/teamsController");
+const statementController = require("../modules/login/Controller/statementController");
+const reportsController = require("../modules/login/Controller/reportsController");
+const invoiceController = require("../modules/login/Controller/invoiceController");
+
 const route = require("express").Router();
 const path = require("path");
 const multer = require("multer");
@@ -157,8 +159,6 @@ route.post(
   dashbordController.dbycurrency
 );
 
-
-
 //deposits controller
 
 route.post(
@@ -167,8 +167,6 @@ route.post(
   helper.verify,
   depositsController.defaultOrder
 );
-
-
 
 route.get(
   "/downloadReports",
@@ -190,7 +188,7 @@ route.post(
   depositsController.searchDateFilter
 );
 
-// Payout Router 
+// Payout Router
 
 route.post("/filter", uploads.none(), helper.verify, payoutController.filter);
 route.post(
@@ -200,30 +198,58 @@ route.post(
   payoutController.payoutheader
 );
 
-
 // Settlement ___________________+++**&&*(())
 
-route.post("/settlemetnt_Trans",
-    uploads.none(),
-    helper.verify,
-    settlementController.settlemetnt_Trans
-  );
-  route.post(
-    "/requestSettlement",
-    uploads.none(),
-    helper.verify,
-    settlementController.requestSettlement
-  );
+route.post(
+  "/settlemetnt_Trans",
+  uploads.none(),
+  helper.verify,
+  settlementController.settlemetnt_Trans
+);
+route.post(
+  "/requestSettlement",
+  uploads.none(),
+  helper.verify,
+  settlementController.requestSettlement
+);
 
 // Statement Rout hai bahanchod????????????????????????????
 
-route.post('/statement',uploads.none(),helper.verify,statementController.statement);
-
+route.post(
+  "/statement",
+  uploads.none(),
+  helper.verify,
+  statementController.statement
+);
 
 // teams controller ==============================
-route.post('/default',uploads.none(),helper.verify, teamsController.default);
-route.post('/createEmployee',uploads.none(),helper.verify, teamsController.createEmployee);
+route.post("/default", uploads.none(), helper.verify, teamsController.default);
+route.post(
+  "/createEmployee",
+  uploads.none(),
+  helper.verify,
+  teamsController.createEmployee
+);
 module.exports = route;
 
+// invoice
+route.post(
+  "/invoice",
+  uploads.none(),
+  helper.verify,
+  invoiceController.allInvoice
+);
+route.post(
+  "/new_invoice",
+  uploads.none(),
+  helper.verify,
+  invoiceController.new_invoice
+);
+
 // Reports Controller
-route.post('/accountSummary',uploads.none(), helper.verify, reportsController.accountSummary)
+route.post(
+  "/accountSummary",
+  uploads.none(),
+  helper.verify,
+  reportsController.accountSummary
+);

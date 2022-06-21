@@ -2,9 +2,30 @@ import React, { useState, useEffect } from "react";
 import "./businessSetting.css";
 import { Grid } from "@mui/material";
 import { Accordion } from "react-bootstrap";
-import { checkboxData } from "../Data/signupData.js";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "react-toastify/dist/ReactToastify.css";
+import "aos/dist/aos.css";
+import axios from "axios";
+
+import baseUrl from "../config/baseUrl.js";
+
 function BusinessSetting() {
   const [comp, setComp] = useState(0);
+  const [Token, setToken] = useState();
+  let [message, setMessage] = useState("");
+  
+const [SfullName, setSFullName] = useState();
+const [SdateOfBirth, setSDateOfBirth] = useState("");
+const [Snationality, setSNationality] = useState("");
+const [SfullName2, setSFullName2] = useState("");
+const [SdateOfBirth2, setSDateOfBirth2] = useState("");
+const [Snationality2, setSNationality2] = useState("");
+  useEffect(()=>{
+    const token = localStorage.getItem("user");
+    setToken(token);
+  },[])
+  
   return (
     <>
       <h4 className="heading">Business Setting</h4>
@@ -65,17 +86,17 @@ function BusinessSetting() {
 
         <Grid item xs={8} className="secondBlock" style={{ height: "37rem" }}>
           {comp === 0 ? (
-            <CompanyProfile />
+            <CompanyProfile Token={Token} message={message} setMessage={setMessage}/>
           ) : comp === 1 ? (
-            <SolutionsApplying />
+            <SolutionsApplying Token={Token} message={message} setMessage={setMessage}/>
           ) : comp === 2 ? (
-            <DirectorInfo />
+            <DirectorInfo Token={Token} message={message} setMessage={setMessage} SfullName={SfullName} setSFullName={setSFullName} SdateOfBirth={SdateOfBirth} setSDateOfBirth={setSDateOfBirth}  Snationality={Snationality} setSNationality={setSNationality}SfullName2={SfullName2} setSFullName2={setSFullName2} SdateOfBirth2={SdateOfBirth2} setSDateOfBirth2={setSDateOfBirth2} Snationality2={Snationality2} setSNationality2={setSNationality2}/>
           ) : comp === 3 ? (
-            <ShareholderInfo />
+            <ShareholderInfo Token={Token} message={message} setMessage={setMessage} SfullName={SfullName} setSFullName={setSFullName} SdateOfBirth={SdateOfBirth} setSDateOfBirth={setSDateOfBirth}  Snationality={Snationality} setSNationality={setSNationality}SfullName2={SfullName2} setSFullName2={setSFullName2} SdateOfBirth2={SdateOfBirth2} setSDateOfBirth2={setSDateOfBirth2} Snationality2={Snationality2} setSNationality2={setSNationality2}/>
           ) : comp === 4 ? (
-            <BusinessProfile />
+            <BusinessProfile Token={Token} message={message} setMessage={setMessage}/>
           ) : comp === 5 ? (
-            <SettlementInfo />
+            <SettlementInfo Token={Token} message={message} setMessage={setMessage}/>
           ) : comp === 6 ? (
             <Keys />
           ) : (
@@ -83,6 +104,7 @@ function BusinessSetting() {
           )}
         </Grid>
       </Grid>
+      <ToastContainer />
     </>
   );
 }
@@ -109,7 +131,9 @@ const InputComp = ({ label, type, value, onChange }) => {
 
 // COMPANY PROFILE ******_____+++++++##@@@@@
 
-const CompanyProfile = () => {
+const CompanyProfile = ({Token,}) => {
+  
+  
   const [companyName, setCompanyName] = useState("");
   const [tradingDoing, setTradingDoing] = useState("");
   const [registeredAddress, setRegisteredAddress] = useState("");
@@ -118,17 +142,36 @@ const CompanyProfile = () => {
   const [mainContactPerson, setMainContactPerson] = useState("");
   const [mainContactEmailAddress, setMainContactEmailAddress] = useState("");
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    console.log(
-      companyName,
-      tradingDoing,
-      registeredAddress,
-      companyNumber,
-      countryofIncorporation,
-      mainContactPerson,
-      mainContactEmailAddress
-    );
+     console.log(Token);
+    let formData = new FormData();
+
+    formData.append("company_name", companyName);
+    formData.append("trading_dba", tradingDoing);
+    formData.append("registered_address", registeredAddress);
+    formData.append("company_registration_no", companyNumber);
+    formData.append("country_of_incorporation", countryofIncorporation);
+    formData.append("main_contact_person", mainContactPerson);
+    formData.append("main_contact_email", mainContactEmailAddress);
+
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+        Authorization: `Bearer ${Token}`,
+      },
+    };
+
+    axios
+      .post(`${baseUrl}/save-company-profile`, formData, config)
+      .then((response) => {
+        console.log(response);
+        
+      })
+      .catch((error) => {
+        console.log(error);
+        
+      });
   };
   return (
     <>
@@ -210,471 +253,190 @@ const CompanyProfile = () => {
 
 // Solution Apply For ******______######
 
-const SolutionsApplying = () => {
+const SolutionsApplying = ({Token,message,setMessage}) => {
   const [show, setshow] = useState(false);
-  const [show2, setshow2] = useState(false);
-  const [show3, setshow3] = useState(false);
-  const [show4, setshow4] = useState(false);
-  const [show5, setshow5] = useState(false);
-  const [show6, setshow6] = useState(false);
+  const [apiData, setApiData] = useState([]);
+  // const [isChecked, setIsChecked] = useState(false);
+  const [solution_apply_for_country, setSolution_apply_for_country] =
+    useState([]);
+  const [mode_of_solution, setMode_of_solution] = useState([]);
 
-  const hideshow = () => {
-    setshow(!show);
-  };
-  const hideshow2 = () => {
-    setshow2(!show2);
-  };
-  const hideshow3 = () => {
-    setshow3(!show3);
-  };
-  const hideshow4 = () => {
-    setshow4(!show4);
-  };
-  const hideshow5 = () => {
-    setshow5(!show5);
-  };
-  const hideshow6 = () => {
-    setshow6(!show6);
+  const selectAll = (e) => {
+    setSolution_apply_for_country([
+      ...solution_apply_for_country,
+      e.target.value,
+    ]);
   };
 
-  const [users, setUsers] = useState([]);
-  const [users2, setUsers2] = useState([]);
-  const [users3, setUsers3] = useState([]);
-  const [users4, setUsers4] = useState([]);
-  const [users5, setUsers5] = useState([]);
-  const [users6, setUsers6] = useState([]);
+  const selectAll2 = (e) => {
+    setMode_of_solution([...mode_of_solution, e.target.value]);
+  };
 
   useEffect(() => {
-    setUsers(checkboxData.china);
-    setUsers2(checkboxData.india);
-    setUsers3(checkboxData.indonesia);
-    setUsers4(checkboxData.malaysia);
-    setUsers5(checkboxData.thailand);
-    setUsers6(checkboxData.vietnam);
+    let formData = new FormData();
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+        Authorization: `Bearer ${Token}`,
+      },
+    };
+
+    axios
+      .post(`${baseUrl}/solution-apply`, formData, config)
+      .then((res) => {
+        // console.log(res.data.data);
+        let result = res.data.data;
+        setApiData((pre) => (pre = result));
+        console.log("im call");
+      })
+      .catch((err) => console.log(err));
   }, []);
 
-  const handleChange = (e) => {
-    const { name, checked } = e.target;
-    if (name === "allSelect") {
-      let tempUser = users.map((user) => {
-        return { ...user, isChecked: checked };
-      });
-      setUsers(tempUser);
-    } else {
-      let tempUser = users.map((user) =>
-        user.name === name ? { ...user, isChecked: checked } : user
-      );
-      setUsers(tempUser);
-    }
+  const handleChange = () => {
+    console.log(solution_apply_for_country, mode_of_solution);
   };
-
-  const handleChange2 = (e) => {
-    const { name, checked } = e.target;
-    if (name === "allSelect") {
-      let tempUser = users2.map((user) => {
-        return { ...user, isChecked: checked };
-      });
-      setUsers2(tempUser);
-    } else {
-      let tempUser = users2.map((user) =>
-        user.name === name ? { ...user, isChecked: checked } : user
-      );
-      setUsers2(tempUser);
-    }
-  };
-  const handleChange3 = (e) => {
-    const { name, checked } = e.target;
-    if (name === "allSelect") {
-      let tempUser = users3.map((user) => {
-        return { ...user, isChecked: checked };
-      });
-      setUsers3(tempUser);
-    } else {
-      let tempUser = users3.map((user) =>
-        user.name === name ? { ...user, isChecked: checked } : user
-      );
-      setUsers3(tempUser);
-    }
-  };
-  const handleChange4 = (e) => {
-    const { name, checked } = e.target;
-    if (name === "allSelect") {
-      let tempUser = users4.map((user) => {
-        return { ...user, isChecked: checked };
-      });
-      setUsers4(tempUser);
-    } else {
-      let tempUser = users4.map((user) =>
-        user.name === name ? { ...user, isChecked: checked } : user
-      );
-      setUsers4(tempUser);
-    }
-  };
-  const handleChange5 = (e) => {
-    const { name, checked } = e.target;
-    if (name === "allSelect") {
-      let tempUser = users5.map((user) => {
-        return { ...user, isChecked: checked };
-      });
-      setUsers5(tempUser);
-    } else {
-      let tempUser = users5.map((user) =>
-        user.name === name ? { ...user, isChecked: checked } : user
-      );
-      setUsers5(tempUser);
-    }
-  };
-  const handleChange6 = (e) => {
-    const { name, checked } = e.target;
-    if (name === "allSelect") {
-      let tempUser = users6.map((user) => {
-        return { ...user, isChecked: checked };
-      });
-      setUsers6(tempUser);
-    } else {
-      let tempUser = users6.map((user) =>
-        user.name === name ? { ...user, isChecked: checked } : user
-      );
-      setUsers6(tempUser);
-    }
-  };
+  handleChange();
 
   const onSubmit = (e) => {
     e.preventDefault();
 
-    console.log(users, users2, users3, users4, users5, users6);
+    let formData = new FormData();
+    formData.append("solution_apply_for_country", solution_apply_for_country);
+    formData.append("mode_of_solution", mode_of_solution);
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+        Authorization: `Bearer ${Token}`,
+      },
+    };
+
+    axios
+      .post(
+        "http://localhost:9240/save-country-solution-apply",
+        formData,
+        config
+      )
+      .then((response) => {
+        console.log(response);
+        setMessage((message = response.data.message));
+        if (response.status === 200) {
+          toast.success(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          console.log("Success");
+        } else {
+          toast.error(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(message, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
   };
 
   return (
     <>
-      <form action="" className="formBlock" onSubmit={onSubmit}>
-        <h6 className="profileHeading">Solutions Applying For</h6>
+      <form
+        action=""
+        data-aos="fade-up"
+        data-aos-offset="200"
+        data-aos-delay="50"
+        data-aos-duration="2000"
+        onSubmit={onSubmit}
+        style={{width: "100%",height:"100%",overflow:"auto"}}
+      >
+        <h6 className="logintext">Solutions Applying For</h6>
         <label className="form-label loginlable mb-3 ">Country</label>
 
-        <Accordion style={{ width: "300px" }}>
+        <Accordion>
           <Accordion.Item eventKey="0">
-            <Accordion.Header>
-              <div>Select one or more Country</div>
-            </Accordion.Header>
+            <Accordion.Header>Select one or more Country</Accordion.Header>
             <Accordion.Body>
-              <div>
-                <div className="d-flex align-items-center justify-content-between">
-                  <div className="d-flex align-items-center p-2 w-100">
-                    <input
-                      type="checkbox"
-                      className="mx-1"
-                      name="allSelect"
-                      checked={!users.some((user) => user?.isChecked !== true)}
-                      onChange={handleChange}
-                    />
-                    China(CNY)
-                  </div>
-                  <span
-                    className="p-2 flex-shrink-1"
-                    style={{
-                      cursor: "pointer",
-                      fontWeight: "bolder",
-                      fontSize: "20px",
-                    }}
-                    onClick={hideshow}
-                  >
-                    {show ? "-" : "+"}
-                  </span>
-                </div>
+              {apiData.map((item, index) => {
+                return (
+                  <>
+                    <div key={index}>
+                      <div className="d-flex align-items-center justify-content-between">
+                        <div className="d-flex align-items-center p-2 w-100">
+                          <input
+                            type="checkbox"
+                            className="mx-1"
+                            name={item.name}
+                            value={item.id}
+                            onChange={selectAll}
+                          />
+                          {item.name}
+                        </div>
+                        <span
+                          className="p-2 flex-shrink-1"
+                          style={{
+                            cursor: "pointer",
+                            fontWeight: "bolder",
+                            fontSize: "20px",
+                          }}
+                          onClick={() => setshow(index)}
+                        >
+                          {show===index ? "-" : "+"}
+                        </span>
+                      </div>
 
-                {show ? (
-                  <div className="borderlist d-flex flex-column mb-3 p-3">
-                    {users.map((user, index) => {
-                      return (
-                        <>
-                          <div
-                            className="d-flex align-items-center mb-3"
-                            key={index}
-                          >
-                            <input
-                              type="checkbox"
-                              className="mx-1"
-                              name={user.name}
-                              checked={user?.isChecked || false}
-                              onChange={handleChange}
-                            />
-                            <div>{user.name}</div>
-                          </div>
-                        </>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-
-              {/* india */}
-              <div>
-                <div className="d-flex align-items-center justify-content-between">
-                  <div className="d-flex align-items-center p-2 w-100">
-                    <input
-                      type="checkbox"
-                      className="mx-1"
-                      name="allSelect"
-                      checked={!users2.some((user) => user?.isChecked !== true)}
-                      onChange={handleChange2}
-                    />
-                    India(INR)
-                  </div>
-                  <span
-                    className="p-2 flex-shrink-1"
-                    style={{
-                      cursor: "pointer",
-                      fontWeight: "bolder",
-                      fontSize: "20px",
-                    }}
-                    onClick={hideshow2}
-                  >
-                    {show2 ? "-" : "+"}
-                  </span>
-                </div>
-
-                {show2 ? (
-                  <div className="borderlist d-flex flex-column mb-3 p-3">
-                    {users2.map((user, index) => {
-                      return (
-                        <>
-                          <div
-                            className="d-flex align-items-center mb-3"
-                            key={index}
-                          >
-                            <input
-                              type="checkbox"
-                              className="mx-1"
-                              name={user.name}
-                              checked={user?.isChecked || false}
-                              onChange={handleChange2}
-                            />
-                            <div>{user.name}</div>
-                          </div>
-                        </>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-              {/* Indonesia */}
-              <div>
-                <div className="d-flex align-items-center justify-content-between">
-                  <div className="d-flex align-items-center p-2 w-100">
-                    <input
-                      type="checkbox"
-                      className="mx-1"
-                      name="allSelect"
-                      checked={!users3.some((user) => user?.isChecked !== true)}
-                      onChange={handleChange3}
-                    />
-                    Indonesia (IDR)
-                  </div>
-                  <span
-                    className="p-2 flex-shrink-1"
-                    style={{
-                      cursor: "pointer",
-                      fontWeight: "bolder",
-                      fontSize: "20px",
-                    }}
-                    onClick={hideshow3}
-                  >
-                    {show3 ? "-" : "+"}
-                  </span>
-                </div>
-
-                {show3 ? (
-                  <div className="borderlist d-flex flex-column mb-3 p-3">
-                    {users3.map((user, index) => {
-                      return (
-                        <>
-                          <div
-                            className="d-flex align-items-center mb-3"
-                            key={index}
-                          >
-                            <input
-                              type="checkbox"
-                              className="mx-1"
-                              name={user.name}
-                              checked={user?.isChecked || false}
-                              onChange={handleChange}
-                            />
-                            <div>{user.name}</div>
-                          </div>
-                        </>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-              {/* malaysia */}
-              <div>
-                <div className="d-flex align-items-center justify-content-between">
-                  <div className="d-flex align-items-center p-2 w-100">
-                    <input
-                      type="checkbox"
-                      className="mx-1"
-                      name="allSelect"
-                      checked={!users4.some((user) => user?.isChecked !== true)}
-                      onChange={handleChange4}
-                    />
-                    Malaysia (MYR)
-                  </div>
-                  <span
-                    className="p-2 flex-shrink-1"
-                    style={{
-                      cursor: "pointer",
-                      fontWeight: "bolder",
-                      fontSize: "20px",
-                    }}
-                    onClick={hideshow4}
-                  >
-                    {show4 ? "-" : "+"}
-                  </span>
-                </div>
-
-                {show4 ? (
-                  <div className="borderlist d-flex flex-column mb-3 p-3">
-                    {users4.map((user, index) => {
-                      return (
-                        <>
-                          <div
-                            className="d-flex align-items-center mb-3"
-                            key={index}
-                          >
-                            <input
-                              type="checkbox"
-                              className="mx-1"
-                              name={user.name}
-                              checked={user?.isChecked || false}
-                              onChange={handleChange4}
-                            />
-                            <div>{user.name}</div>
-                          </div>
-                        </>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-              {/*  Thailand (THB) */}
-              <div>
-                <div className="d-flex align-items-center justify-content-between">
-                  <div className="d-flex align-items-center p-2 w-100">
-                    <input
-                      type="checkbox"
-                      className="mx-1"
-                      name="allSelect"
-                      checked={!users5.some((user) => user?.isChecked !== true)}
-                      onChange={handleChange5}
-                    />
-                    Thailand (THB)
-                  </div>
-                  <span
-                    className="p-2 flex-shrink-1"
-                    style={{
-                      cursor: "pointer",
-                      fontWeight: "bolder",
-                      fontSize: "20px",
-                    }}
-                    onClick={hideshow5}
-                  >
-                    {show5 ? "-" : "+"}
-                  </span>
-                </div>
-
-                {show5 ? (
-                  <div className="borderlist d-flex flex-column mb-3 p-3">
-                    {users5.map((user, index) => {
-                      return (
-                        <>
-                          <div
-                            className="d-flex align-items-center mb-3"
-                            key={index}
-                          >
-                            <input
-                              type="checkbox"
-                              className="mx-1"
-                              name={user.name}
-                              checked={user?.isChecked || false}
-                              onChange={handleChange5}
-                            />
-                            <div>{user.name}</div>
-                          </div>
-                        </>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-              {/*   Vietnam (VND)*/}
-              <div>
-                <div className="d-flex align-items-center justify-content-between">
-                  <div className="d-flex align-items-center p-2 w-100">
-                    <input
-                      type="checkbox"
-                      className="mx-1"
-                      name="allSelect"
-                      checked={!users6.some((user) => user?.isChecked !== true)}
-                      onChange={handleChange6}
-                    />
-                    Vietnam (VND)
-                  </div>
-                  <span
-                    className="p-2 flex-shrink-1"
-                    style={{
-                      cursor: "pointer",
-                      fontWeight: "bolder",
-                      fontSize: "20px",
-                    }}
-                    onClick={hideshow6}
-                  >
-                    {show6 ? "-" : "+"}
-                  </span>
-                </div>
-
-                {show6 ? (
-                  <div className="borderlist d-flex flex-column mb-3 p-3">
-                    {users6.map((user, index) => {
-                      return (
-                        <>
-                          <div
-                            className="d-flex align-items-center mb-3"
-                            key={index}
-                          >
-                            <input
-                              type="checkbox"
-                              className="mx-1"
-                              name={user.name}
-                              checked={user?.isChecked || false}
-                              onChange={handleChange6}
-                            />
-                            <div>{user.name}</div>
-                          </div>
-                        </>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
+                      {show === index ? (
+                        <div className="borderlist d-flex flex-column mb-3 p-3">
+                          {item.support_method.map((user, index) => {
+                            return (
+                              <>
+                                <div
+                                  className="d-flex align-items-center mb-3"
+                                  key={index}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    className="mx-1"
+                                    value={`${item.id}.${user.id}`}
+                                    onChange={selectAll2}
+                                  />
+                                  <div>{user.name}</div>
+                                </div>
+                              </>
+                            );
+                          })}
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  </>
+                );
+              })}
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
-        <div className="d-flex justify-content-start mt-3 mb-3">
-          <button className="saveButton " type="submit">
-            Save
+        <div className="d-flex  mt-3">
+         
+          <button className="Nextbtn2 " type="submit">
+            Next
           </button>
         </div>
       </form>
@@ -684,66 +446,145 @@ const SolutionsApplying = () => {
 
 //<>><><><>><><<><><><><<><> Director’s Info >>><<<<<<<>>>>><<<>>><<<>>><
 
-const DirectorInfo = () => {
-  const [fullName, setFullName] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
-  const [nationality, setNationality] = useState("");
-  const [fullName2, setFullName2] = useState("");
-  const [dateOfBirth2, setDateOfBirth2] = useState("");
-  const [nationality2, setNationality2] = useState("");
+
+const DirectorInfo = ({ setSFullName, setSDateOfBirth, setSNationality, setSFullName2,  setSDateOfBirth2, setSNationality2,Token,message,setMessage}) => {
+  const [director1_name, setFullName] = useState("");
+  const [director1_dob, setDateOfBirth] = useState("");
+  const [director1_nationality, setNationality] = useState("");
+  const [director2_name, setFullName2] = useState("");
+  const [director2_dob, setDateOfBirth2] = useState("");
+  const [director2_nationality, setNationality2] = useState("");
+
   const onSubmit = (e) => {
     e.preventDefault();
+
+    setSFullName(director1_name);
+    setSDateOfBirth(director1_dob);
+    setSNationality(director1_nationality);
+    setSFullName2(director2_name);
+    setSDateOfBirth2(director2_dob);
+    setSNationality2(director2_nationality);
+
+    let formData = new FormData();
+
+    formData.append("director1_name", director1_name);
+    formData.append("director1_dob", director1_dob);
+    formData.append("director1_nationality", director1_nationality);
+    formData.append("director2_name", director2_name);
+    formData.append("director2_dob", director2_dob);
+    formData.append("director2_nationality", director2_nationality);
+
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+        Authorization: `Bearer ${Token}`,
+      },
+    };
+
+    axios
+      .post(`${baseUrl}/save-director-info`, formData, config)
+      .then((response) => {
+        console.log(response);
+        setMessage((message = response.data.message));
+        if (response.status === 200) {
+          toast.success(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          console.log("success");
+        } else {
+          toast.error(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Fields not Matched", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
   };
   return (
     <>
-      <form action="" className="formBlock mx-3" onSubmit={onSubmit}>
-        <h6 className="profileHeading">Director’s Info</h6>
+      <form
+        action=""
+        
+        data-aos="fade-up"
+        data-aos-offset="200"
+        data-aos-delay="50"
+        data-aos-duration="2000"
+        onSubmit={onSubmit}
+        style={{width: "100%",height:"100%",overflow:"auto"}}
+      >
+        <h6 className="logintext">Director’s Info</h6>
+        <hr className="hrstyle" />
 
-        <h6 className="form-subtitle">Director 1*</h6>
+        <h6 className="director">Director 1</h6>
 
         <InputComp
           label="Full Name"
           type="text"
-          value={fullName}
+          value={director1_name}
           onChange={(e) => setFullName(e.target.value)}
+          required="required"
         />
         <InputComp
           label="Date of Birth 	"
           type="date"
-          value={dateOfBirth}
+          value={director1_dob}
           onChange={(e) => setDateOfBirth(e.target.value)}
+          required="required"
         />
         <InputComp
           label="Nationality  	"
           type="text"
-          value={nationality}
+          value={director1_nationality}
           onChange={(e) => setNationality(e.target.value)}
+          required="required"
         />
         <hr className="hrstyle" />
 
-        <h6 className="form-subtitle">Director 2 (Optional)</h6>
+        <h6 className="director">Director 2</h6>
         <InputComp
           label="Full Name"
           type="text"
-          value={fullName2}
+          value={director2_name}
           onChange={(e) => setFullName2(e.target.value)}
         />
         <InputComp
           label="Date of Birth 	"
           type="date"
-          value={dateOfBirth2}
+          value={director2_dob}
           onChange={(e) => setDateOfBirth2(e.target.value)}
         />
         <InputComp
           label="Nationality  	"
           type="text"
-          value={nationality2}
+          value={director2_nationality}
           onChange={(e) => setNationality2(e.target.value)}
         />
-        <div className="d-flex justify-content-start mt-3 mb-3">
-          <button className="saveButton " type="submit">
-            Save
-          </button>
+
+        <div className="d-flex  mt-3">
+          
+          <button className="Nextbtn2 ">Next</button>
         </div>
       </form>
     </>
@@ -752,117 +593,279 @@ const DirectorInfo = () => {
 
 //<>><><><>><><<><><><><<><> Shareholder Info >>><<<<<<<>>>>><<<>>><<<>>><
 
-const ShareholderInfo = () => {
-  const [fullName, setFullName] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
-  const [nationality, setNationality] = useState("");
-  const [fullName2, setFullName2] = useState("");
-  const [dateOfBirth2, setDateOfBirth2] = useState("");
-  const [nationality2, setNationality2] = useState("");
+const ShareholderInfo = ({SfullName, SdateOfBirth, Snationality,SfullName2,SdateOfBirth2, Snationality2,Token,message,setMessage}) => {
+  let [shareholder1_name, setFullName] = useState("");
+  let [shareholder1_dob, setDateOfBirth] = useState("");
+  let [shareholder1_nationality, setNationality] = useState("");
+  let [shareholder2_name, setFullName2] = useState("");
+  let [shareholder2_dob, setDateOfBirth2] = useState("");
+  let [shareholder2_nationality, setNationality2] = useState("");
   const [isChecked, setIsChecked] = useState(false);
+
+  const setinpiutFields = () => {
+    if (isChecked === false) {
+      setFullName((shareholder1_name = SfullName));
+      setDateOfBirth((shareholder1_dob = SdateOfBirth));
+      setNationality((shareholder1_nationality = Snationality));
+      setFullName2((shareholder2_name = SfullName2));
+      setDateOfBirth2((shareholder2_dob = SdateOfBirth2));
+      setNationality2((shareholder2_nationality = Snationality2));
+    } else {
+      setFullName("");
+      setDateOfBirth("");
+      setNationality("");
+      setFullName2("");
+      setDateOfBirth2("");
+      setNationality2("");
+    }
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
+
+    let formData = new FormData();
+
+    formData.append("shareholder1_name", shareholder1_name);
+    formData.append("shareholder1_dob", shareholder1_dob);
+    formData.append("shareholder1_nationality", shareholder1_nationality);
+    formData.append("shareholder2_name", shareholder2_name);
+    formData.append("shareholder2_dob", shareholder2_dob);
+    formData.append("shareholder2_nationality", shareholder2_nationality);
+
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+        Authorization: `Bearer ${Token}`,
+      },
+    };
+
+    axios
+      .post(`${baseUrl}/save_shareholder_info`, formData, config)
+      .then((response) => {
+        console.log(response);
+        setMessage((message = response.data.message));
+
+        if (response.status === 200) {
+          toast.success(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          console.log("success");
+        } else {
+          toast.error(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(message, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
   };
 
   return (
     <>
-      <form action="" className="formBlock mx-3" onSubmit={onSubmit}>
-        <h6 className="profileHeading">Shareholder Info</h6>
+      <form
+        action=""
+        data-aos="fade-up"
+        data-aos-offset="200"
+        data-aos-delay="50"
+        data-aos-duration="2000"
+        onSubmit={onSubmit}
+        style={{width: "100%",height:"100%",overflow:"auto"}}
+      >
+        <h6 className="logintext">Shareholder Info</h6>
 
+        <hr className="hrstyle" />
         <div className="d-flex  align-items-center ">
-          <p className="form-subtitle me-auto">Shareholder 1</p>
-          <input type="checkbox" onChange={() => setIsChecked(!isChecked)} />
+          <p className="director me-auto">Shareholder 1</p>
+          <input
+            type="checkbox"
+            onChange={() => setIsChecked(!isChecked)}
+            onClick={setinpiutFields}
+          />
           <p className="samedirector mx-1 my-2">Same as Director</p>
         </div>
 
         <InputComp
           label="Full Name"
           type="text"
-          value={fullName}
+          value={shareholder1_name}
           onChange={(e) => setFullName(e.target.value)}
+          required="required"
         />
         <InputComp
           label="Date of Birth 	"
           type="date"
-          value={dateOfBirth}
+          value={shareholder1_dob}
           onChange={(e) => setDateOfBirth(e.target.value)}
+          required="required"
         />
         <InputComp
           label="Nationality  	"
           type="text"
-          value={nationality}
+          value={shareholder1_nationality}
           onChange={(e) => setNationality(e.target.value)}
+          required="required"
         />
         <hr className="hrstyle" />
 
-        <h6 className="form-subtitle">Shareholder 2 (Optional)</h6>
+        <h6 className="director">Shareholder 2</h6>
         <InputComp
           label="Full Name"
           type="text"
-          value={fullName2}
+          value={shareholder2_name}
           onChange={(e) => setFullName2(e.target.value)}
         />
         <InputComp
-          label="Date of Birth 	"
+          label="Date of Birth"
           type="date"
-          value={dateOfBirth2}
+          value={shareholder2_dob}
           onChange={(e) => setDateOfBirth2(e.target.value)}
         />
         <InputComp
-          label="Nationality  	"
+          label="Nationality"
           type="text"
-          value={nationality2}
+          value={shareholder2_nationality}
           onChange={(e) => setNationality2(e.target.value)}
         />
-        <div className="d-flex justify-content-start mt-3 mb-3">
-          <button className="saveButton " type="submit">
-            Save
-          </button>
+
+        <div className="d-flex  mt-3">
+          
+          <button className="Nextbtn2 ">Next</button>
         </div>
       </form>
     </>
   );
 };
 
+
 // <>><<><<><><><><><><><><><Business Info>><><><<><>><><>><>><>><><<>
 
-const BusinessProfile = () => {
-  const [website, setWebsite] = useState("");
-  const [natureofbusiness, setNatureofbusiness] = useState("");
-  const [estimatedMonthly, setEstimatedMonthly] = useState("");
-  const [averageTicket, setAverageTicket] = useState("");
+const BusinessProfile = ({Token,message,setMessage}) => {
+  const [company_website_processing_url, setWebsite] = useState("");
+  const [company_nature_of_business, setNatureofbusiness] = useState("");
+  const [company_estimated_monthly_volume, setEstimatedMonthly] =
+    useState("");
+  const [company_avarage_ticket_size, setAverageTicket] = useState("");
   const onSubmit = (e) => {
     e.preventDefault();
+
+    let formData = new FormData();
+
+    formData.append(
+      "company_website_processing_url",
+      company_website_processing_url
+    );
+    formData.append("company_nature_of_business", company_nature_of_business);
+    formData.append(
+      "company_estimated_monthly_volume",
+      company_estimated_monthly_volume
+    );
+    formData.append(
+      "company_avarage_ticket_size",
+      company_avarage_ticket_size
+    );
+
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+        Authorization: `Bearer ${Token}`,
+      },
+    };
+
+    axios
+      .post(`${baseUrl}/save_business_info`, formData, config)
+      .then((response) => {
+        console.log(response);
+        setMessage((message = response.data.message));
+
+        if (response.status === 200) {
+          
+          console.log("success");
+        } else {
+          toast.error(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(message, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
   };
   return (
     <>
-      <form action="" className="formBlock mx-3" onSubmit={onSubmit}>
-        <h6 className="profileHeading">Business Info</h6>
-        <br />
+      <form
+        action=""
+        data-aos="fade-up"
+        data-aos-offset="200"
+        data-aos-delay="50"
+        data-aos-duration="2000"
+        style={{width: "100%",height:"100%",overflow:"auto"}}
+        onSubmit={onSubmit}
+
+      >
+        <h6 className="logintext">Company Profile</h6>
+
         <InputComp
           label="Website / Processing URL"
           type="url"
-          value={website}
+          value={company_website_processing_url}
           onChange={(e) => setWebsite(e.target.value)}
+          required="required"
         />
-        <br />
         <InputComp
           label="Nature of Business 	"
           type="text"
-          value={natureofbusiness}
+          value={company_nature_of_business}
           onChange={(e) => setNatureofbusiness(e.target.value)}
+          required="required"
         />
-        <br />
+
         <div className="mb-2">
           <label className="form-label loginlable ">
             Estimated Monthly Volume per Market (in USD)
           </label>
           <select
-            className="form-select form-select-sm boldOption"
-            value={estimatedMonthly}
+            className="form-select form-select-sm"
+            value={company_estimated_monthly_volume}
             onChange={(e) => setEstimatedMonthly(e.target.value)}
           >
+            <option value="">Please Select</option>
             <option value="Below 50000">Below 50000</option>
             <option value="50000 - 100000">50000 - 100000</option>
             <option value="100001 - 300000">100001 - 300000 </option>
@@ -871,17 +874,18 @@ const BusinessProfile = () => {
             <option value="800001 and above">800001 and above </option>
           </select>
         </div>
-        <br />
         <InputComp
           label="Average Ticket Size (in USD) 	"
           type="text"
-          value={averageTicket}
+          value={company_avarage_ticket_size}
           onChange={(e) => setAverageTicket(e.target.value)}
+          required="required"
         />
-        <br />
-        <div className="d-flex justify-content-start mt-3 mb-3">
-          <button className="saveButton " type="submit">
-            Save
+
+        <div className="d-flex  mt-3">
+         
+          <button className="Nextbtn2 " type="submit">
+            Next
           </button>
         </div>
       </form>
@@ -889,26 +893,81 @@ const BusinessProfile = () => {
   );
 };
 
-const SettlementInfo = () => {
-  const [settelmentInfo, setSettelmentInfo] = useState("");
-  const [cryptoWallet, setCryptoWallet] = useState("");
+const SettlementInfo = ({Token,message,setMessage}) => {
+  const [international_settelment_currency, setSettelmentInfo] = useState("");
+  const [usdt_wallet_address, setCryptoWallet] = useState("");
 
   const onSubmit = (e) => {
     e.preventDefault();
+
+    let formData = new FormData();
+
+    formData.append(
+      "international_settelment_currency",
+      international_settelment_currency
+    );
+    formData.append("usdt_wallet_address", usdt_wallet_address);
+
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+        Authorization: `Bearer ${Token}`,
+      },
+    };
+
+    axios
+      .post(`${baseUrl}/save_settelment_info`, formData, config)
+      .then((response) => {
+        console.log(response);
+        setMessage((message = response.data.message));
+        if (response.status === 200) {
+          console.log("success");
+          toast.success(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(message, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
   };
 
   return (
     <>
-      <form action="" className="formBlock mx-3" onSubmit={onSubmit}>
-        <h6 className="profileHeading">Settlement Info </h6>
-        <br />
+      <form
+        action=""
+        style={{width: "100%",height:"100%",overflow:"auto"}}
+        data-aos="fade-up"
+        data-aos-offset="200"
+        data-aos-delay="50"
+        data-aos-duration="2000"
+        onSubmit={onSubmit}
+      >
+        <h6 className="logintext">Company Profile </h6>
+
         <div className="mb-2">
           <label className="form-label loginlable ">Settelment Info</label>
           <select
-            className="form-select form-select-sm boldOption"
-            value={settelmentInfo}
+            className="form-select form-select-sm"
+            value={international_settelment_currency}
             onChange={(e) => setSettelmentInfo(e.target.value)}
           >
+            <option value="">Please Select</option>
             <option value="INR">INR</option>
             <option value="CNY">CNY</option>
             <option value="IDR">IDR</option>
@@ -917,17 +976,17 @@ const SettlementInfo = () => {
             <option value="VND">VND </option>
           </select>
         </div>
-        <br />
         <InputComp
           label="Crypto Wallet Address (Optional) 	"
           type="text"
-          value={cryptoWallet}
+          value={usdt_wallet_address}
           onChange={(e) => setCryptoWallet(e.target.value)}
         />
-        <br />
-        <div className="d-flex justify-content-start mt-3 mb-3">
-          <button className="saveButton " type="submit">
-            Save
+
+        <div className="d-flex  mt-3">
+          
+          <button className="Nextbtn2 " type="submit">
+            Finish
           </button>
         </div>
       </form>

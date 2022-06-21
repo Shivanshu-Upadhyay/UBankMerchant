@@ -6,30 +6,36 @@
   color: #bfbfbf !important;
 }
 
-input{
-  color: #BFBFBF;
+input {
+  color: #bfbfbf;
 }
 
-a{
+a {
   text-decoration: none !important;
 }
 
-.MuiPaper-elevation.MuiPaper-elevation8.MuiPaper-root.MuiPaper-rounded.MuiPopover-paper.css-3bmhjh-MuiPaper-root-MuiPopover-paper{
+.MuiPaper-elevation.MuiPaper-elevation8.MuiPaper-root.MuiPaper-rounded.MuiPopover-paper.css-3bmhjh-MuiPaper-root-MuiPopover-paper {
   left: 1310px !important;
 }
-
 
 select.form-select.form-select-sm.mb-3.boldOption {
   border: none;
 }
-select.form-select.form-select-sm.mb-3.boldOption:focus{
- box-shadow: none;
+select.form-select.form-select-sm.mb-3.boldOption:focus {
+  box-shadow: none;
+}
+
+.createInvoiceTeaxtArea {
+  width: 100%;
+  height: 80%;
+  border: none;
+  line-height: 32px;
+  font-weight: "600";
+}
+
+textarea.createInvoiceTeaxtArea{
+  outline: none;
 }
 /*++++++++++++++++++++++++++++ Settlement Styling ++++++++++++++++++++++++++ */
 
-
-
 /*++++++++++++++++++++++++ Settlement Styling End ++++++++++++++++++++++++++ */
-
-
-

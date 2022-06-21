@@ -17,10 +17,10 @@ export default class SplineGraph extends React.Component {
                 }
             },
             Weekday: ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"],
-            Data: [40, 70, 28, 35, 42, 90, 40],
+            Data: [],
             series: [{
                 name: '',
-                data: [40, 70, 28, 35, 42, 90, 40]
+                data: []
             }],
             options: {
                 chart: {
