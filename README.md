@@ -41,7 +41,12 @@ Here All the common files Like  `Card` `Table` is here
 ### `Components`
 Here All the Components files are here
   - Dashboard
-     - Api  
+     - Api
+        1 card
+        2 graph
+        3 Deposits By Currency
+        4 Top Transactions
+        5 Deposits
   - Deposite
   - Payout
   - Settelment
