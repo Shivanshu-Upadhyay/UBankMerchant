@@ -51,14 +51,40 @@ Here All the Components files are here
       - Api
         - Deposite
   - Payout
+      - Api
+        - Payout
   - Settelment
+     - Api
+        - Settelment
   - Reports
+     - Api
+        - Reporsts
   - Statements
+     - Api
+        - Statements
   - Invoice
+     - Api
+        - Create Invoice
+        - Invoice
   - Teams
+     - Api
+        - Create Teams
+        - Teams
   - Business Settings
+     - Api
+        - Company Profile
+        - Solutions Applying For
+        - Director’s Info
+        - Shareholder Info
+        - Company Profile
+        - Company Profile
+        
+
   - Integrations
+       - No Api Call
   - Change Password
+     - Api
+        - Change Password
   - Logout
 
 
