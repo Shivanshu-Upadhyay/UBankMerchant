@@ -48,6 +48,8 @@ Here All the Components files are here
         - Top Transactions
         - Deposits
   - Deposite
+      - Api
+        - Deposite
   - Payout
   - Settelment
   - Reports
