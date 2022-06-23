@@ -38,9 +38,9 @@ const LogIn = () => {
       .post(`${baseUrl}/login`, formData, config)
       .then((response) => {
         setMessage((message = response.data.message));
-        console.log(response.data.data);
+        console.log(response.data.data.token);
         setToken((Token = response.data.data.token));
-
+           
         if (response.data.is_complete === 1) {
           localStorage.setItem("user", Token);
           setIsLoginUser(true);
@@ -73,7 +73,7 @@ const LogIn = () => {
       })
       .catch((error) => {
         console.log(error);
-        toast.error(message, {
+        toast.error("Connect Your Database🔗🖇️", {
           position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: false,
