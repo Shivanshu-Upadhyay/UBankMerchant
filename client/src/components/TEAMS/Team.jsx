@@ -11,7 +11,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import baseUrl from "../../components/config/baseUrl";
-import axios from 'axios'
+import axios from "axios";
 import "./team.css";
 function Team() {
   const [page, setPage] = useState(1);
@@ -26,7 +26,7 @@ function Team() {
       const auth = localStorage.getItem("user");
       let formData = new FormData();
       formData.append("page", page);
-      
+
       const config = {
         headers: {
           "content-type": "multipart/form-data",
@@ -46,46 +46,20 @@ function Team() {
     <>
       <h4 className="heading">Employee</h4>
       <div className="text-end mx-5 mb-4">
-        <TableDialog />
+        <TableDialog  tabledatafetch={tabledatafetch}/>
       </div>
       <TeamTable tableBodyData={tableBodyData} />
     </>
   );
 }
 
-const TableDialog = () => {
+const TableDialog = ({tabledatafetch}) => {
   const [open, setOpen] = React.useState(false);
-  const [fname,setFname] = useState('')
-  const [lname,setLname] = useState('')
-  const [role,setRole] = useState('1')
-  const [email,setEmail] = useState('')
-  const [number,setNumber] = useState('')
-
-  console.log(fname,lname,role,email,number)
-  const createTeamApi = async () => {
-    try {
-      const auth = localStorage.getItem("user");
-      let formData = new FormData();
-      formData.append("fname", fname);
-      formData.append("lname", lname);
-      formData.append("role", role);
-      formData.append("email", email);
-      formData.append("number", number);
-      
-      const config = {
-        headers: {
-          "content-type": "multipart/form-data",
-          Authorization: `Bearer ${auth}`,
-        },
-      };
-
-      let result = await axios.post(`${baseUrl}/createEmployee`, formData, config);
-      console.log(result);
-      
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
+  const [role, setRole] = useState("1");
+  const [email, setEmail] = useState("");
+  const [number, setNumber] = useState("");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -95,6 +69,38 @@ const TableDialog = () => {
     setOpen(false);
   };
 
+  const createTeamApi = async () => {
+    try {
+      const auth = localStorage.getItem("user");
+      let formData = new FormData();
+      formData.append("fname", fname);
+      formData.append("lname", lname);
+      formData.append("role", role);
+      formData.append("email", email);
+      formData.append("number", number);
+
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${auth}`,
+        },
+      };
+
+      let result = await axios.post(
+        `${baseUrl}/createEmployee`,
+        formData,
+        config
+      );
+      console.log(result);
+      if(result.status === 200){
+        handleClose();
+        tabledatafetch();
+      }
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -127,15 +133,25 @@ const TableDialog = () => {
                   <form action="" className="row">
                     <div className=" col-md-4 d-flex flex-column text-center">
                       <label htmlFor="">First Name</label>
-                      <input type="text" style={{textAlign:"center"}} value={fname} onChange={(e)=>setFname(e.target.value)}/>
+                      <input
+                        type="text"
+                        style={{ textAlign: "center" }}
+                        value={fname}
+                        onChange={(e) => setFname(e.target.value)}
+                      />
                     </div>
                     <div className="col-md-4 d-flex flex-column text-center">
                       <label htmlFor="">Last Name</label>
-                      <input type="text" style={{textAlign:"center"}} value={lname} onChange={(e)=>setLname(e.target.value)}/>
+                      <input
+                        type="text"
+                        style={{ textAlign: "center" }}
+                        value={lname}
+                        onChange={(e) => setLname(e.target.value)}
+                      />
                     </div>
                     <div className=" col-md-4 d-flex flex-column text-center mb-3 justify-content-center align-items-center">
                       <label htmlFor="">Role</label>
-                      <select  onChange={(e)=>setRole(e.target.value)}>
+                      <select onChange={(e) => setRole(e.target.value)}>
                         <option value="1">Administrator</option>
                         <option value="2">Manager</option>
                         <option value="3">Cashier</option>
@@ -146,11 +162,21 @@ const TableDialog = () => {
                     <hr />
                     <div className=" col-md-4 d-flex flex-column text-center mt-2 ">
                       <label htmlFor="">Email Address</label>
-                      <input type="text" style={{textAlign:"center"}} value={email} onChange={(e)=>setEmail(e.target.value)}/>
+                      <input
+                        type="text"
+                        style={{ textAlign: "center" }}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
                     </div>
                     <div className="col-md-4 d-flex flex-column text-center mt-2 ">
                       <label htmlFor="">Phone Number</label>
-                      <input type="text" style={{textAlign:"center"}} value={number} onChange={(e)=>setNumber(e.target.value)}/>
+                      <input
+                        type="text"
+                        style={{ textAlign: "center" }}
+                        value={number}
+                        onChange={(e) => setNumber(e.target.value)}
+                      />
                     </div>
                   </form>
                 </div>
@@ -164,12 +190,22 @@ const TableDialog = () => {
                         fontWeight: "600",
                       }}
                     >
-                      {role==="1"?"Administrator":role==="2"?"Manager":role==="3"?"Cashier":"Reporter"}
+                      {role === "1"
+                        ? "Administrator"
+                        : role === "2"
+                        ? "Manager"
+                        : role === "3"
+                        ? "Cashier"
+                        : "Reporter"}
                     </div>
                     <div style={{ fontSize: "14.5px", color: "#000" }}>
-
-                      {role==="1"?"Full access to UBank Connect. This role allows the same permissions as the Owner, but does not allow access to Owner information. The Admin role should only be assigned to your most trusted and senior employees only.":role==="2"?"Limited access to UBank Connect. As an Owner or Admin, you must grant the Manager role access to additional permissions, such as Activity, Virtual Terminal, Invoices, Disputies, Transactions, Payouts, Reports, Statements, Add Employees only.":role==="3"?"Limited access to UBank Connect. As an Owner or Admin, you must grant the Cashier role access to additional permissions, such as Activity, Virtual Terminal, Invoices, Disputies, Transactions, Payouts, Reports, Statements only.":"Limited access to UBank Connect. As an Owner or Admin, you must grant the Reporter role access to additional permissions, such as Reports, Statements only."}
-                     
+                      {role === "1"
+                        ? "Full access to UBank Connect. This role allows the same permissions as the Owner, but does not allow access to Owner information. The Admin role should only be assigned to your most trusted and senior employees only."
+                        : role === "2"
+                        ? "Limited access to UBank Connect. As an Owner or Admin, you must grant the Manager role access to additional permissions, such as Activity, Virtual Terminal, Invoices, Disputies, Transactions, Payouts, Reports, Statements, Add Employees only."
+                        : role === "3"
+                        ? "Limited access to UBank Connect. As an Owner or Admin, you must grant the Cashier role access to additional permissions, such as Activity, Virtual Terminal, Invoices, Disputies, Transactions, Payouts, Reports, Statements only."
+                        : "Limited access to UBank Connect. As an Owner or Admin, you must grant the Reporter role access to additional permissions, such as Reports, Statements only."}
                     </div>
                     <br />
                     <div style={{ fontWeight: "600", color: "black" }}>
@@ -187,7 +223,12 @@ const TableDialog = () => {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <button className="buttonteam2" onClick={()=>{handleClose();createTeamApi()}}>
+            <button
+              className="buttonteam2"
+              onClick={() => {
+                createTeamApi();
+              }}
+            >
               Create
             </button>
           </DialogActions>
@@ -225,7 +266,13 @@ const TeamTable = ({ tableBodyData }) => {
                   <TableCell>{item.email}</TableCell>
                   <TableCell>{item.mobile_no}</TableCell>
                   <TableCell style={{ fontWeight: "600" }}>
-                    {item.role===1?"Administrator":item.role===2?"Manager":item.role===3?"Cashier":"Reporter"}
+                    {item.role === 1
+                      ? "Administrator"
+                      : item.role === 2
+                      ? "Manager"
+                      : item.role === 3
+                      ? "Cashier"
+                      : "Reporter"}
                   </TableCell>
                   <TableCell>{item.last_login}</TableCell>
                   <TableCell>
