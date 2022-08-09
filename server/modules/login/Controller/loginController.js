@@ -266,12 +266,11 @@ const loginCont = {
     }
   },
 
-
   save_country_solution_apply: async function (req, res) {
     let user = req.user;
     // res.send(users);
     var bconnect = {};
-    
+
     try {
       var request = req.body;
       console.log(request);
@@ -286,7 +285,6 @@ const loginCont = {
             req_arr.push(validate_req[key]);
           }
         }
-
 
         if (req_arr.length > 0) {
           // console.log('hdfgghgf', req_arr);
@@ -608,15 +606,40 @@ const loginCont = {
         if (request.email && emailvalidator.validate(request.email)) {
           var password = request.password;
           if (password) {
-            sql = "SELECT  * FROM tbl_user where email = ? AND password = ?";
+            sql = "SELECT * FROM tbl_user where email = ? AND password = ?";
+            console.log(request.email);
+            console.log(request.password);
             var dbquery = await mysqlcon(sql, [
               request.email,
               md5(request.password),
             ]);
+            console.log(dbquery);
 
             if (dbquery[0]) {
               if (dbquery[0].complete_profile == 1) {
                 if (dbquery[0].status == 1) {
+                  let sqlCheck =
+                    "SELECT * FROM tbl_merchnat_answer WHERE user_id = ?";
+                  let resultCheck = await mysqlcon(sqlCheck, [dbquery[0].id]);
+
+                  let questionAnswer = [];
+
+                  if (resultCheck.length !== 0) {
+                    for (let i = 0; i < resultCheck.length; i++) {
+                      let sqlExtract =
+                        "SELECT * FROM tbl_login_security WHERE id = ?";
+                      let resultExtract = await mysqlcon(sqlExtract, [
+                        resultCheck[i].question,
+                      ]);
+
+                      questionAnswer.push({
+                        id: resultCheck[i].question,
+                        question: resultExtract[0].question,
+                        answer: resultCheck[i].answer,
+                      });
+                    }
+                  }
+
                   // console.log(dbquery);
                   let token = await jwt.sign(
                     { id: dbquery[0].id },
@@ -624,19 +647,24 @@ const loginCont = {
                     { expiresIn: config.JWT_EXPIRY }
                   );
                   dbquery[0]["token"] = token;
-                  res.status(200).json({
-                    status: false,
-                    is_complete: 1,
-                    message: "Login successfully",
-                    data: dbquery[0],
-                  });
+                  res
+                    .status(200)
+                    .json({
+                      status: false,
+                      is_complete:1,
+                      message: "Login successfully",
+                      questionAnswer,
+                      data: dbquery[0],
+                    });
                 } else {
-                  res.status(201).json({
-                    status: false,
-                    message:
-                      "Your profile is active now, It is in under-review wait 24 hours.",
-                    data: [],
-                  });
+                  res
+                    .status(201)
+                    .json({
+                      status: false,
+                      message:
+                        "Your profile is active now, It is in under-review wait 24 hours.",
+                      data: [],
+                    });
                 }
               } else {
                 let token = await jwt.sign(
@@ -645,57 +673,64 @@ const loginCont = {
                   { expiresIn: config.JWT_EXPIRY }
                 );
                 dbquery[0]["token"] = token;
-                res.status(201).json({
-                  status: false,
-                  is_complete: 2,
-                  message: "Your profile is not complete.",
-                  data: dbquery[0],
-                });
+                res
+                  .status(201)
+                  .json({
+                    status: false,
+                    is_complete:2,
+                    message: "Your profile is not complete.",
+                    data: dbquery[0],
+                  });
               }
-
             } else {
-              res.status(201).json({
-                status: false,
-                is_complete: 3,
-                message: "You entered a wrong credentials.",
-                data: [],
-              });
+              res
+                .status(201)
+                .json({
+                  status: false,
+                  message: "You entered a wrong credentials.",
+                  data: [],
+                });
             }
           } else {
-            res.status(201).json({
-              status: false,
-              is_complete: 3,
-              message: "Enter a valid password",
-              data: [],
-            });
+            res
+              .status(201)
+              .json({
+                status: false,
+                message: "Enter a valid password",
+                data: [],
+              });
           }
         } else {
-          res.status(201).json({
-            status: false,
-            is_complete: 3,
-            message: "Enter a valid email id",
-            data: [],
-          });
+          res
+            .status(201)
+            .json({
+              status: false,
+              message: "Enter a valid email id",
+              data: [],
+            });
         }
       } catch (e) {
         console.log(e);
-        res.status(500).json({
-          status: false,
-          message: "Error to complete task.",
-          data: [],
-        });
+        res
+          .status(500)
+          .json({
+            status: false,
+            message: "Error to complete task.",
+            data: [],
+          });
       } finally {
         // res.send(bconnect);
         // // bconnect['message'] = 'Something went wrong';
         console.log("Execution completed.");
       }
     } else {
-      res.status(201).json({
-        status: false,
-        is_complete: 3,
-        message: "Enter valid email and password",
-        data: [],
-      });
+      res
+        .status(201)
+        .json({
+          status: false,
+          message: "Enter valid email and password",
+          data: [],
+        });
     }
   },
 
@@ -799,13 +834,82 @@ const loginCont = {
     }
   },
 
-  testsql: async function (req, res) {
-    let results = await mysqlcon("SELECT *from user");
-    if (error) throw error;
-    console.log("The error: ", error);
-    // console.log('The result: ', results );
-    // console.log('fields: ', fields );
-    res.send(results);
+  qusAns: async function (req, res) {
+    try {
+      let { id } = req.user;
+      let {
+        question_id1,
+        answer1,
+        question_id2,
+        answer2,
+        question_id3,
+        answer3,
+      } = req.body;
+      if (
+        question_id1 ||
+        answer1 ||
+        question_id2 ||
+        answer2 ||
+        question_id3 ||
+        answer3
+      ) {
+        if (
+          question_id1 &&
+          answer1 &&
+          question_id2 &&
+          answer2 &&
+          question_id3 &&
+          answer3
+        ) {
+          sqlForAns =
+            "INSERT INTO tbl_merchnat_answer  (user_id,question,answer) VALUES ?";
+          let values = [
+            [id, question_id1, answer1],
+            [id, question_id2, answer2],
+            [id, question_id3, answer3],
+          ];
+          let result = await mysqlcon(sqlForAns, [values]);
+          if (result) {
+            res.status(200).json({
+              status: true,
+              database: true,
+              message: "Answer added successfully",
+            });
+          } else {
+            res.status(201).json({
+              status: false,
+              message: "Answer not added",
+            });
+          }
+        } else {
+          res.status(201).json({
+            status: false,
+            message: "Please answer all questions",
+          });
+        }
+      } else {
+        let sqlForQus = "SELECT id,question  From tbl_login_security";
+        let result = await mysqlcon(sqlForQus);
+        if (result) {
+          res.status(200).json({
+            status: true,
+            message: "Question get successfully",
+            data: result,
+          });
+        } else {
+          res.status(201).json({
+            status: false,
+            message: "Question not found",
+          });
+        }
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        message: "Internal server error ❌",
+        error: err,
+      });
+    }
   },
 };
 

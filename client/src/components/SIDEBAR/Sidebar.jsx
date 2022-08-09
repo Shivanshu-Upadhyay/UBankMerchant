@@ -195,7 +195,7 @@ export default function Sidebar() {
               <img
                 src="https://www.bankconnect.online/assets/merchants/img/logo.png"
                 alt=""
-                width="120px"
+                width="40px"
               />
             ) : (
               <img src="./imges/fav-icon.png" alt="" width="36px" />

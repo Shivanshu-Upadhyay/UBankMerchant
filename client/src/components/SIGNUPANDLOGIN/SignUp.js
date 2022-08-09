@@ -8,6 +8,8 @@ import axios from "axios";
 import "./signup.css";
 import { Link } from "react-router-dom";
 import baseUrl from "../config/baseUrl.js";
+import CachedIcon from "@mui/icons-material/Cached";
+
 function SignUp() {
   const [comp, setComp] = useState(0);
   const [Token, setToken] = useState();
@@ -795,7 +797,7 @@ function SignUp() {
                             }}
                             onClick={() => setshow(index)}
                           >
-                            {show===index ? "-" : "+"}
+                            {show === index ? "-" : "+"}
                           </span>
                         </div>
 
@@ -1015,6 +1017,7 @@ function SignUp() {
           setMessage((message = response.data.message));
           if (response.status === 200) {
             console.log("success");
+            setComp(comp + 1);
           }
         })
         .catch((error) => {
@@ -1072,10 +1075,196 @@ function SignUp() {
               Back
             </button>
             <button className="Nextbtn2 " type="submit">
-              Finish
+              Next
             </button>
           </div>
         </form>
+      </>
+    );
+  };
+
+  const QusAns = () => {
+    const [question, setQuestion] = useState("");
+    const [refreshNumber, setRefreshNumber] = useState(
+      Math.floor(Math.random() * 10)
+    );
+
+    const [functionCallCount, setFunctionCallCount] = useState(0);
+    const [answer1, setAnswer1] = useState("");
+    const [answer2, setAnswer2] = useState("");
+    const [answer3, setAnswer3] = useState("");
+    const [question_id1, setQuestionId1] = useState("");
+    const [question_id2, setQuestionId2] = useState("");
+    const [question_id3, setQuestionId3] = useState("");
+
+    useEffect(() => {
+      fetchQus();
+    }, []);
+    async function fetchQus() {
+      try {
+        let formData = new FormData();
+        const config = {
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: `Bearer ${Token}`,
+          },
+        };
+        let result = await axios.post(`${baseUrl}/qusAns`, formData, config);
+        setQuestion(result.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    const handleSubmit = async () => {
+      console.log(
+        question_id1,
+        answer1,
+        question_id2,
+        answer2,
+        question_id3,
+        answer3
+      );
+      try {
+        let formData = new FormData();
+        formData.append("answer1", answer1);
+        formData.append("answer2", answer2);
+        formData.append("answer3", answer3);
+        formData.append("question_id1", question_id1);
+        formData.append("question_id2", question_id2);
+        formData.append("question_id3", question_id3);
+        const config = {
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: `Bearer ${Token}`,
+          },
+        };
+        let result = await axios.post(`${baseUrl}/qusAns`, formData, config);
+        console.log(result.data);
+        if (result.data.database) {
+          console.log(result);
+          setComp(comp + 1);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    const nextQusVal = (e) => {
+      e.preventDefault();
+      if (functionCallCount === 0) {
+        setRefreshNumber(Math.floor(Math.random() * 10));
+        setFunctionCallCount(1);
+      } else if (functionCallCount === 1) {
+        setRefreshNumber(Math.floor(Math.random() * 10));
+        setFunctionCallCount(2);
+      } else if (functionCallCount === 2) {
+        handleSubmit();
+      }
+    };
+
+    return (
+      <>
+        <form
+          action=""
+          className="logindash"
+          data-aos="fade-up"
+          data-aos-offset="200"
+          data-aos-delay="50"
+          data-aos-duration="2000"
+        >
+          <h6 className="logintext">Secuirty Question For Forgot Password</h6>
+
+          <div className="mb-3">
+            <div className="d-flex justify-content-between align-items-center">
+              <label className="form-label loginlable mb-3 ">
+                {question[refreshNumber]?.question}
+              </label>
+              <div
+                className="refreshIconButton mb-3"
+                onClick={() => setRefreshNumber(Math.floor(Math.random() * 10))}
+              >
+                <CachedIcon sx={{ fontSize: 20 }} />
+              </div>
+            </div>
+            {functionCallCount === 0 ? (
+              <input
+                type="text"
+                className="form-control inputField2"
+                placeholder="Answer"
+                value={answer1}
+                onChange={(e) => {
+                  setAnswer1(e.target.value);
+                  setQuestionId1(question[refreshNumber]?.id);
+                }}
+              />
+            ) : functionCallCount === 1 ? (
+              <input
+                type="text"
+                className="form-control inputField2"
+                placeholder="Answer"
+                value={answer2}
+                onChange={(e) => {
+                  setAnswer2(e.target.value);
+                  setQuestionId2(question[refreshNumber]?.id);
+                }}
+              />
+            ) : (
+              <input
+                type="text"
+                className="form-control inputField2"
+                placeholder="Answer"
+                value={answer3}
+                onChange={(e) => {
+                  setAnswer3(e.target.value);
+                  setQuestionId3(question[refreshNumber]?.id);
+                }}
+              />
+            )}
+          </div>
+
+          <div className="d-flex  mt-3 justify-content-around">
+            <button
+              className=" back "
+              onClick={() => {
+                setComp(comp - 1);
+              }}
+            >
+              Back
+            </button>
+            <button className="Nextbtn2 " type="submit" onClick={nextQusVal}>
+              Next
+            </button>
+            <button
+              className="Nextbtn2 "
+              type="submit"
+              onClick={() => setComp(comp + 1)}
+            >
+              Skip
+            </button>
+          </div>
+        </form>
+      </>
+    );
+  };
+
+  const EndPage = () => {
+    return (
+      <>
+        <div className="lastPage">
+          <div className="lastpageBlock">
+            <h4 className="lastpagesucces">SUCCESS!</h4>
+            <p className=" lastPcolor">
+              Your registration and profile completed successfully. <br /> Your account
+              is under review. Please contact on sales@ubankconnect.com if not
+              activated within next 24 hours. <br />
+              Mail sent on your registered email id, verify your email id if not
+              verify.
+            </p>
+            <button className="lastloginbutton"> <Link to="/login"> Login</Link> </button>
+            <div>
+              <span> <b>Need Help ?</b> </span> <a href="https://ubankconnect.com/#contact">Contact Us</a>
+            </div>
+          </div>
+        </div>
       </>
     );
   };
@@ -1100,19 +1289,27 @@ function SignUp() {
         </header>
 
         <div className="col-12 secondblock container">
-          <div className="col-md-7 p-4">
-            <img src="./imges/loginimg.svg" alt="" className="" width="300px" />
-            <h6 className="firstline">
-              Do more with Alternative Payment Methods!
-            </h6>
-            <p className="secondline">
-              Use Alternative Payment Methods to accept from your Customers
-            </p>
-            <button className="learnMoreSign mb-4">Learn More</button>
-            <div>
-              Need help? <a href="bb"> Contact Us</a>
+          {comp <= 7 ? (
+            <div className="col-md-7 p-4">
+              <img
+                src="./imges/loginimg.svg"
+                alt=""
+                className=""
+                width="300px"
+              />
+              <h6 className="firstline">
+                Do more with Alternative Payment Methods!
+              </h6>
+              <p className="secondline">
+                Use Alternative Payment Methods to accept from your Customers
+              </p>
+              <button className="learnMoreSign mb-4">Learn More</button>
+              <div>
+                Need help? <a href="bb"> Contact Us</a>
+              </div>
             </div>
-          </div>
+          ) : null}
+
           <div className="col-md-5">
             {comp === 0 ? (
               <RegisterDash />
@@ -1126,8 +1323,12 @@ function SignUp() {
               <ShareholderInfo />
             ) : comp === 5 ? (
               <BusinessProfile />
-            ) : (
+            ) : comp === 6 ? (
               <SettlementInfo />
+            ) : comp === 7 ? (
+              <QusAns />
+            ) : (
+              <EndPage />
             )}
           </div>
         </div>

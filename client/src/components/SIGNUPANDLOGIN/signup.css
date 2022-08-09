@@ -304,3 +304,58 @@ form::-webkit-scrollbar {
   overflow-y: scroll !important;
   overflow-x: hidden !important;
 }
+
+.refreshIconButton{
+  border-color: #ffc107;
+  background: #ffc107;
+  padding: 0px 3px 2px 3px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* last page */
+
+.lastPage{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:80rem ;
+  height: 30rem;
+}
+
+.lastpageBlock{
+ text-align: center;
+ width: 80%;
+}
+
+.lastpagesucces{
+ color: #0bad32;
+ font-family: 'Mulish';
+ font-style: normal;
+ font-weight: 800;
+ font-size: 24px;
+ line-height: 30px;
+}
+
+.lastPcolor{
+  font-family: 'Mulish';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 28px;
+    color: #999;
+}
+
+.lastloginbutton{
+  border: 1px solid #1EAAE7;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border-radius: 5px;
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 19px;
+  color: #1EAAE7;
+  margin-bottom: 20px;
+}

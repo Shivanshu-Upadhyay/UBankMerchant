@@ -94,11 +94,9 @@ route.post(
   loginController.save_director_info
 );
 
-//,
-// route.post('/user-login', uploads.none(), userController.login);
-// route.post('/user-list', uploads.none(), helper.verify, userController.get_users);
 
-route.post("/sqltest", uploads.none(), helper.verify, loginController.testsql);
+
+route.post("/qusAns", uploads.none(), helper.verify, loginController.qusAns);
 
 // dashboard controller
 
