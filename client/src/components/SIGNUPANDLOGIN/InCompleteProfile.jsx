@@ -92,7 +92,7 @@ function InCompleteProfile() {
       };
 
       axios
-        .post("http://localhost:9240/save-company-profile", formData, config)
+        .post(`${baseUrl}/save-company-profile`, formData, config)
         .then((response) => {
           console.log(response);
           setMessage((message = response.data.message));
@@ -570,7 +570,7 @@ function InCompleteProfile() {
 
       axios
         .post(
-          "http://localhost:9240/save-country-solution-apply",
+          `${baseUrl}/save-country-solution-apply`,
           formData,
           config
         )

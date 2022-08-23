@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-
+import baseUrl from '../config/baseUrl';
 
 export default class WeeklyBarGraph extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            base_url: "http://localhost:9240/",
+            base_url:  `${baseUrl}/`,
             // formData: new FormData(),
             header: {
                 headers: {

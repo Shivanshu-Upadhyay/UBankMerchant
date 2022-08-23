@@ -3,7 +3,7 @@ import React from "react";
 import Chart from "react-apexcharts";
 import './styles.css'
 import axios from "axios";
-
+import baseUrl from "../config/baseUrl";
 
 export default class SparkLineGraph extends React.Component {
    
@@ -11,7 +11,7 @@ export default class SparkLineGraph extends React.Component {
         super(props);
         
         this.state = {
-            base_url: "http://localhost:9240/",
+            base_url: `${baseUrl}/`,
             // formData: new FormData(),
             header: {
                 headers: {

@@ -312,7 +312,7 @@ const SolutionsApplying = ({Token,message,setMessage}) => {
 
     axios
       .post(
-        "http://localhost:9240/save-country-solution-apply",
+        `${baseUrl}/save-country-solution-apply`,
         formData,
         config
       )

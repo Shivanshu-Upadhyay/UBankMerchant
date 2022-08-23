@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios';
+import baseUrl from '../config/baseUrl';
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 
@@ -8,7 +9,7 @@ export default class MonthlyBarGraph extends Component {
         super(props);
 
         this.state = {
-            base_url: "http://localhost:9240/",
+            base_url: `${baseUrl}/`,
             // formData: new FormData(),
             header: {
                 headers: {
