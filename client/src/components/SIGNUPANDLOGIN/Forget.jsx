@@ -67,7 +67,8 @@ function Forget() {
         <div className="col-12 secondblock container">
           <div className="col-md-7 p-4">
             <img
-              src="https://www.bankconnect.online/assets/ubankconnect/images/undraw_profile_data_re_v81r.svgvg"
+              src="https://www.bankconnect.online/assets/ubankconnect/images/undraw_profile_data_re_v81r.svg
+vg"
               alt=""
               className=""
               width="300px"
