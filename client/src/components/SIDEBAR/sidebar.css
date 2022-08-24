@@ -60,8 +60,11 @@
   width: 20px;
 }
 .iconcontainer {
-  padding: 8px 10px;
-  padding: 8px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
 }
 
