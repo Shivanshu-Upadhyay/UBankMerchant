@@ -21,10 +21,10 @@ var connection = mysql.createConnection({
 });
 connection.connect(function(err){
     if(err){
-        console.log('error to connect database');
+        console.log('error to connect database❌');
     }
     else{
-        console.log('connection success to database');
+        console.log('connection success to database✅');
     }
 });
  

@@ -90,12 +90,12 @@ export default function PayoutTable({ tableBodyData, xlData, setXlData }) {
                     <input
                       className="form-check-input"
                       type="checkbox"
-                      name={item.uniqueid}
+                      name={item.users_id}
                       checked={item?.isChecked || false}
                       onChange={handleChange}
                     />
                   </TableCell>
-                  <TableCell className="tablebold">{item.uniqueid}</TableCell>
+                  <TableCell className="tablebold">{item.users_id}</TableCell>
                   <TableCell>{item.created_on}</TableCell>
                   <TableCell className="tablebold">{item.utrnumber}</TableCell>
                   <TableCell align="center" className="tablebold">
