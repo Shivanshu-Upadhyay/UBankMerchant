@@ -44,9 +44,11 @@ function Dashbord() {
         formData,
         config
       );
-      
+
       setSuccess(result.data.data);
-      setLoading(false)
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
       
     } catch (error) {
       console.log(error);
@@ -66,9 +68,8 @@ function Dashbord() {
       };
 
       let result = await axios.post(`${baseUrl}/card_data`, formData, config);
-
+     
       setAtmData(result.data.data[0]);
-      
     } catch (error) {
       console.log(error);
     }
