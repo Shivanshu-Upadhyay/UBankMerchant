@@ -10,15 +10,18 @@ function Reports() {
   const [fromdate, SetToFromDate] = useState("");
   return (
     <div>
-      <h4 className="heading mx-3">Reports</h4>
-      <div className="text-end ">
+    <div className=" d-flex justify-content-between align-items-center">
+    <h4 className="heading mx-3">Reports</h4>
+      
         <FilterDate
           todate={todate}
           SetToDate={SetToDate}
           fromdate={fromdate}
           SetToFromDate={SetToFromDate}
         />
-      </div>
+      
+    </div>
+      
       <div className="text-end mx-4"></div>
       <Block2 todate={todate} fromdate={fromdate} />
     </div>
