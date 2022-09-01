@@ -10,18 +10,17 @@ function Reports() {
   const [fromdate, SetToFromDate] = useState("");
   return (
     <div>
-    <div className=" d-flex justify-content-between align-items-center">
-    <h4 className="heading mx-3">Reports</h4>
-      
+      <div className=" d-flex justify-content-between align-items-center">
+        <h4 className="heading mx-3">Reports</h4>
+
         <FilterDate
           todate={todate}
           SetToDate={SetToDate}
           fromdate={fromdate}
           SetToFromDate={SetToFromDate}
         />
-      
-    </div>
-      
+      </div>
+
       <div className="text-end mx-4"></div>
       <Block2 todate={todate} fromdate={fromdate} />
     </div>
@@ -103,6 +102,7 @@ const Section1 = ({
   data,
 }) => {
   const downloadExl = () => {
+    console.log(data);
     setDownloadApi(buttonVal);
     const workSheet = XLSX.utils.json_to_sheet(data);
     const workBook = XLSX.utils.book_new();
@@ -142,12 +142,12 @@ const Block2 = ({ todate, fromdate }) => {
   const [downloadApi, setDownloadApi] = useState(1);
   const [data, setData] = useState([]);
   const { setActive } = useStateContext();
-  
+
   console.log(downloadApi);
 
   useEffect(() => {
     fetchData();
-    setActive(4)
+    setActive(4);
   }, [downloadApi]);
 
   const fetchData = async () => {
@@ -167,13 +167,14 @@ const Block2 = ({ todate, fromdate }) => {
         },
       };
 
-      const result = await axios.post(
-        `${baseUrl}/accountSummary`,
+      const {data} = await axios.post(
+        `${baseUrl}/reports`,
         formData,
         config
       );
-      console.log(result.data);
-      setData(result.data.data);
+      console.log(data);
+      console.log(data);
+      setData(data.deposit);
     } catch (err) {
       console.log(err);
     }
@@ -187,7 +188,7 @@ const Block2 = ({ todate, fromdate }) => {
           discription="A breakdown of gross and net sales by account."
           buttonVal={1}
           setDownloadApi={setDownloadApi}
-          data={data.depositSummary}
+          data={data}
         />
         <Section1
           heading="Payment Type Summary"

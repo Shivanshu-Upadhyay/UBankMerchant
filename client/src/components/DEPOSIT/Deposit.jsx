@@ -10,10 +10,10 @@ import Card from "../../commonComp/Card/Card";
 import baseUrl from "../../components/config/baseUrl";
 import * as XLSX from "xlsx";
 import { useStateContext } from "../../context/ContextProvider";
+import { statusResult } from "../../Api";
 const Footer = ({ setPage, page, totalPage }) => {
   const pageNumber = (e, p) => {
     setPage(p);
-   
   };
   return (
     <>
@@ -102,37 +102,31 @@ const SecondBlock = ({
 
 function Deposit() {
   // Download Data
-  const [xlData,setXlData]= useState([])
+  const [xlData, setXlData] = useState([]);
   const { setActive } = useStateContext();
-  
+
   // CARD DATA
   const [cardData, setCardData] = useState([]);
   const [totalPage, setTotalPage] = useState(1);
-   
+
   useEffect(() => {
     setActive(1);
-    const auth = localStorage.getItem("user");
-    let formData = new FormData();
-    const config = {
-      headers: {
-        "content-type": "multipart/form-data",
-        Authorization: `Bearer ${auth}`,
-      },
+    const statusResultFun = async () => {
+      try {
+        const { data } = await statusResult();
+        setCardData(data?.data);
+      } catch (error) {
+        console.log(error);
+      }
     };
-
-    axios
-      .post(`${baseUrl}/statusResult`, formData, config)
-      .then((res) => {
-        setCardData((pre) => (pre = res.data.data));
-      })
-      .catch((err) => console.log(err));
+    statusResultFun();
   }, []);
 
   // +++++++++++++++++++++Table Data++++++++++++++++++++
   const [tableBodyData, setTableBodyData] = useState([]);
   const [page, setPage] = useState(1);
   const [orderNumber, setorderNumber] = useState("");
-  
+
   useEffect(() => {
     tabledatafetch();
   }, [page, orderNumber]);
@@ -168,21 +162,18 @@ function Deposit() {
   let [methodPayment, setMethodPayment] = useState([]);
   let [status, setStatusPayment] = useState([]);
   let [currency, setCurrencyPayment] = useState([]);
-  
+
   const fetchDatafilterall = () => {
     const auth = localStorage.getItem("user");
     let formData = new FormData();
 
     if (date) {
       formData.append("date", date);
-       formData.append("page", page);
-      
+      formData.append("page", page);
     } else if (from && to) {
-
       formData.append("from", from);
       formData.append("to", to);
-       formData.append("page", page);
-       
+      formData.append("page", page);
     } else if (
       methodPayment.length > 0 &&
       status.length > 0 &&
@@ -191,32 +182,30 @@ function Deposit() {
       formData.append("methodPayment[]", methodPayment);
       formData.append("status[]", status);
       formData.append("currency[]", currency);
-       formData.append("page", page);
+      formData.append("page", page);
     } else if (methodPayment.length > 0 && status.length > 0) {
       formData.append("methodPayment[]", methodPayment);
       formData.append("status[]", status);
-       formData.append("page", page);
+      formData.append("page", page);
     } else if (status.length > 0 && currency.length > 0) {
       formData.append("status[]", status);
       formData.append("currency[]", currency);
-       formData.append("page", page);
+      formData.append("page", page);
     } else if (methodPayment.length > 0 && currency.length > 0) {
       formData.append("methodPayment[]", methodPayment);
       formData.append("currency[]", currency);
-       formData.append("page", page);
+      formData.append("page", page);
     } else if (methodPayment.length > 0) {
       formData.append("methodPayment[]", methodPayment);
-       formData.append("page", page);
+      formData.append("page", page);
     } else if (status.length > 0) {
       formData.append("status[]", status);
-       formData.append("page", page);
+      formData.append("page", page);
     } else if (currency.length > 0) {
       formData.append("currency[]", currency);
-       formData.append("page", page);
-
+      formData.append("page", page);
     } else {
-       formData.append("page", page);
-       
+      formData.append("page", page);
     }
 
     const config = {
@@ -237,7 +226,6 @@ function Deposit() {
 
   useEffect(() => {
     fetchDatafilterall();
-    
   }, [date, to, from, methodPayment, page, status, currency]);
 
   // Search

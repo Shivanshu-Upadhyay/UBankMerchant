@@ -9,9 +9,7 @@ const dashboardCount = {
       res.json({
         message: "err in finding payout",
       });
-      console.log("reached");
-      // sql = "SELECT * FROM `tbl_icici_payout_transaction_response_details` WHERE users_id = ?"
-      // let found = await mysqlcon.query(sql,user_id)
+      
     } catch (error) {
       return res.json({
         status: 400,
@@ -42,7 +40,7 @@ const dashboardCount = {
         .status(500)
         .json({ status: false, message: "Error to complete task.", Error });
     } finally {
-      console.log("Execution completed.");
+      
     }
   },
   success_rate: async function (req, res) {
@@ -73,7 +71,7 @@ const dashboardCount = {
         .status(500)
         .json({ status: false, message: "Error to complete task.", Error });
     } finally {
-      console.log("Execution completed.");
+     
     }
   },
   //   dbycurrency : async function (req, res) {
@@ -114,7 +112,7 @@ const dashboardCount = {
   //         res.status(500).json({ status: false, message: 'Error to complete task.', Error });
   //     }
   //     finally {
-  //         console.log("Execution completed.");
+  //         
   //     }
   // },
   top_transaction_today: async function (req, res) {
@@ -160,9 +158,7 @@ const dashboardCount = {
       res
         .status(500)
         .json({ status: false, message: "Error to complete task.", Error });
-    } finally {
-      console.log("Execution completed.");
-    }
+    } 
   },
   payout_icon: async (req, res) => {
     let user = req.user;
@@ -353,9 +349,7 @@ const dashboardCount = {
       res
         .status(500)
         .json({ status: false, message: "Error to complete task.", Error });
-    } finally {
-      console.log("Execution completed.");
-    }
+    } 
   },
   dbycurrency: async function (req, res) {
     let user = req.user;
@@ -475,9 +469,7 @@ const dashboardCount = {
       res
         .status(500)
         .json({ status: false, message: "Error to complete task.", Error });
-    } finally {
-      console.log("Execution completed.");
-    }
+    } 
   },
 };
 

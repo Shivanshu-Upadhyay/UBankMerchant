@@ -328,8 +328,6 @@ const Invoice = {
         message: "error occure",
         error,
       });
-    } finally {
-      console.log("Execution completed.");
     }
   },
 
@@ -382,9 +380,7 @@ const Invoice = {
         message: "error occure",
         error,
       });
-    } finally {
-      console.log("Execution completed.");
-    }
+    } 
   },
 };
 

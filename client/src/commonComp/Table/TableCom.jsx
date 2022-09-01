@@ -82,7 +82,7 @@ export default function TableComp({ tableBodyData, xlData, setXlData }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((item, index) => {
+            {users?.map((item, index) => {
               return (
                 <TableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

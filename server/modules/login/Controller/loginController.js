@@ -186,11 +186,7 @@ const loginCont = {
       res
         .status(500)
         .json({ status: false, message: "Error to complete task.", data: [] });
-    } finally {
-      // res.send(bconnect);
-      // // bconnect['message'] = 'Something went wrong';
-      console.log("Execution completed.");
-    }
+    } 
   },
 
   company_profile: async function (req, res) {
@@ -261,9 +257,7 @@ const loginCont = {
       res
         .status(500)
         .json({ status: false, message: "Error to complete task.", data: [] });
-    } finally {
-      console.log("Execution completed.");
-    }
+    } 
   },
 
   save_country_solution_apply: async function (req, res) {
@@ -321,9 +315,7 @@ const loginCont = {
       res
         .status(500)
         .json({ status: false, message: "Error to complete task.", data: [] });
-    } finally {
-      console.log("Execution completed.");
-    }
+    } 
   },
 
   save_director_info: async function (req, res) {
@@ -393,9 +385,7 @@ const loginCont = {
       res
         .status(500)
         .json({ status: false, message: "Error to complete task.", data: [] });
-    } finally {
-      console.log("Execution completed.");
-    }
+    } 
   },
 
   save_shareholder_info: async function (req, res) {
@@ -465,9 +455,7 @@ const loginCont = {
       res
         .status(500)
         .json({ status: false, message: "Error to complete task.", data: [] });
-    } finally {
-      console.log("Execution completed.");
-    }
+    } 
   },
 
   save_business_info: async function (req, res) {
@@ -534,9 +522,7 @@ const loginCont = {
       res
         .status(500)
         .json({ status: false, message: "Error to complete task.", data: [] });
-    } finally {
-      console.log("Execution completed.");
-    }
+    } 
   },
 
   save_settelment_info: async function (req, res) {
@@ -594,9 +580,7 @@ const loginCont = {
       res
         .status(500)
         .json({ status: false, message: "Error to complete task.", data: [] });
-    } finally {
-      console.log("Execution completed.");
-    }
+    } 
   },
 
   login: async function (req, res) {
@@ -640,12 +624,13 @@ const loginCont = {
                     }
                   }
 
-                  // console.log(dbquery);
-                  let token = await jwt.sign(
-                    { id: dbquery[0].id },
-                    config.JWT_SECRET,
-                    { expiresIn: config.JWT_EXPIRY }
-                  );
+                //  CREATING JWT TOKEN
+                const token = jwt.sign(
+                  { id: dbquery[0].id },
+                  config.JWT_SECRET,
+                  { expiresIn: config.JWT_EXPIRY }
+                );
+                  console.log(token);
                   dbquery[0]["token"] = token;
                   res
                     .status(200)
@@ -718,11 +703,7 @@ const loginCont = {
             message: "Error to complete task.",
             data: [],
           });
-      } finally {
-        // res.send(bconnect);
-        // // bconnect['message'] = 'Something went wrong';
-        console.log("Execution completed.");
-      }
+      } 
     } else {
       res
         .status(201)
@@ -757,11 +738,7 @@ const loginCont = {
       res
         .status(500)
         .json({ status: false, message: "Error to complete task.", data: [] });
-    } finally {
-      // res.send(bconnect);
-      // // bconnect['message'] = 'Something went wrong';
-      console.log("Execution completed.");
-    }
+    } 
   },
 
   get_solution_apply: async function (req, res) {
@@ -827,11 +804,7 @@ const loginCont = {
       res
         .status(500)
         .json({ status: false, message: "Error to complete task.", data: [] });
-    } finally {
-      // res.send(bconnect);
-      // // bconnect['message'] = 'Something went wrong';
-      console.log("Execution completed.");
-    }
+    } 
   },
 
   qusAns: async function (req, res) {

@@ -122,9 +122,7 @@ module.exports.downloadReports = async function (req, res) {
     res
       .status(201)
       .json({ status: false, message: "Some error occured", data: [] });
-  } finally {
-    console.log("Execution completed.");
-  }
+  } 
 };
 
 module.exports.statusResult = async function (req, res) {

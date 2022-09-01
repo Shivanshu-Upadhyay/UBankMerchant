@@ -83,11 +83,8 @@ const payoutMethods = {
       return res
         .status(201)
         .json({ status: false, message: "Some error occured" });
-    } finally {
-      console.log("Execution completed.");
-    }
+    } 
   },
-
   payoutheader: async (req, res) => {
     let user = req.user;
     let sql =
@@ -112,9 +109,7 @@ const payoutMethods = {
       return res
         .status(201)
         .json({ status: false, message: "Some error occured" });
-    } finally {
-      console.log("Execution completed.");
-    }
+    } 
   },
 
   viewDetails: async (req, res) => {
@@ -132,9 +127,7 @@ const payoutMethods = {
       return res
         .status(201)
         .json({ status: false, message: "Some error occured", data: [] });
-    } finally {
-      console.log("Execution completed.");
-    }
+    } 
   },
 
   downloadReport: async (req, res) => {
@@ -170,9 +163,7 @@ const payoutMethods = {
       return res
         .status(201)
         .json({ status: false, message: "Some error occured", data: [] });
-    } finally {
-      console.log("Execution completed.");
-    }
+    } 
   },
 };
 

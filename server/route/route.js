@@ -94,8 +94,6 @@ route.post(
   loginController.save_director_info
 );
 
-
-
 route.post("/qusAns", uploads.none(), helper.verify, loginController.qusAns);
 
 // dashboard controller
@@ -246,8 +244,8 @@ route.post(
 
 // Reports Controller
 route.post(
-  "/accountSummary",
+  "/reports",
   uploads.none(),
   helper.verify,
-  reportsController.accountSummary
+  reportsController.reports
 );

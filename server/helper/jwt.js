@@ -5,11 +5,10 @@ const jwt = {
     verify:function(req,res,next){
         if("authorization" in req.headers){
             let token  = req.headers.authorization.split("Bearer ")[1];
-            
             mjwt.verify(token,config.JWT_SECRET,async (err,payload)=>{
                 if(err) return res.send(err);
                 let id  = payload.id; 
-                // console.log(id);
+                console.log(id);
                 mysqlcon('SELECT * FROM tbl_user WHERE id = ?', [id], (err, results) => {
                     if(err){
                         res.status(201).json({status:false, message:'Authentication Failed', data: []});  

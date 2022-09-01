@@ -37,7 +37,7 @@ const LogInForm = () => {
       .then((response) => {
         setMessage((message = response.data.message));
         console.log(response.data.data.token);
-        console.log(response.data.questionAnswer);
+        
         if (response.data.is_complete === 1) {
           setQus(response.data.questionAnswer);
           setToken((Token = response.data.data.token));
@@ -90,7 +90,7 @@ const LogInForm = () => {
         localStorage.setItem("user", Token);
         setIsLoginUser(true);
         natigate("/");
-        console.log("success");
+        
       } else {
         toast.error("Answer is not Matched❌❌", {
           position: "bottom-right",

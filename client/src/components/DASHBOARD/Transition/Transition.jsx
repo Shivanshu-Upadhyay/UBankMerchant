@@ -5,43 +5,29 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import baseUrl from "../../../components/config/baseUrl";
 import "../Currency/currency.css";
 import "./transition.css";
-import axios from "axios";
+import { top_transaction_today } from "../../../Api/index";
 function Transition() {
   const [tab, setTab] = useState(3);
   const [todayData, setTodayData] = useState([]);
-  
+
   useEffect(() => {
     todayApi();
   }, [tab]);
 
   const todayApi = async () => {
     try {
-      const auth = localStorage.getItem("user");
       let formData = new FormData();
-      if(tab===3){
-         formData.append("today", 1);
-      }else if(tab===2){
+      if (tab === 3) {
+        formData.append("today", 1);
+      } else if (tab === 2) {
         formData.append("week", 1);
-      }else{
-         formData.append("month", 1);
+      } else {
+        formData.append("month", 1);
       }
-     
-      const config = {
-        headers: {
-          "content-type": "multipart/form-data",
-          Authorization: `Bearer ${auth}`,
-        },
-      };
-
-      let result = await axios.post(
-        `${baseUrl}/top_transaction_today`,
-        formData,
-        config
-      );
-      setTodayData(result.data.data);
+      const { data } = await top_transaction_today(formData);
+      setTodayData(data.data);
     } catch (error) {
       console.log(error);
     }
@@ -83,20 +69,15 @@ function Transition() {
 }
 
 const TableComp = ({ todayData }) => {
-  
-
   return (
     <>
       <TableContainer className="tableblockdash">
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
-            <TableRow>
-              
-              
-            </TableRow>
+            <TableRow></TableRow>
           </TableHead>
           <TableBody>
-            {todayData.length >= 1 ? (
+            {todayData?.length >= 1 ? (
               todayData.map((item, index) => {
                 return (
                   <TableRow
@@ -143,10 +124,10 @@ const TableComp = ({ todayData }) => {
               })
             ) : (
               <TableRow>
-              <TableCell style={{ fontWeight: "600" }} align="center">
-                <h5>No Data Found</h5>
-              </TableCell>
-            </TableRow>
+                <TableCell style={{ fontWeight: "600" }} align="center">
+                  <h5>No Data Found</h5>
+                </TableCell>
+              </TableRow>
             )}
           </TableBody>
         </Table>
