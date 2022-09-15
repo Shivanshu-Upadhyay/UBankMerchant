@@ -22,6 +22,7 @@
   position: absolute;
   bottom: 4.9rem;
   left: 11rem;
+  cursor: pointer;
 }
 .shadowimg {
   position: absolute;

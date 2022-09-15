@@ -5,18 +5,22 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import baseUrl from "../../../components/config/baseUrl";
 import "./currency.css";
-import { dbycurrency } from "../../../Api";
+import axios from "axios";
 function Currency() {
   const [tab, setTab] = useState(3);
+
   const [todayData, setTodayData] = useState([]);
 
   useEffect(() => {
     todayApi();
   }, [tab]);
   const todayApi = async () => {
-    try {  
+    try {
+      const auth = localStorage.getItem("user");
       let formData = new FormData();
+
       if (tab === 3) {
         formData.append("today", 1);
       } else if (tab === 2) {
@@ -24,8 +28,16 @@ function Currency() {
       } else {
         formData.append("today", 3);
       }
-      const {data} = await dbycurrency(formData)
-      setTodayData(data.data);
+
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${auth}`,
+        },
+      };
+
+      let result = await axios.post(`${baseUrl}/dbycurrency`, formData, config);
+      setTodayData(result.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -57,6 +69,7 @@ function Currency() {
             </button>
           </div>
         </div>
+
         <TableComp todayData={todayData} />
       </div>
     </>

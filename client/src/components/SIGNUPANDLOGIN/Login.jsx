@@ -31,16 +31,17 @@ const LogInForm = () => {
     formData.append("password", password);
     const config = {
       headers: { "content-type": "multipart/form-data" },
-    };
+    };  
     axios
       .post(`${baseUrl}/login`, formData, config)
       .then((response) => {
         setMessage((message = response.data.message));
-        console.log(response.data.data.token);
         
         if (response.data.is_complete === 1) {
+          setToken(response.data.data.token)
+          setIsLoginUser(true);
+          console.log(response.data.data.token);
           setQus(response.data.questionAnswer);
-          setToken((Token = response.data.data.token));
           setStep(1);
         } else if (response.data.is_complete === 2) {
           toast.error(message, {
@@ -52,7 +53,6 @@ const LogInForm = () => {
             draggable: true,
             progress: undefined,
           });
-
           natigate(`/inCompleteProfile/${Token}`);
         } else {
           toast.error(message, {
@@ -68,7 +68,7 @@ const LogInForm = () => {
       })
       .catch((error) => {
         console.log(error);
-        toast.error("Connect Your Database🔗🖇️", {
+        toast.error("Somthing went wrong🔗🖇️", {
           position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -89,7 +89,10 @@ const LogInForm = () => {
       if (answer.toLocaleLowerCase() === qus[refreshNumber].answer.toLocaleLowerCase()) {
         localStorage.setItem("user", Token);
         setIsLoginUser(true);
-        natigate("/");
+        setTimeout(()=>{
+          natigate("/");
+        },500)
+        
         
       } else {
         toast.error("Answer is not Matched❌❌", {
@@ -232,9 +235,8 @@ function Login() {
         <div className="col-12 secondblock container">
           <div className="col-md-7 p-4">
             <img
-              src="https://www.bankconnect.online/assets/ubankconnect/images/undraw_profile_data_re_v81r.svg
-"
-              alt=""
+              src="https://www.bankconnect.online/assets/ubankconnect/images/undraw_profile_data_re_v81r.svg"
+              alt="not found"
               className=""
               width="300px"
             />

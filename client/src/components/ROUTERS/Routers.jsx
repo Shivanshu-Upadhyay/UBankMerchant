@@ -22,8 +22,6 @@ import { useStateContext } from "../../context/ContextProvider";
 const auth = localStorage.getItem("user");
 function Routers() {
   const { isLoginUser } = useStateContext();
-  
-  
   console.log(auth);
   return (
     <>

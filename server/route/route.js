@@ -7,6 +7,7 @@ const teamsController = require("../modules/login/Controller/teamsController");
 const statementController = require("../modules/login/Controller/statementController");
 const reportsController = require("../modules/login/Controller/reportsController");
 const invoiceController = require("../modules/login/Controller/invoiceController");
+const changePassController = require("../modules/login/Controller/changePassController");
 
 const route = require("express").Router();
 const path = require("path");
@@ -248,4 +249,10 @@ route.post(
   uploads.none(),
   helper.verify,
   reportsController.reports
+);
+route.post(
+  "/changePassword-merchant",
+  uploads.none(),
+  helper.verify,
+  changePassController.changePassword
 );

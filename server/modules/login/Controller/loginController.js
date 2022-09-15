@@ -22,7 +22,6 @@ const email_validate = require("../../../helper/email-validation");
 const mysqlcon = require("../../../config/db_connection");
 const { exit } = require("process");
 
-console.log(mysqlcon);
 const loginCont = {
   register: async function (req, res) {
     // var url = 'google.com';
@@ -64,11 +63,7 @@ const loginCont = {
               var em = [request.email, request.user_id];
             }
             var dbquery = await mysqlcon(sql, em);
-            // console.log(dbquery);
-            // console.log(err);
-            //  console.log(dbquery[0]);
-            //  console.log('1');
-
+            
             if (!dbquery[0]) {
               if (user_id) {
                 var user_data = {
@@ -89,10 +84,10 @@ const loginCont = {
                     status: true,
                     message: "Profile saved successfully",
                     data: dbquery.insertId,
-                  });
+                  });cd 
                 }
               } else {
-                // console.log('2');
+              
                 var secret_key = otpGenerator.generate(8, {
                   upperCaseAlphabets: true,
                   specialChars: false,
@@ -106,9 +101,7 @@ const loginCont = {
                   specialChars: false,
                 });
 
-                // console.log('secret_key', secret_key);
-                // console.log('test_secret_key', test_secret_key);
-                // console.log('token', token);
+                
                 var user_data = {
                   parent_id: 0,
                   account_type: 1,
@@ -195,7 +188,7 @@ const loginCont = {
     var bconnect = {};
     try {
       var request = req.body;
-      // console.log(request);
+      
       if (request) {
         var validate_req = [
           "company_name",
@@ -209,7 +202,7 @@ const loginCont = {
         var req_str = "";
         var req_arr = [];
         for (const key in validate_req) {
-          // console.log(request[validate_req[key]]);
+          
           if (!request[validate_req[key]]) {
             req_str += "<p>" + validate_req[key] + " is required </p>";
             req_arr.push(validate_req[key]);
@@ -217,7 +210,7 @@ const loginCont = {
         }
 
         if (req_arr.length > 0) {
-          // console.log('hdfgghgf', req_arr);
+          
           res
             .status(201)
             .json({ status: false, message: req_str, data: req_arr });
@@ -240,7 +233,7 @@ const loginCont = {
 
         sql = "UPDATE tbl_user SET ? WHERE id = ? ";
         let dbquery = await mysqlcon(sql, [company_data, user_id]);
-        // console.log(dbquery.sql);
+        
         if (dbquery) {
           res
             .status(200)
@@ -267,13 +260,13 @@ const loginCont = {
 
     try {
       var request = req.body;
-      console.log(request);
+      
       if (request) {
         var validate_req = ["solution_apply_for_country", "mode_of_solution"];
         var req_str = "";
         var req_arr = [];
         for (const key in validate_req) {
-          // console.log(request[validate_req[key]]);
+
           if (!request[validate_req[key]]) {
             req_str += "" + validate_req[key] + " is required ";
             req_arr.push(validate_req[key]);
@@ -281,14 +274,13 @@ const loginCont = {
         }
 
         if (req_arr.length > 0) {
-          // console.log('hdfgghgf', req_arr);
+          
           res
             .status(201)
             .json({ status: false, message: req_str, data: req_arr });
           return true;
         }
-        // console.log('kdfhksdfhkjsh', request.mode_of_solution.join());
-        // return true;
+        
 
         var user_id = user.id;
         var company_data = {
@@ -298,7 +290,7 @@ const loginCont = {
 
         sql = "UPDATE tbl_user SET ? WHERE id = ? ";
         var dbquery = mysqlcon(sql, [company_data, user_id]);
-        // console.log(dbquery.sql);
+       
         if (dbquery) {
           res
             .status(200)
@@ -320,7 +312,7 @@ const loginCont = {
 
   save_director_info: async function (req, res) {
     let user = req.user;
-    // res.send(users);
+  
     var bconnect = {};
     try {
       var request = req.body;
@@ -334,7 +326,7 @@ const loginCont = {
         var req_str = "";
         var req_arr = [];
         for (const key in validate_req) {
-          // console.log(request[validate_req[key]]);
+          
           if (!request[validate_req[key]]) {
             req_str += "<p>" + validate_req[key] + " is required </p>";
             req_arr.push(validate_req[key]);
@@ -342,14 +334,13 @@ const loginCont = {
         }
 
         if (req_arr.length > 0) {
-          // console.log('hdfgghgf', req_arr);
+         
           res
             .status(201)
             .json({ status: false, message: req_str, data: req_arr });
           return true;
         }
-        // console.log('kdfhksdfhkjsh', request.mode_of_solution.join());
-        // return true;
+        
 
         var user_id = user.id;
 
@@ -366,7 +357,7 @@ const loginCont = {
 
         sql = "UPDATE tbl_user SET ? WHERE id = ? ";
         var dbquery = await mysqlcon(sql, [director_info, user_id]);
-        // console.log("////////////////////////////"+dbquery);
+       
         if (dbquery) {
           res.status(200).json({
             status: true,
@@ -390,7 +381,7 @@ const loginCont = {
 
   save_shareholder_info: async function (req, res) {
     let user = req.user;
-    // res.send(users);
+   
     var bconnect = {};
     try {
       var request = req.body;
@@ -404,7 +395,7 @@ const loginCont = {
         var req_str = "";
         var req_arr = [];
         for (const key in validate_req) {
-          // console.log(request[validate_req[key]]);
+          
           if (!request[validate_req[key]]) {
             req_str += "<p>" + validate_req[key] + " is required </p>";
             req_arr.push(validate_req[key]);
@@ -412,14 +403,13 @@ const loginCont = {
         }
 
         if (req_arr.length > 0) {
-          // console.log('hdfgghgf', req_arr);
+          
           res
             .status(201)
             .json({ status: false, message: req_str, data: req_arr });
           return true;
         }
-        // console.log('kdfhksdfhkjsh', request.mode_of_solution.join());
-        // return true;
+        
 
         var user_id = user.id;
 
@@ -438,7 +428,7 @@ const loginCont = {
 
         sql = "UPDATE tbl_user SET ? WHERE id = ? ";
         var dbquery = mysqlcon(sql, [shareholder_info, user_id]);
-        // console.log(dbquery.sql);
+       
         if (dbquery) {
           res
             .status(200)
@@ -460,7 +450,7 @@ const loginCont = {
 
   save_business_info: async function (req, res) {
     let user = req.user;
-    // res.send(users);
+    
     var bconnect = {};
     try {
       var request = req.body;
@@ -475,7 +465,7 @@ const loginCont = {
         var req_str = "";
         var req_arr = [];
         for (const key in validate_req) {
-          // console.log(request[validate_req[key]]);
+          
           if (!request[validate_req[key]]) {
             req_str += "<p>" + validate_req[key] + " is required </p>";
             req_arr.push(validate_req[key]);
@@ -483,14 +473,13 @@ const loginCont = {
         }
 
         if (req_arr.length > 0) {
-          // console.log('hdfgghgf', req_arr);
+         
           res
             .status(201)
             .json({ status: false, message: req_str, data: req_arr });
           return true;
         }
-        // console.log('kdfhksdfhkjsh', request.mode_of_solution.join());
-        // return true;
+       
 
         var user_id = user.id;
 
@@ -505,7 +494,7 @@ const loginCont = {
 
         sql = "UPDATE tbl_user SET ? WHERE id = ? ";
         var dbquery = mysqlcon(sql, [business_info, user_id]);
-        // console.log(dbquery.sql);
+        
         if (dbquery) {
           res
             .status(200)
@@ -537,7 +526,7 @@ const loginCont = {
         var req_str = "";
         var req_arr = [];
         for (const key in validate_req) {
-          // console.log(request[validate_req[key]]);
+          
           if (!request[validate_req[key]]) {
             req_str += "<p>" + validate_req[key] + " is required </p>";
             req_arr.push(validate_req[key]);
@@ -545,7 +534,7 @@ const loginCont = {
         }
 
         if (req_arr.length > 0) {
-          // console.log('hdfgghgf', req_arr);
+          
           res
             .status(201)
             .json({ status: false, message: req_str, data: req_arr });
@@ -563,7 +552,7 @@ const loginCont = {
 
         sql = "UPDATE tbl_user SET ? WHERE id = ? ";
         var dbquery = mysqlcon(sql, [settelment_info, user_id]);
-        // console.log(dbquery.sql);
+        
         if (dbquery) {
           res
             .status(200)

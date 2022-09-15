@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Grid } from "@mui/material";
 import "./changePass.css";
+import { changePass } from "../../Api";
 function ChangePassword() {
   return (
     <>
@@ -33,12 +34,12 @@ const Header = () => {
         }}
       >
         <div className="imgdiv">
-        <input type="file" className="file" />
+          <input type="file" className="file" />
           <img
             src="	https://www.bankconnect.online/assets/merchants/img/profile.jpg"
             alt="Not Found"
             className="UploadImg"
-          /> 
+          />
         </div>
         <div className="mt-2">
           <h6 className="uploadtext">Upload Profile Image</h6>
@@ -48,12 +49,17 @@ const Header = () => {
   );
 };
 
-
 const ChangePassForm = () => {
   const [type1, setType1] = useState("password");
   const [type2, setType2] = useState("password");
   const [type3, setType3] = useState("password");
-
+  let token = localStorage.getItem("user");
+  const [changePassdata, setChangePassData] = useState({
+    token,
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
   const changeType1 = () => {
     setType1((preType) => (preType === "password" ? "text" : "password"));
   };
@@ -62,6 +68,20 @@ const ChangePassForm = () => {
   };
   const changeType3 = () => {
     setType3((preType) => (preType === "password" ? "text" : "password"));
+  };
+
+  const handlesubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await changePass(changePassdata);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleChange = (e) => {
+    setChangePassData({ ...changePassdata, [e.target.name]: e.target.value });
   };
 
   return (
@@ -76,6 +96,8 @@ const ChangePassForm = () => {
               type={type1}
               className="form-control inputField"
               placeholder="Current Password"
+              name="oldPassword"
+              onChange={handleChange}
             />
             <img
               src="	https://www.bankconnect.online/assets/merchants/img/Eye.svg"
@@ -95,6 +117,8 @@ const ChangePassForm = () => {
               type={type2}
               className="form-control inputField"
               placeholder="Current Password"
+              name="newPassword"
+              onChange={handleChange}
             />
             <img
               src="	https://www.bankconnect.online/assets/merchants/img/Eye.svg"
@@ -114,6 +138,8 @@ const ChangePassForm = () => {
               type={type3}
               className="form-control inputField"
               placeholder="Current Password"
+              name="confirmPassword"
+              onChange={handleChange}
             />
             <img
               src="	https://www.bankconnect.online/assets/merchants/img/Eye.svg"
@@ -133,7 +159,11 @@ const ChangePassForm = () => {
           <button type="submit" className="cancel mx-2">
             Cancel
           </button>
-          <button type="submit" className="changepassBtn">
+          <button
+            type="submit"
+            className="changepassBtn"
+            onClick={handlesubmit}
+          >
             Change Password
           </button>
         </div>

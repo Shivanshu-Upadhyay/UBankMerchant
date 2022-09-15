@@ -4,14 +4,16 @@ import ChartBlock from "./ChartBlock1/ChartBlock";
 import Diposite from "./Diposite/Diposite";
 import Currency from "./Currency/Currency";
 import Transition from "./Transition/Transition";
+import baseUrl from "../../components/config/baseUrl";
 import WeeklyBarGraph from "../../components/REACTGRAPH/WeeklyBarGraph";
 import Loader from "../../components/Loader/Loader";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MonthlyBarGraph from "../../components/REACTGRAPH/MonthlyBarGraph";
+import axios from "axios";
 import "./style.css";
+
 import Wave from "react-wavify";
-import { card_data, payment_type, success_rate } from "../../Api";
 
 function Dashbord() {
   const [success, setSuccess] = useState("");
@@ -27,11 +29,27 @@ function Dashbord() {
 
   const successRate = async () => {
     try {
-      const { data } = await success_rate();
-      setSuccess(data.data);
+      const auth = localStorage.getItem("user");
+      let formData = new FormData();
+
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${auth}`,
+        },
+      };
+
+      let result = await axios.post(
+        `${baseUrl}/success_rate`,
+        formData,
+        config
+      );
+
+      setSuccess(result.data.data);
       setTimeout(() => {
         setLoading(false);
       }, 1000);
+      
     } catch (error) {
       console.log(error);
     }
@@ -39,8 +57,19 @@ function Dashbord() {
 
   const cardDetails = async () => {
     try {
-      const { data } = await card_data();
-      setAtmData(data.data[0]);
+      const auth = localStorage.getItem("user");
+      let formData = new FormData();
+
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${auth}`,
+        },
+      };
+
+      let result = await axios.post(`${baseUrl}/card_data`, formData, config);
+     
+      setAtmData(result.data.data[0]);
     } catch (error) {
       console.log(error);
     }
@@ -48,8 +77,24 @@ function Dashbord() {
 
   const paymentType = async () => {
     try {
-      const { data } = await payment_type();
-      setPaymentData(data.data);
+      const auth = localStorage.getItem("user");
+      let formData = new FormData();
+
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${auth}`,
+        },
+      };
+
+      let result = await axios.post(
+        `${baseUrl}/payment_type`,
+        formData,
+        config
+      );
+
+      setPaymentData((pre) => (pre = result.data.data));
+      
     } catch (error) {
       console.log(error);
     }
