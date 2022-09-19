@@ -3,10 +3,12 @@ import Circul from '../Circul/Circul';
 import './card.css'
 
 const Card = ({carddata}) => {
+  
+  
   return (
     <>
       <div className="row justify-content-between">
-        {carddata.map((item, index) => {
+        {carddata?.map((item, index) => {
           return (
             <div
               className={
@@ -21,10 +23,10 @@ const Card = ({carddata}) => {
               key={index}
             >
               <div className="d-flex align-items-center">
-                {item.percentage ? (
+                {item?.percentage>=0 ? (
                     <Circul
-                      value={item.percentage}
-                      text={item.percentage + "%"}
+                      value={item.percentage?item.percentage:0}
+                      text={item.percentage?item.percentage + "%":0+"%"}
                       pathColor={
                         index === 0
                           ? "#AB38D3"
@@ -57,7 +59,7 @@ const Card = ({carddata}) => {
 
                 <div className="mx-2">
                   <div className="namedata">{item.name}</div>
-                  <div className="numberData my-2">{item.amount}</div>
+                  <div className="numberData my-2">{item.amount===null?0:item.amount}</div>
                 </div>
               </div>
             </div>

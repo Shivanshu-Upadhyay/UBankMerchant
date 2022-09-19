@@ -4,16 +4,17 @@ import baseUrl from "../../components/config/baseUrl";
 import axios from "axios";
 import { useStateContext } from "../../context/ContextProvider";
 import "./statements.css";
- let newdownloadStatement=[] 
+let newdownloadStatement = [];
 
 function Statements() {
   const [yearVal, setYearVal] = useState("2022");
-  const {setDownloadStatement } = useStateContext();
+  const { setDownloadStatement } = useStateContext();
   const { setActive } = useStateContext();
-  useEffect(()=>{ setActive(5)},[])
+  useEffect(() => {
+    setActive(5);
+  }, []);
   const statementData = async (val) => {
     try {
-     
       const auth = localStorage.getItem("user");
       let formData = new FormData();
       formData.append("month", val);
@@ -44,17 +45,22 @@ function Statements() {
   );
 }
 
-const Block1 = ({ setYearVal }) => {
+const Block1 = ({ setYearVal, yearVal }) => {
   const date = [2016, 2017, 2018, 2019, 2020, 2021, 2022];
   const [activ, setActive] = useState(2022);
 
   const increment = () => {
-    setActive(activ + 1);
-    setYearVal(activ + 1);
+    if (yearVal <= 2021) {
+      setActive(activ + 1);
+      setYearVal(activ + 1);
+    }
   };
   const deccrement = () => {
-    setActive(activ - 1);
-    setYearVal(activ - 1);
+    if (yearVal > 2016) {
+      console.log("i m call");
+      setActive(activ - 1);
+      setYearVal(activ - 1);
+    }
   };
 
   return (
@@ -145,4 +151,4 @@ const Block2 = ({ statementData }) => {
 };
 
 export default Statements;
-export {newdownloadStatement};
+export { newdownloadStatement };

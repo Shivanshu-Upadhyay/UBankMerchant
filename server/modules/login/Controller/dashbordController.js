@@ -44,15 +44,20 @@ const dashboardCount = {
     }
   },
   success_rate: async function (req, res) {
-    let user = req.user;
-    let user_id = user.id;
-
+    let {id} = req.user;                      
     try {
       sql =
-        "select status from  tbl_icici_payout_transaction_response_details "; //WHERE users_id = ? user_id
-      let result = await mysqlcon(sql);
-
+        "select status from  tbl_icici_payout_transaction_response_details where users_id = ? AND created_on > CURRENT_TIMESTAMP "; //WHERE users_id = ? user_id
+      let result = await mysqlcon(sql,[id]);
       let total = result.length;
+     if(total<1){
+      return res.status(200).json({
+        status: true,
+        message: "data sent successfully",
+        data: 0,
+      });
+     }
+
       let successCount = 0;
       for (let i = 0; i < total; i++) {
         if (result[i].status === "SUCCESS") {
@@ -74,7 +79,7 @@ const dashboardCount = {
      
     }
   },
-  //   dbycurrency : async function (req, res) {
+ 
   //     let user = req.user;
 
   //     let today = Number(req.body.today); //? Number(req.body.today) : 1
@@ -111,9 +116,7 @@ const dashboardCount = {
   //         console.log(Error)
   //         res.status(500).json({ status: false, message: 'Error to complete task.', Error });
   //     }
-  //     finally {
-  //         
-  //     }
+  //  
   // },
   top_transaction_today: async function (req, res) {
     let user = req.user;
@@ -196,7 +199,7 @@ const dashboardCount = {
         " ) as total_payout,(select ROUND(sum(ammount)) from tbl_merchant_transaction) as total_deposit";
 
       let found = await mysqlcon(sql, user_id);
-      console.log(found);
+      
       return res.json({
         status: 200,
         message: "data recieved",
@@ -241,67 +244,79 @@ const dashboardCount = {
     }
   },
   monthly_transaction: async (req, res) => {
-    let user = req.user;
+    let user = req.user
+    let sql = "SELECT IF(created_on, 1, 1) as tbl, MONTH(created_on) as month, SUM(ammount) as amount from tbl_merchant_transaction WHERE user_id = ? AND status = 1 AND YEAR(created_on) = YEAR(NOW()) AND MONTH(created_on) >= 1  GROUP BY MONTH(created_on) UNION SELECT IF(created_on, 2, 2) as tbl, MONTH(created_on) as month, SUM(amount) as amount from tbl_icici_payout_transaction_response_details WHERE users_id = ? AND status= 'SUCCESS' AND YEAR(created_on) = YEAR(NOW()) AND MONTH(created_on) >= 1  GROUP BY MONTH(created_on);";
     try {
-      let user_id = user.id;
-
-      let Start = req.body.start_date;
-      let End = req.body.end_date;
-
-      sql =
-        "select ROUND(sum(ammount)) as Total_transaction_amount,count(ammount) as No_of_transaction,SUBSTRING(date_format(created_on,'%M-%Y'),1,3) as name from tbl_merchant_transaction where date(created_on)>=DATE_SUB(date(now()),interval 12 month) group by date_format(created_on,'%m-%Y');";
-      let found = await mysqlcon(sql, [user_id, Start, End]);
-
-      if (!found) {
-        return res.status(201).json({ message: "not found" });
+      let result = (await mysqlcon(sql, [user.id, user.id]));
+      let deposit = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      let payout = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      for (x in result) {
+        if (result[x].tbl === 1) {
+          deposit[(result[x].month) - 1] = Number(result[x].amount);
+        }
+        else {
+          payout[(result[x].month) - 1] = Number(result[x].amount);
+        }
       }
       return res.status(200).json({
-        message: "data recieved",
-        data: found,
-      });
-    } catch (error) {
-      console.log(error);
-      return res.status(400).json({
-        message: "err in finding payout ",
-        error,
+        status: true,
+        message: "Last 12 month Transections of deposit & payout ",
+        data: {
+          deposit: deposit,
+          payout: payout
+        }
       });
     }
+    catch (Error) {
+      console.log(Error)
+      res.status(500).json({ status: false, message: 'Error to complete task.', Error });
+    }
+    finally {
+      console.log("Execution completed.");
+    }
   },
+
   weekly_transaction: async (req, res) => {
     let user = req.user;
+    let sql = "SELECT IF(created_on, 1, 1) as tbl, WEEKDAY(created_on) as day, SUM(ammount) as amount FROM tbl_merchant_transaction WHERE user_id = ? AND status = 1 AND created_on >= NOW() - INTERVAL WEEKDAY(NOW()) DAY GROUP BY WEEKDAY(created_on) UNION SELECT IF(created_on, 2, 2) as tbl, WEEKDAY(created_on) as day, SUM(amount) as amount FROM tbl_icici_payout_transaction_response_details WHERE users_id = ? AND status = 'SUCCESS' AND created_on >= NOW() - INTERVAL WEEKDAY(NOW()) DAY GROUP BY WEEKDAY(created_on)";
     try {
-      let user_id = user.id;
-
-      let Start = req.body.start_date;
-      let End = req.body.end_date;
-
-      sql =
-        "select sum(ammount) as Total_transaction_amount,count(ammount) as No_of_transaction,if(WEEKDAY(date_format(created_on,'%Y-%m-%d'))=0,'Sun',if(WEEKDAY(date_format(created_on,'%Y-%m-%d'))=1,'Mon',if(WEEKDAY(date_format(created_on,'%Y-%m-%d'))=2,'Tue',if(WEEKDAY(date_format(created_on,'%Y-%m-%d'))=3,'Wed',if(WEEKDAY(date_format(created_on,'%Y-%m-%d'))=4,'Thu',if(WEEKDAY(date_format(created_on,'%Y-%m-%d'))=5,'Fri',if(WEEKDAY(date_format(created_on,'%Y-%m-%d'))=6,'Sat',''))))))) as name,date_format(created_on,'%d-%m') as date from tbl_merchant_transaction where DATE(created_on) BETWEEN DATE_SUB(date(now()), INTERVAL 6 DAY) AND date(now()) GROUP by date(created_on)";
-      let found = await mysqlcon(sql, [user_id, Start, End]);
-
-      if (!found) {
-        return res.status(201).json({ message: "not found" });
+      let result = (await mysqlcon(sql, [user.id, user.id]));
+      let deposit = [0, 0, 0, 0, 0, 0, 0];
+      let payout = [0, 0, 0, 0, 0, 0, 0];
+      for (x in result){
+        if (result[x].tbl === 1) {
+          deposit[result[x].day] = Number(result[x].amount);
+        }
+        else {
+          payout[result[x].day] = Number(result[x].amount);
+        }
       }
       return res.status(200).json({
-        message: "data recieved",
-        data: found,
+        status: true,
+        message: "Last week Transections of deposit & payout ",
+        data: {
+          deposit: deposit,
+          payout: payout
+        }
       });
-    } catch (error) {
-      console.log(error);
-      return res.status(400).json({
-        message: "err in finding payout ",
-        error,
-      });
+      
+    }
+    catch (Error) {
+      console.log(Error)
+      res.status(500).json({ status: false, message: 'Error to complete task.', Error });
+    }
+    finally {
+      console.log("Execution completed.");
     }
   },
   payment_type: async function (req, res) {
-    let user = req.user;
-    let user_id = user.id;
-
+    let {id} = req.user;
+    
+    const currentdate     = new Date(); 
     try {
-      sql = "select payment_type,ammount from tbl_merchant_transaction";
+      sql = "select payment_type,ammount from tbl_merchant_transaction where users_id = ? AND created_on > CURRENT_TIMESTAMP";
 
-      let result = await mysqlcon(sql);
+      let result = await mysqlcon(sql,[id]);
       upi_amt = 0;
       wallet_amt = 0;
       card_amt = 0;

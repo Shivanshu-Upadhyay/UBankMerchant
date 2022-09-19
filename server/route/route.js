@@ -244,15 +244,24 @@ route.post(
 );
 
 // Reports Controller
-route.post(
-  "/reports",
-  uploads.none(),
-  helper.verify,
-  reportsController.reports
-);
+// route.post(
+//   "/reports",
+//   uploads.none(),
+//   helper.verify,
+//   reportsController.reports
+// );
 route.post(
   "/changePassword-merchant",
   uploads.none(),
   helper.verify,
   changePassController.changePassword
+);
+
+
+// reports abhineet
+route.post(
+  "/accountSummary",
+  uploads.none(),
+  helper.verify,
+  reportsController.accountSummary
 );

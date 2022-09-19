@@ -1,169 +1,92 @@
-import React, { Component } from 'react'
+import React from 'react';
+import ReactApexChart from 'react-apexcharts'
 import axios from 'axios';
 import baseUrl from '../config/baseUrl';
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 
-export default class MonthlyBarGraph extends Component {
+
+
+export default class MonthlyBarGraph extends React.Component {
+    
     constructor(props) {
         super(props);
-
         this.state = {
-            base_url: `${baseUrl}/`,
-            // formData: new FormData(),
-            header: {
-                headers: {
-                    "content-type": "multipart/form-data",
-                    Authorization: 'Bearer ' + localStorage.getItem('user')
-                }
+            series: [{
+            name: 'Deposit',
+            data: []
+            }, {
+            name: 'Payout',
+            data: []
+            }],
+            options: {
+                chart: {
+                    type: 'bar',
+                    height: '100%'
+                },
+                plotOptions: {
+                    bar: {
+                    horizontal: false,
+                    columnWidth: '55%',
+                    endingShape: 'rounded'
+                    },
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['transparent']
+                },
+                xaxis: {
+                    categories: ['Jan','Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                },
+                fill: {
+                    opacity: 1
+                },
             },
-            data :[
-                {
-                    name: 'Page A',
-                    No_of_transaction: 4000,
-                    Total_transaction_amount: 1,
-                    amt: 2400,
-                },
-                {
-                    name: 'Page B',
-                    No_of_transaction: 3000,
-                    Total_transaction_amount: 1398,
-                    amt: 2210,
-                },
-                {
-                    name: 'Page C',
-                    No_of_transaction: 2000,
-                    Total_transaction_amount: 20800,
-                    amt: 2290,
-                },
-                {
-                    name: 'Page D',
-                    No_of_transaction: 2780,
-                    Total_transaction_amount: 3908,
-                    amt: 2000,
-                },
-                {
-                    name: 'Page E',
-                    No_of_transaction: 1890,
-                    Total_transaction_amount: 4800,
-                    amt: 2181,
-                },
-                {
-                    name: 'Page F',
-                    No_of_transaction: 2390,
-                    Total_transaction_amount: 3800,
-                    amt: 2500,
-                },
-                {
-                    name: 'Page G',
-                    No_of_transaction: 3490,
-                    Total_transaction_amount: 4300,
-                    amt: 2100,
-                },
-            ],
-        }
-    }
-    montharray = () => {
-        const DateToMonth = (month) => {
-            var temp = ''
-            switch (month) {
-                case '01':
-                    temp += 'Jan'
-                    break;
-                case '02':
-                    temp += 'Feb'
-                    break;
-                case '03':
-                    temp += 'Mar'
-                    break;
-                case '04':
-                    temp += 'Apr'
-                    break;
-                case '05':
-                    temp += 'May'
-                    break;
-                case '06':
-                    temp += 'Jun'
-                    break;
-                case '07':
-                    temp += 'Jul'
-                    break;
-                case '08':
-                    temp += 'Aug'
-                    break;
-                case '09':
-                    temp += 'Sep'
-                    break;
-                case '10':
-                    temp += 'Oct'
-                    break;
-                case '11':
-                    temp += 'Nov'
-                    break;
-                case '12':
-                    temp += 'Dec'
-                    break;
-                case 'asp':
-                    temp += 'Dec'
-                    break;
-                default:
-                    break;
-            }
-            return temp;
-        }
-        var dataray = [];
-        var d = new Date();
-        d.setMonth(d.getMonth() - 11)
-        let start_date = d.getMonth() + 1;
-        while (dataray.length < 12) {
-            if (start_date < 10) {
-                dataray.push(DateToMonth("0" + start_date))
-            } else {
-                dataray.push(DateToMonth("" + start_date))
-            }
-            if (start_date === 12) {
-                start_date = 1
-            } else {
-                start_date += 1
-            }
-        }
-        return (dataray);
-    }
+           
+        };
 
-    graphData() {
-        axios.post(this.state.base_url + "monthly_transaction", { }, this.state.header).then((res) => {
-            const mongtharr = this.montharray();
-            const datamongth2 = []
-            for (let i of mongtharr) {
-                datamongth2.push({
-                    "Total_transaction_amount": 0, "No_of_transaction": 0, "name": i
-                })
-            }
-            for (let i of res.data.data) {
-                let index = mongtharr.indexOf(i.name.slice(0, 3));
-                datamongth2[index].No_of_transaction = i.No_of_transaction;
-                datamongth2[index].Total_transaction_amount = i.Total_transaction_amount;
-            }
-            this.setState({ data: datamongth2
-})
-        })
     }
-    componentDidMount(){
-        this.graphData()
+    componentDidMount() {
+        const monthly = async() => {
+    
+            try {
+                const auth = localStorage.getItem("user");
+                let formData = new FormData();
+                
+            
+                const config = {
+                  headers: {
+                    "content-type": "multipart/form-data",
+                    Authorization: `Bearer ${auth}`,
+                  },
+                };
+            
+                let {data} = await axios.post(`${baseUrl}/monthly_transaction`, formData, config);
+                console.log(data.data);
+               
+                this.setState({series:[{data:data.data.deposit},{data:data.data.payout}]})
+                
+                // console.log(this.state.series[0].data);
+                // console.log(this.state.series[0].data);
+                // console.log(this.state.series[1].data);
+                
+              } catch (error) {
+                console.log(error);
+              }
+            }
+            monthly()
+            
+      }
+    render() {
+      return (
+        <div>
+            <div id="chart">
+                <ReactApexChart options={this.state.options} series={this.state.series} type="bar" height={350} />
+            </div>
+        </div>
+      );
     }
-  render() {
-    return (
-            <ResponsiveContainer width="100%" height="85%">
-                <BarChart data={this.state.data}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="Total_transaction_amount" fill="#8884d8" />
-                    <Bar dataKey="No_of_transaction" fill="#82ca9d" />
-                </BarChart>
-            </ResponsiveContainer>
-    )
-  }
 }

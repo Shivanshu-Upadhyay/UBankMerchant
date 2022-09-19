@@ -123,7 +123,7 @@ function Deposit() {
     axios
       .post(`${baseUrl}/statusResult`, formData, config)
       .then((res) => {
-        setCardData((pre) => (pre = res.data.data));
+        setCardData( res?.data.data);
       })
       .catch((err) => console.log(err));
   }, []);

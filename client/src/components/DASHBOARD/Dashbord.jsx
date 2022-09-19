@@ -6,7 +6,6 @@ import Currency from "./Currency/Currency";
 import Transition from "./Transition/Transition";
 import baseUrl from "../../components/config/baseUrl";
 import WeeklyBarGraph from "../../components/REACTGRAPH/WeeklyBarGraph";
-import Loader from "../../components/Loader/Loader";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MonthlyBarGraph from "../../components/REACTGRAPH/MonthlyBarGraph";
@@ -20,11 +19,12 @@ function Dashbord() {
   const [atmData, setAtmData] = useState([]);
   const [paymentData, setPaymentData] = useState();
   const [graphval, setGraphVal] = useState("month");
-  const [loading, setLoading] = useState(true);
+ 
   useEffect(() => {
-    paymentType();
-    cardDetails();
-    successRate();
+    Promise.all([paymentType(),
+    cardDetails(),
+    successRate()])
+    
   }, []);
 
   const successRate = async () => {
@@ -46,9 +46,7 @@ function Dashbord() {
       );
 
       setSuccess(result.data.data);
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
+     
       
     } catch (error) {
       console.log(error);
@@ -117,9 +115,7 @@ function Dashbord() {
     setGraphVal("week");
   };
 
-  if (loading) {
-    return <Loader />;
-  }
+  
   return (
     <>
       <div className="row justify-content-between">
@@ -128,7 +124,7 @@ function Dashbord() {
         </div>
         <div className="col-1 d-flex  flex-column">
           <div className="liquedblock">
-            <Wave
+          {success? <Wave
               fill="#1caae8"
               paused={false}
               options={{
@@ -141,7 +137,8 @@ function Dashbord() {
                 height: `${success}%`,
                 top: `${100 - success}%`,
               }}
-            />
+            />:null}
+           
           </div>
           <div className="text-center">
             <h6

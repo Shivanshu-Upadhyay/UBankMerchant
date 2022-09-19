@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./report.css";
 import Menu from "@mui/material/Menu";
-import baseUrl from "../../components/config/baseUrl";
+import baseUrl from "../config/baseUrl";
 import axios from "axios";
 import * as XLSX from "xlsx";
 import { useStateContext } from "../../context/ContextProvider";
@@ -97,21 +97,51 @@ function FilterDate({ todate, SetToDate, fromdate, SetToFromDate }) {
 const Section1 = ({
   heading,
   discription,
-  setDownloadApi,
+  todate,
+  fromdate,
   buttonVal,
   data,
+  
 }) => {
   const downloadExl = () => {
-    console.log(data);
-    setDownloadApi(buttonVal);
-    const workSheet = XLSX.utils.json_to_sheet(data);
-    const workBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workBook, workSheet, "Deposit");
+    const fetchData = async () => {
+      try {
+        const auth = localStorage.getItem("user");
+        let formData = new FormData();
+        formData.append("value", buttonVal);
+        if (todate && fromdate) {
+          formData.append("from", todate);
+          formData.append("to", fromdate);
+        }
 
-    // Binary String
-    XLSX.write(workBook, { bookType: "xlsx", type: "binary" });
-    // Download
-    XLSX.writeFile(workBook, "Settlement.xlsx");
+        const config = {
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: `Bearer ${auth}`,
+          },
+        };
+        const { data } = await axios.post(
+          `${baseUrl}/accountSummary`,
+          formData,
+          config
+        );
+        console.log(data);
+        
+        const workSheet = XLSX.utils.json_to_sheet(data.data);
+        const workBook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workBook, workSheet, `report${Date.now()}`);
+
+        // Binary String
+        XLSX.write(workBook, { bookType: "xlsx", type: "binary" });
+        // Download
+        XLSX.writeFile(workBook, `report${Date.now()}.xlsx`);
+      } catch (err) {
+        console.log(err);
+      }
+     
+    };
+   
+    fetchData();
   };
   return (
     <>
@@ -139,46 +169,14 @@ const Section1 = ({
 };
 
 const Block2 = ({ todate, fromdate }) => {
-  const [downloadApi, setDownloadApi] = useState(1);
-  const [data, setData] = useState([]);
+ 
   const { setActive } = useStateContext();
 
-  console.log(downloadApi);
+  
 
   useEffect(() => {
-    fetchData();
     setActive(4);
-  }, [downloadApi]);
-
-  const fetchData = async () => {
-    try {
-      const auth = localStorage.getItem("user");
-      let formData = new FormData();
-      formData.append("value", downloadApi);
-      if (todate && fromdate) {
-        formData.append("from", todate);
-        formData.append("to", fromdate);
-      }
-
-      const config = {
-        headers: {
-          "content-type": "multipart/form-data",
-          Authorization: `Bearer ${auth}`,
-        },
-      };
-
-      const {data} = await axios.post(
-        `${baseUrl}/reports`,
-        formData,
-        config
-      );
-      console.log(data);
-      console.log(data);
-      setData(data.deposit);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  }, []);
 
   return (
     <>
@@ -187,57 +185,60 @@ const Block2 = ({ todate, fromdate }) => {
           heading="Account Summary"
           discription="A breakdown of gross and net sales by account."
           buttonVal={1}
-          setDownloadApi={setDownloadApi}
-          data={data}
+          todate={todate} 
+          fromdate={fromdate}
+          
         />
         <Section1
           heading="Payment Type Summary"
           discription="View sales by type of transaction methods i.e. Deposists recieved through online inter bank transfer, cards, e-wallets and alternate payment methods"
-          setDownloadApi={setDownloadApi}
           buttonVal={2}
-          data={data.paymentSummary}
+          todate={todate} 
+          fromdate={fromdate}
         />
         <Section1
           heading="Payout Type Summary"
           discription="View payouts by modes used for payouts i.e. payout to cards, bank accounts, e-wallets."
           buttonVal={3}
-          setDownloadApi={setDownloadApi}
+          todate={todate} 
+          fromdate={fromdate}
         />
         <Section1
           heading="Currency & Geolocation Summary"
           discription="View deposits and payouts by type of currency or by country."
           buttonVal={4}
-          setDownloadApi={setDownloadApi}
         />
         <Section1
           heading="Transactions"
           discription="Export a listing of all transactions in a period."
           buttonVal={5}
-          setDownloadApi={setDownloadApi}
+          todate={todate} 
+          fromdate={fromdate}
         />
         <Section1
           heading="Dispute Reports"
           discription="View status of your disputes."
           buttonVal={6}
-          setDownloadApi={setDownloadApi}
         />
         <Section1
           heading="Transaction Status Summary"
           discription="View transactions based on status for a period i.e. success, pending and failed transactions."
           buttonVal={7}
-          setDownloadApi={setDownloadApi}
         />
         <Section1
           heading="Refund Transactions"
           discription="View a detailed breakdwon of all refunded transactions in a period."
           buttonVal={8}
-          setDownloadApi={setDownloadApi}
         />
         <Section1
           heading="Card Brand Summary"
           discription="View sales total transactions by available card brand."
           buttonVal={9}
-          setDownloadApi={setDownloadApi}
+        />
+        <Section1
+          heading="Commissions and Charges"
+          discription="View and download all Commissions and total Charges."
+          buttonVal={10}
         />
       </div>
     </>

@@ -7,7 +7,7 @@ const cors = require("cors");
 // Cors error
 const corsOption = {
     credentials:true,
-    origin: ["http://localhost:3001"],
+    origin: ["http://localhost:3000"],
   };
 app.use(cors(corsOption));
 app.use(express.urlencoded())
