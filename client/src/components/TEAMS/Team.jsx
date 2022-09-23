@@ -36,6 +36,7 @@ function Team() {
 
       let result = await axios.post(`${baseUrl}/default`, formData, config);
       console.log(result.data.employee);
+      
       setTableBodyData(result.data.employee);
       // setTotalPage(result.data.data.totalPage);
     } catch (error) {
@@ -239,6 +240,15 @@ const TableDialog = ({tabledatafetch}) => {
 };
 
 const TeamTable = ({ tableBodyData }) => {
+  function convertTZ(date, tzString) {
+    date.replace('Z',"")
+   let dateTime = new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString})); 
+   dateTime =  dateTime.toDateString() +" "+ dateTime.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,})
+     return dateTime
+}
   return (
     <>
       <TableContainer className="tablecontainer">
@@ -274,7 +284,7 @@ const TeamTable = ({ tableBodyData }) => {
                       ? "Cashier"
                       : "Reporter"}
                   </TableCell>
-                  <TableCell>{item.last_login}</TableCell>
+                  <TableCell >{convertTZ(item.last_login,JSON.parse(localStorage.getItem('timeZone')).timeZone)}</TableCell>
                   <TableCell>
                     {item.status ? (
                       <button className="enable">Enabled</button>

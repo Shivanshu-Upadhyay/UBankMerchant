@@ -151,7 +151,21 @@ function Deposit() {
       };
 
       let result = await axios.post(`${baseUrl}/show_all`, formData, config);
-      setTableBodyData(result.data.data.deposits);
+      let newData = result.data.data.deposits.map((item)=>{
+        function convertTZ(date, tzString) {
+          date.replace('Z',"")
+         let dateTime = new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString})); 
+         dateTime =  dateTime.toDateString() +" "+ dateTime.toLocaleString("en-US", {
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,})
+           return dateTime
+      }
+        let data ={...item,created_on:convertTZ(item.created_on,JSON.parse(localStorage.getItem('timeZone')).timeZone)}
+       return data
+       
+      })
+      setTableBodyData(newData);
       setTotalPage(result.data.data.totalPage);
     } catch (error) {
       console.log(error);

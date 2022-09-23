@@ -6,6 +6,7 @@ function ContextProvider({ children }) {
   const [downloadStatement, setDownloadStatement] = useState([]);
   const [isLoginUser, setIsLoginUser] = useState(false);
   const [active, setActive] = React.useState(0);
+  const [timeZoneVal,setTimeZoneVal] = useState('')
   return (
     <StateContext.Provider
       value={{
@@ -13,7 +14,7 @@ function ContextProvider({ children }) {
         setDownloadStatement,
         isLoginUser,
         setIsLoginUser,
-        active, setActive
+        active, setActive,timeZoneVal,setTimeZoneVal
       }}
     >
       {children}

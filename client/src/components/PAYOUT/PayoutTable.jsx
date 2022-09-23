@@ -31,7 +31,15 @@ const ButtonBox = ({ name }) => {
 
 export default function PayoutTable({ tableBodyData, xlData, setXlData }) {
   const [users, setUsers] = useState([]);
-
+  function convertTZ(date, tzString) {
+    date.replace('Z',"")
+   let dateTime = new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString})); 
+   dateTime =  dateTime.toDateString() +" "+ dateTime.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,})
+     return dateTime
+}
   useEffect(() => {
     setUsers(tableBodyData);
   }, [tableBodyData]);
@@ -47,7 +55,7 @@ export default function PayoutTable({ tableBodyData, xlData, setXlData }) {
       setXlData(tempUser);
     } else {
       let tempUser = users.map((user) =>
-        user.uniqueid === name ? { ...user, isChecked: checked } : user
+        user.created_on === name ? { ...user, isChecked: checked } : user
       );
       setUsers(tempUser);
       setXlData(tempUser.filter((item) => item.isChecked));
@@ -71,7 +79,7 @@ export default function PayoutTable({ tableBodyData, xlData, setXlData }) {
                 />
               </TableCell>
               <TableCell> Transfer ID</TableCell>
-              <TableCell> Initiated At</TableCell>
+              <TableCell > Initiated At</TableCell>
               <TableCell>UTR No/Ref Id</TableCell>
               <TableCell align="center">Account No</TableCell>
               <TableCell>Bank Name</TableCell>
@@ -90,13 +98,13 @@ export default function PayoutTable({ tableBodyData, xlData, setXlData }) {
                     <input
                       className="form-check-input"
                       type="checkbox"
-                      name={item.users_id}
+                      name={item.created_on}
                       checked={item?.isChecked || false}
                       onChange={handleChange}
                     />
                   </TableCell>
                   <TableCell className="tablebold">{item.users_id}</TableCell>
-                  <TableCell>{item.created_on}</TableCell>
+                  <TableCell style={{width:"500px"}}>{ convertTZ(item.created_on,JSON.parse(localStorage.getItem('timeZone')).timeZone) }</TableCell>
                   <TableCell className="tablebold">{item.utrnumber}</TableCell>
                   <TableCell align="center" className="tablebold">
                     {item.creditacc}

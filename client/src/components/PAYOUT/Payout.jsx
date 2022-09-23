@@ -154,7 +154,22 @@ function Payout() {
       };
 
       let result = await axios.post(`${baseUrl}/filter`, formData, config);
-      setTableBodyData(result.data.data);
+      let newData = result.data.data.map((item)=>{
+        function convertTZ(date, tzString) {
+          date.replace('Z',"")
+         let dateTime = new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString})); 
+         dateTime =  dateTime.toDateString() +" "+ dateTime.toLocaleString("en-US", {
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,})
+           return dateTime
+      }
+        let data ={...item,created_on:convertTZ(item.created_on,JSON.parse(localStorage.getItem('timeZone')).timeZone)}
+       return data
+       
+      })
+      
+      setTableBodyData(newData);
       setTotalPage(result.data.totalPage);
       setMessage(result.data.message)
     } catch (error) {
@@ -162,7 +177,7 @@ function Payout() {
     }
   };
 
-  console.log(tableBodyData);
+  
 
   return (
     <>

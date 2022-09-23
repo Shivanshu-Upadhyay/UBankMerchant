@@ -12,6 +12,9 @@ import MailIcon from "@mui/icons-material/Mail";
 import Badge from "@mui/material/Badge";
 import { Link, Outlet } from "react-router-dom";
 import { useStateContext } from "../../context/ContextProvider";
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import ScheduleIcon from "@mui/icons-material/Schedule";
+import Form from "react-bootstrap/Form";
 import "./sidebar.css";
 
 const drawerWidth = 240;
@@ -81,17 +84,27 @@ const Drawer = styled(MuiDrawer, {
 
 export default function Sidebar() {
   const [open, setOpen] = React.useState(true);
-  const { active, setActive } = useStateContext();
+  const { active, setActive,setTimeZoneVal } = useStateContext();
   const { setIsLoginUser } = useStateContext();
+  const [dateState, setDateState] = React.useState(new Date());
   
+  
+  React.useEffect(() => {
+    setInterval(() => setDateState(new Date()), 30000);
+  }, []);
+
+  const timeZoneFun = (e)=>{
+    setTimeZoneVal(JSON.parse(e.target.value).timeZone)
+    localStorage.setItem("timeZone",e.target.value)
+
+  }
+  let timeZoneValShow = JSON.parse(localStorage.getItem('timeZone')).timeZone
 
   const logout = () => {
     localStorage.clear("user");
     setIsLoginUser(false);
   };
 
-  
-  
   const sidebarLink = [
     {
       name: "Dashboard",
@@ -189,7 +202,12 @@ export default function Sidebar() {
       <CssBaseline />
       <AppBar position="fixed" open={open} className="appBar">
         <Toolbar className="appBarcom">
-          <Typography variant="h6" noWrap component="div">
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            className="d-flex align-items-center"
+          >
             {open ? (
               <img
                 src="https://www.bankconnect.online/assets/merchants/img/logo.png"
@@ -200,6 +218,44 @@ export default function Sidebar() {
               <img src="./imges/fav-icon.png" alt="" width="36px" />
             )}
           </Typography>
+          <div className="d-flex align-items-center ms-5 justify-content-center">
+            <div
+              style={{ color: "black" }}
+              className="d-flex justify-content-center align-items-center"
+            >
+              <span>
+              <CalendarMonthIcon className="mx-1"/>
+                {dateState.toLocaleDateString("en-GB", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                  timeZone:timeZoneValShow?timeZoneValShow:"Asia/Kolkata"
+                })}
+              </span>
+
+              <span className="mx-2">
+                <ScheduleIcon className="mx-1" />
+                {dateState.toLocaleString("en-US", {
+                  hour: "numeric",
+                  minute: "numeric",
+                  hour12: true,
+                  timeZone:timeZoneValShow?timeZoneValShow:"Asia/Kolkata"
+                })}
+              </span>
+            </div>
+            <div>
+              <Form.Select aria-label="Default select example" className="mx-3" onChange={(e)=>timeZoneFun(e)} value={localStorage.getItem('timeZone')}>
+                <option defaultChecked value={JSON.stringify({name:"India",hr:0,min:0,timeZone:"Asia/Kolkata"})}>India</option>
+                <option value={JSON.stringify({name:"China",hr:2,min:30,timeZone:"Asia/Shanghai"})}>China</option>
+                <option value={JSON.stringify({name:"Indonesia",hr:1,min:30,timeZone:"Asia/Jakarta"})}>Indonesia</option>
+                <option value={JSON.stringify({name:"Malaysia",hr:2,min:30,timeZone:"Asia/Shanghai"})}>Malaysia</option>
+                <option value={JSON.stringify({name:"Philippines",hr:2,min:30,timeZone:"Asia/Shanghai"})}>Philippines</option>
+                <option value={JSON.stringify({name:"Thailand",hr:1,min:30,timeZone:"Asia/Jakarta"})}>Thailand</option>
+                <option value={JSON.stringify({name:"Vietanam",hr:1,min:30,timeZone:"Asia/Jakarta"})}>Vietanam</option>
+              </Form.Select>
+            </div>
+          </div>
+
           <div className=" navLeft">
             <Badge badgeContent={4} color="primary" className="mx-3">
               <MailIcon color="action" />

@@ -32,6 +32,18 @@ const ButtonBox = ({ name }) => {
 
 export default function TableComp({ tableBodyData, xlData, setXlData }) {
   const [users, setUsers] = useState([]);
+  
+  function convertTZ(date, tzString) {
+    date.replace('Z',"")
+   let dateTime = new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString})); 
+   dateTime =  dateTime.toDateString() +" "+ dateTime.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,})
+     return dateTime
+}
+
+console.log();
 
   useEffect(() => {
     setUsers(tableBodyData);
@@ -72,7 +84,7 @@ export default function TableComp({ tableBodyData, xlData, setXlData }) {
                 />
               </TableCell>
               <TableCell>Order Id</TableCell>
-              <TableCell> Date</TableCell>
+              <TableCell > Date</TableCell>
               <TableCell>Customer Name</TableCell>
               <TableCell>Amount</TableCell>
               <TableCell>Currency</TableCell>
@@ -98,7 +110,7 @@ export default function TableComp({ tableBodyData, xlData, setXlData }) {
                     />
                   </TableCell>
                   <TableCell className="tablebold">{item.order_no}</TableCell>
-                  <TableCell>{item.created_on}</TableCell>
+                  <TableCell style={{width:"500px"}}>{ convertTZ(item.created_on,JSON.parse(localStorage.getItem('timeZone')).timeZone) }</TableCell>
                   <TableCell className="tablebold">{item.i_flname}</TableCell>
                   <TableCell align="center" className="tablebold">
                     {item.ammount}
