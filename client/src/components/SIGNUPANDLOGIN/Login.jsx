@@ -38,6 +38,7 @@ const LogInForm = () => {
         setMessage((message = response.data.message));
         
         if (response.data.is_complete === 1) {
+          
           setToken(response.data.data.token)
           setIsLoginUser(true);
           console.log(response.data.data.token);
@@ -88,6 +89,7 @@ const LogInForm = () => {
       e.preventDefault();
       if (answer.toLocaleLowerCase() === qus[refreshNumber].answer.toLocaleLowerCase()) {
         localStorage.setItem("user", Token);
+        localStorage.setItem('timeZone',JSON.stringify({name:"India",timeZone:"Asia/Kolkata"}))
         setIsLoginUser(true);
         setTimeout(()=>{
           natigate("/");

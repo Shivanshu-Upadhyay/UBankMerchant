@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Dashbord from "../DASHBOARD/Dashbord";
 import Deposit from "../DEPOSIT/Deposit";
@@ -22,6 +22,7 @@ import { useStateContext } from "../../context/ContextProvider";
 const auth = localStorage.getItem("user");
 function Routers() {
   const { isLoginUser } = useStateContext();
+  
   console.log(auth);
   return (
     <>

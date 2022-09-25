@@ -91,6 +91,7 @@ export default function Sidebar() {
   
   React.useEffect(() => {
     setInterval(() => setDateState(new Date()), 30000);
+   
   }, []);
 
   const timeZoneFun = (e)=>{
@@ -98,6 +99,7 @@ export default function Sidebar() {
     localStorage.setItem("timeZone",e.target.value)
 
   }
+
   let timeZoneValShow = JSON.parse(localStorage.getItem('timeZone')).timeZone
 
   const logout = () => {
@@ -223,7 +225,7 @@ export default function Sidebar() {
               style={{ color: "black" }}
               className="d-flex justify-content-center align-items-center"
             >
-              <span>
+              <div className="d-flex justify-content-between align-items-center">
               <CalendarMonthIcon className="mx-1"/>
                 {dateState.toLocaleDateString("en-GB", {
                   day: "numeric",
@@ -231,9 +233,6 @@ export default function Sidebar() {
                   year: "numeric",
                   timeZone:timeZoneValShow?timeZoneValShow:"Asia/Kolkata"
                 })}
-              </span>
-
-              <span className="mx-2">
                 <ScheduleIcon className="mx-1" />
                 {dateState.toLocaleString("en-US", {
                   hour: "numeric",
@@ -241,17 +240,19 @@ export default function Sidebar() {
                   hour12: true,
                   timeZone:timeZoneValShow?timeZoneValShow:"Asia/Kolkata"
                 })}
-              </span>
+              </div>
+
+              
             </div>
             <div>
               <Form.Select aria-label="Default select example" className="mx-3" onChange={(e)=>timeZoneFun(e)} value={localStorage.getItem('timeZone')}>
-                <option defaultChecked value={JSON.stringify({name:"India",hr:0,min:0,timeZone:"Asia/Kolkata"})}>India</option>
-                <option value={JSON.stringify({name:"China",hr:2,min:30,timeZone:"Asia/Shanghai"})}>China</option>
-                <option value={JSON.stringify({name:"Indonesia",hr:1,min:30,timeZone:"Asia/Jakarta"})}>Indonesia</option>
-                <option value={JSON.stringify({name:"Malaysia",hr:2,min:30,timeZone:"Asia/Shanghai"})}>Malaysia</option>
-                <option value={JSON.stringify({name:"Philippines",hr:2,min:30,timeZone:"Asia/Shanghai"})}>Philippines</option>
-                <option value={JSON.stringify({name:"Thailand",hr:1,min:30,timeZone:"Asia/Jakarta"})}>Thailand</option>
-                <option value={JSON.stringify({name:"Vietanam",hr:1,min:30,timeZone:"Asia/Jakarta"})}>Vietanam</option>
+                <option value={JSON.stringify({name:"India",timeZone:"Asia/Kolkata"})}>India</option>
+                <option value={JSON.stringify({name:"China",timeZone:"Asia/Shanghai"})}>China</option>
+                <option value={JSON.stringify({name:"Indonesia",timeZone:"Asia/Jakarta"})}>Indonesia</option>
+                <option value={JSON.stringify({name:"Philippines",timeZone:"Asia/Shanghai"})}>Philippines</option>
+                <option value={JSON.stringify({name:"Thailand",timeZone:"Asia/Jakarta"})}>Thailand</option>
+                <option value={JSON.stringify({name:"Malaysia",timeZone:"Asia/Shanghai"})}>Malaysia</option>
+                <option value={JSON.stringify({name:"Vietanam",timeZone:"Asia/Jakarta"})}>Vietanam</option>
               </Form.Select>
             </div>
           </div>

@@ -9,6 +9,7 @@ import "aos/dist/aos.css";
 import axios from "axios";
 
 import baseUrl from "../config/baseUrl.js";
+import Aos from "aos";
 
 function BusinessSetting() {
   const [comp, setComp] = useState(0);
@@ -276,6 +277,7 @@ const SolutionsApplying = ({Token,message,setMessage}) => {
 
   useEffect(() => {
     let formData = new FormData();
+    Aos.init()
     const config = {
       headers: {
         "content-type": "multipart/form-data",
@@ -446,7 +448,7 @@ const SolutionsApplying = ({Token,message,setMessage}) => {
   );
 };
 
-//<>><><><>><><<><><><><<><> Director’s Info >>><<<<<<<>>>>><<<>>><<<>>><
+//<>><><><>><><<><><><><<><> Director’s Info <><><><><><><><><><><><><><><><><>
 
 
 const DirectorInfo = ({ setSFullName, setSDateOfBirth, setSNationality, setSFullName2,  setSDateOfBirth2, setSNationality2,Token,message,setMessage}) => {
@@ -468,26 +470,19 @@ const DirectorInfo = ({ setSFullName, setSDateOfBirth, setSNationality, setSFull
     setSNationality2(director2_nationality);
 
     let formData = new FormData();
-
     formData.append("director1_name", director1_name);
     formData.append("director1_dob", director1_dob);
     formData.append("director1_nationality", director1_nationality);
     formData.append("director2_name", director2_name);
     formData.append("director2_dob", director2_dob);
     formData.append("director2_nationality", director2_nationality);
-
     const config = {
       headers: {
         "content-type": "multipart/form-data",
         Authorization: `Bearer ${Token}`,
       },
     };
-
-    axios
-      .post(`${baseUrl}/save-director-info`, formData, config)
-      .then((response) => {
-        console.log(response);
-        setMessage((message = response.data.message));
+    axios.post(`${baseUrl}/save-director-info`, formData, config).then((response) =>{console.log(response);setMessage((message = response.data.message));
         if (response.status === 200) {
           toast.success(message, {
             position: "bottom-right",
