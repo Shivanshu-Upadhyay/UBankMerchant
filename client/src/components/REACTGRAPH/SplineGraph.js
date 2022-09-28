@@ -10,7 +10,7 @@ export default class SplineGraph extends React.Component {
         this.state = {
         
           series: [{
-            name: '# of trnx',
+            name: 'Amount',
             data: [ ]
           }],
           options: {
