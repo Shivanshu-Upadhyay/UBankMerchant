@@ -165,82 +165,79 @@ const dashboardCount = {
   },
   payout_icon: async (req, res) => {
     let user = req.user;
-    let Type = req.body.type;
-    am = "";
-    let tbl_name = "";
-    if (Type === "payout") {
-      tbl_name += "tbl_icici_payout_transaction_response_details";
-      am += "amount";
-    } else {
-      tbl_name += "tbl_merchant_transaction";
-      am += "ammount";
-    }
+    let sql = "SELECT IF(ammount, 1, 1) as tbl, COUNT(ammount) as count,SUM(ammount) as amount, ammount_type as currency, (CASE WHEN hour(created_on) < 4 then '00-04' WHEN hour(created_on) >= 4 and hour(created_on) < 8 then '04-08' WHEN hour(created_on) >= 8 and hour(created_on) < 12 then '08-12' WHEN hour(created_on) >= 12 and hour(created_on) < 16 then '12-16' WHEN hour(created_on) >= 16 and hour(created_on) < 20 then '16-20' ELSE '20-24' END) AS hr FROM tbl_merchant_transaction WHERE user_id = ? AND status = 1 AND DATE(created_on) = DATE(NOW()) GROUP BY currency, hr UNION SELECT IF(amount, 2, 2) tbl, COUNT(amount), SUM(amount), currency,(CASE WHEN hour(created_on) < 4 then '00-04' WHEN hour(created_on) >= 4 and hour(created_on) < 8 then '04-08' WHEN hour(created_on) >= 8 and hour(created_on) < 12 then '08-12' WHEN hour(created_on) >= 12 and hour(created_on) < 16 then '12-16' WHEN hour(created_on) >= 16 and hour(created_on) < 20 then '16-20' ELSE '20-24' END) AS hr FROM `tbl_icici_payout_transaction_response_details` WHERE DATE(created_on) = DATE(NOW()) AND users_id = ? and status = 'SUCCESS' GROUP BY currency, hr";
+    let sql1 = "SELECT * FROM tbl_user_settled_currency WHERE settled_currency = ?";
+    let sql2 = "SELECT symbol FROM countries WHERE sortname = ?";
     try {
-      let user_id = user.id;
-      // sql = "select (select count(*) from " + tbl_name + " where time(created_on) BETWEEN '00:00:01' and '04:00:00' and date(created_on)=date(now()) ) as first,(select count(*) from " + tbl_name + " where time(created_on) BETWEEN '04:00:01' and '08:00:00' and date(created_on)=date(now()) ) as second,(select count(*) from " + tbl_name + " where time(created_on) BETWEEN '08:00:01' and '12:00:00' and date(created_on)=date(now()) ) as third,(select count(*) from " + tbl_name + " where time(created_on) BETWEEN '12:00:01' and '16:00:00' and date(created_on)=date(now()) ) as fourth,(select count(*) from " + tbl_name + " where time(created_on) BETWEEN '16:00:01' and '20:00:00' and date(created_on)=date(now()) ) as fifth,(select count(*) from " + tbl_name + " where time(created_on) BETWEEN '20:00:01' and '24:00:00' and date(created_on)=date(now()) ) as sixth,(select sum(" + am + ") from " + tbl_name + " ) as total_payout,(select ROUND(sum(ammount)) from tbl_merchant_transaction) as total_deposit"
+      let result = await mysqlcon(sql, [user.id, user.id]);
+      let result1 = await mysqlcon(sql1, [user.settle_currency]);
+      let result2 = await mysqlcon(sql2, [user.settle_currency == 'USDT' ? 'USD' :user.settle_currency]);
+      let deposit_data = []
+      let payout_data = []
+      deposit_data[0] = result.filter((item) => item.hr === '00-04' && item.tbl === 1).reduce((acc, curr) => { acc.count += curr.count; acc.amount += curr.amount / (((result1.filter((item) => item.deposit_currency === curr.currency)[0]) ? (result1.filter((item) => item.deposit_currency === curr.currency)[0].rate) : 1)); return acc }, { count: 0, amount: 0 }, 0)
+      deposit_data[1] = result.filter((item) => item.hr === '04-08' && item.tbl === 1).reduce((acc, curr) => { acc.count += curr.count; acc.amount += curr.amount / (((result1.filter((item) => item.deposit_currency === curr.currency)[0]) ? (result1.filter((item) => item.deposit_currency === curr.currency)[0].rate) : 1)); return acc }, { count: 0, amount: 0 }, 0)
+      deposit_data[2] = result.filter((item) => item.hr === '08-12' && item.tbl === 1).reduce((acc, curr) => { acc.count += curr.count; acc.amount += curr.amount / (((result1.filter((item) => item.deposit_currency === curr.currency)[0]) ? (result1.filter((item) => item.deposit_currency === curr.currency)[0].rate) : 1)); return acc }, { count: 0, amount: 0 }, 0)
+      deposit_data[3] = result.filter((item) => item.hr === '12-16' && item.tbl === 1).reduce((acc, curr) => { acc.count += curr.count; acc.amount += curr.amount / (((result1.filter((item) => item.deposit_currency === curr.currency)[0]) ? (result1.filter((item) => item.deposit_currency === curr.currency)[0].rate) : 1)); return acc }, { count: 0, amount: 0 }, 0)
+      deposit_data[4] = result.filter((item) => item.hr === '16-20' && item.tbl === 1).reduce((acc, curr) => { acc.count += curr.count; acc.amount += curr.amount / (((result1.filter((item) => item.deposit_currency === curr.currency)[0]) ? (result1.filter((item) => item.deposit_currency === curr.currency)[0].rate) : 1)); return acc }, { count: 0, amount: 0 }, 0)
+      deposit_data[5] = result.filter((item) => item.hr === '20-24' && item.tbl === 1).reduce((acc, curr) => { acc.count += curr.count; acc.amount += curr.amount / (((result1.filter((item) => item.deposit_currency === curr.currency)[0]) ? (result1.filter((item) => item.deposit_currency === curr.currency)[0].rate) : 1)); return acc }, { count: 0, amount: 0 }, 0)
+      let dep_count = deposit_data.map((item, index) => (item.count));
+      let dep_total = result2[0].symbol +" " + deposit_data.reduce((total, curr) => { return total += curr.amount }, 0).toFixed(2);
 
-      sql =
-        "select (select count(*) from " +
-        tbl_name +
-        " where time(created_on) BETWEEN '00:00:01' and '04:00:00' ) as first,(select count(*) from " +
-        tbl_name +
-        " where time(created_on) BETWEEN '04:00:01' and '08:00:00' ) as second,(select count(*) from " +
-        tbl_name +
-        " where time(created_on) BETWEEN '08:00:01' and '12:00:00' ) as third,(select count(*) from " +
-        tbl_name +
-        " where time(created_on) BETWEEN '12:00:01' and '16:00:00' ) as fourth,(select count(*) from " +
-        tbl_name +
-        " where time(created_on) BETWEEN '16:00:01' and '20:00:00' ) as fifth,(select count(*) from " +
-        tbl_name +
-        " where time(created_on) BETWEEN '20:00:01' and '24:00:00' ) as sixth,(select sum(" +
-        am +
-        ") from " +
-        tbl_name +
-        " ) as total_payout,(select ROUND(sum(ammount)) from tbl_merchant_transaction) as total_deposit";
+      payout_data[0] = result.filter((item) => item.hr === '00-04' && item.tbl === 2).reduce((acc, curr) => { acc.count += curr.count; acc.amount += curr.amount / (((result1.filter((item) => item.deposit_currency === curr.currency)[0]) ? (result1.filter((item) => item.deposit_currency === curr.currency)[0].rate) : 1)); return acc }, { count: 0, amount: 0 }, 0)
+      payout_data[1] = result.filter((item) => item.hr === '04-08' && item.tbl === 2).reduce((acc, curr) => { acc.count += curr.count; acc.amount += curr.amount / (((result1.filter((item) => item.deposit_currency === curr.currency)[0]) ? (result1.filter((item) => item.deposit_currency === curr.currency)[0].rate) : 1)); return acc }, { count: 0, amount: 0 }, 0)
+      payout_data[2] = result.filter((item) => item.hr === '08-12' && item.tbl === 2).reduce((acc, curr) => { acc.count += curr.count; acc.amount += curr.amount / (((result1.filter((item) => item.deposit_currency === curr.currency)[0]) ? (result1.filter((item) => item.deposit_currency === curr.currency)[0].rate) : 1)); return acc }, { count: 0, amount: 0 }, 0)
+      payout_data[3] = result.filter((item) => item.hr === '12-16' && item.tbl === 2).reduce((acc, curr) => { acc.count += curr.count; acc.amount += curr.amount / (((result1.filter((item) => item.deposit_currency === curr.currency)[0]) ? (result1.filter((item) => item.deposit_currency === curr.currency)[0].rate) : 1)); return acc }, { count: 0, amount: 0 }, 0)
+      payout_data[4] = result.filter((item) => item.hr === '16-20' && item.tbl === 2).reduce((acc, curr) => { acc.count += curr.count; acc.amount += curr.amount / (((result1.filter((item) => item.deposit_currency === curr.currency)[0]) ? (result1.filter((item) => item.deposit_currency === curr.currency)[0].rate) : 1)); return acc }, { count: 0, amount: 0 }, 0)
+      payout_data[5] = result.filter((item) => item.hr === '20-24' && item.tbl === 2).reduce((acc, curr) => { acc.count += curr.count; acc.amount += curr.amount / (((result1.filter((item) => item.deposit_currency === curr.currency)[0]) ? (result1.filter((item) => item.deposit_currency === curr.currency)[0].rate) : 1)); return acc }, { count: 0, amount: 0 }, 0)
+      let pay_count = payout_data.map((item, index) => (item.count));
+      let pay_total = result2[0].symbol + " " + payout_data.reduce((total, curr) => { return total += curr.amount }, 0).toFixed(2);
 
-      let found = await mysqlcon(sql, user_id);
-      
-      return res.json({
-        status: 200,
-        message: "data recieved",
-        data: found,
+      return res.status(200).json({
+        status: true,
+        message: "Deposit & Payout icon data - ",
+        data: {
+          dep_total: dep_total,
+          dep_count: dep_count,
+          pay_total: pay_total,
+          pay_count: pay_count
+        }
       });
     } catch (error) {
-      console.log(error);
-      return res.json({
-        status: 400,
-        message: "err in finding payout ",
-        error,
-      });
+      console.log(error)
+      res.status(500).json({ status: false, message: 'Error to complete task.', data: [] });
     }
   },
   daily_sale_count_icon: async (req, res) => {
     let user = req.user;
+    let day = { 0: 'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat' }
+    let sql = "SELECT date_format(created_on,'%d-%m') as day, SUM(ammount) as total FROM tbl_merchant_transaction WHERE user_id = ? AND status = 1 AND DATE(created_on) >= DATE(NOW()) - INTERVAL 6 DAY GROUP BY day ORDER BY created_on ASC;";
     try {
-      let user_id = user.id;
-
-      let Start = req.body.start_date;
-      let End = req.body.end_dateDATE_S;
-      sql =
-        "select count(ammount) as no_of_transaction,SUBSTRING(DAYNAME(date(created_on)),1,3) as weekday,date_format(created_on,'%d-%m') as date from tbl_merchant_transaction where DATE(created_on) BETWEEN DATE_SUB(date(now()), INTERVAL 6 DAY) AND date(now()) GROUP by date(created_on)";
-      // sql ="select count(ammount) as no_of_transaction,if(WEEKDAY(date_format(created_on,'%Y-%m-%d'))=0,'Sun',if(WEEKDAY(date_format(created_on,'%Y-%m-%d'))=1,'Mon',if(WEEKDAY(date_format(created_on,'%Y-%m-%d'))=2,'Tue',if(WEEKDAY(date_format(created_on,'%Y-%m-%d'))=3,'Wed',if(WEEKDAY(date_format(created_on,'%Y-%m-%d'))=4,'Thu',if(WEEKDAY(date_format(created_on,'%Y-%m-%d'))=5,'Fri',if(WEEKDAY(date_format(created_on,'%Y-%m-%d'))=6,'Sat',''))))))) as weekday,date_format(created_on,'%d-%m') as date from tbl_merchant_transaction where DATE(created_on) BETWEEN DATE_SUB(date(now()), INTERVAL 6 DAY) AND date(now()) GROUP by date(created_on)"
-      // let = sql = "SELECT sum(ammount) AS sale ,DATE(created_on) AS time FROM tbl_merchant_transaction WHERE user_id = ? AND DATE(created_on) BETWEEN ? AND ? GROUP by time(created_on)"
-
-      let found = await mysqlcon(sql, [user_id, Start, End]);
-
-      if (!found) {
-        return res.status(201).json({ message: "not found" });
-      }
+        let result = await mysqlcon(sql, [user.id]);
+        const dates = [...Array(7)].map((_, i) => {
+          const d = new Date();
+          d.setDate(d.getDate() - i);
+          return (("0" + (d.getDate())).slice(-2)+ "-" +   ("0" + (d.getMonth() + 1)).slice(-2)  + " " + day[d.getDay()]);
+        })
+        let data = {}
+        dates.forEach(item => {
+          let data1 = (result.filter((item1)=> item1.day === item.split(' ')[0] )[0])
+          let data2 = (data1 ? data1 : 'daily_trnx');
+          if (item.split(' ')[0] === data2.day){
+            data[item] = data2.total
+          }
+          else{
+            data[item] = 0
+          } 
+        });
       return res.status(200).json({
-        message: "data recieved",
-        data: found,
+        status: true,
+        message: "Daily Sales count - ",
+        data: data
       });
+
     } catch (error) {
-      console.log(error);
-      return res.status(400).json({
-        message: "err in finding payout ",
-        error,
-      });
+      console.log(error)
+      res.status(500).json({ status: false, message: 'Error to complete task.', data: [] });
     }
   },
   monthly_transaction: async (req, res) => {

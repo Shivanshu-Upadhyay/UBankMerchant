@@ -1,101 +1,92 @@
 import React from "react";
-import Chart from "react-apexcharts";
+import ReactApexChart from 'react-apexcharts';
 import './styles.css'
 import axios from "axios";
 import baseUrl from "../config/baseUrl";
 
 export default class SparkLineGraph2 extends React.Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+      super(props);
 
-        this.state = {
-            base_url:  `${baseUrl}/`,
-            // formData: new FormData(),
-            header: {
-                headers: {
-                    "content-type": "multipart/form-data",
-                    Authorization: 'Bearer ' + localStorage.getItem('user')
-                }
+      this.state = {
+      
+        series1: [{
+            name: "# of trnx",
+            data: [ ]
+        }],
+        options: {
+          chart: {
+            height: '100%',
+            type: 'line',
+            sparkline: {
+              enabled: true,
+              }
+          },
+          dataLabels: {
+            enabled: false
+          },
+          stroke: {
+            curve: 'smooth'
+          },
+          title: {
+              text: 'Payouts',
+              style: {
+                  fontSize: '15px',
+                  fontWeight: '700',
+                  color: '#CCC'
+              }
+          },
+          subtitle: {
+              text: '',
+              style: {
+                  fontSize: '25px',
+                  fontWeight: '600',
+                  color: '#000'
+              }
+          },
+          grid: {
+            row: {
+              colors: ['#f3f3f3', 'transparent'], 
+              opacity: 0.5
             },
-            graph_data: [],
-            name: '# of Trxn',
-            data: [0, 0, 0, 0, 0, 0],
+          },
+          xaxis: {
+            categories: ['00:00-04:00', '04:01-08:00', '08:01-12:00', '12:01-16:00', '16:01-20:00', '20:00-23:59'],
+          }
+        },
+      };
+    }
+
+  componentDidMount() {
+    const perDayPayout = async() => {
+      try {
+        const auth = localStorage.getItem("user");
+        let formData = new FormData();
+        
+    
+        const config = {
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: `Bearer ${auth}`,
+          },
         };
+    
+        let {data} = await axios.post(`${baseUrl}/payout_icon`, formData, config);
+        
+        this.setState({series1:[{data:data.data.pay_count}]})
+        this.setState({options:{subtitle:{text:data.data.pay_total}}})
+        
+      } catch (error) {
+        console.log(error);
+      }
     }
-
-    graphData() {
-        axios.post(this.state.base_url + "payout_icon", { type: "payout" }, this.state.header).then((res) => {
-            let temp = res.data.data[0];
-            let deta = [temp.first,temp.second,temp.third,temp.fourth,temp.fifth,temp.sixth]
-            // let deta = [10, 20, 8, 15, 30, 12]
-            this.setState({
-                data: deta,
-                totalpayout: temp.total_payout === null ? 0 : temp.total_payout
-            })
-        })
-    }
-
-
-
-    componentDidMount() {
-        this.graphData();
-    }
-
-    render() {
-        return (
-            <div className="row">
-                <div className="col-md-12 sparkline2" >
-                    <div id="chart-spark2">
-                        <Chart 
-                        options={{
-                            chart: {
-                                type: 'area',
-                                height: 160,
-                                sparkline: {
-                                    enabled: true
-                                },
-                            },
-                            stroke: {
-                                curve: 'smooth'
-                            },
-                            fill: {
-                                type: 'solid',
-                                opacity: 0,
-                            },
-                            yaxis: {
-                                min: 0
-                            },
-                            colors: ['#1EAAE7'],
-                            title: {
-                                text: 'Payouts',
-                                style: {
-                                    fontSize: '15px',
-                                    fontWeight: '700',
-                                    color: '#CCC'
-                                }
-                            },
-                            subtitle: {
-                                text: this.state.totalpayout,
-                                style: {
-                                    fontSize: '25px',
-                                    fontWeight: '600',
-                                    color: '#000'
-                                }
-                            },
-                            xaxis: {
-                                crosshairs: {
-                                    width: 1
-                                },
-                                type: 'hours',
-                                categories: ["12-4AM", "4-8AM", "8-12PM", "12-4PM", "4-8PM", "8-12AM", "8-12AM", "8-12AM", "8-12AM", "8-12AM"]
-                            }
-                        }} series={[{
-                            name: '# of Trxn',
-                            data: this.state.data,
-                        }]} type="area" height={160} />
-                    </div>
-                </div>
-            </div>
-        );
-    }
+    perDayPayout()
+  }
+  render() {
+    return (
+    <div id="chart">
+        <ReactApexChart options={this.state.options} series={this.state.series1} type="line" height={150} />
+    </div>
+    );
+  }
 }

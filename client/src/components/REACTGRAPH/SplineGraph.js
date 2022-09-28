@@ -1,5 +1,5 @@
 import React from "react";
-import Chart from "react-apexcharts";
+import ReactApexChart from 'react-apexcharts';
 import axios from "axios";
 import baseUrl from "../config/baseUrl";
 
@@ -8,154 +8,86 @@ export default class SplineGraph extends React.Component {
         super(props);
 
         this.state = {
-            base_url:  `${baseUrl}/`,
-            // formData: new FormData(),
-            header: {
-                headers: {
-                    "content-type": "multipart/form-data",
-                    Authorization: 'Bearer ' + localStorage.getItem('user')
+        
+          series: [{
+            name: '# of trnx',
+            data: [ ]
+          }],
+          options: {
+            chart: {
+              height: '100%',
+              type: 'area'
+            },
+            dataLabels: {
+              enabled: false
+            },
+            title: {
+                text: 'Daily Sales Count',
+                align: 'center',
+                style: {
+                    fontSize: '15px',
+                    fontWeight: '700',
+                    color: '#CCC'
                 }
             },
-            Weekday: ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"],
-            Data: [],
-            series: [{
-                name: '',
-                data: []
-            }],
-            options: {
-                chart: {
-                    height: 170,
-                    width: '100%',
-                    type: 'area'
-                },
-                fill: {
-                    type: 'solid',
-                    opacity: 0.7
-                },
-                dataLabels: {
-                    enabled: false
-                },
-                title: {
-                    text: 'Daily Sales Count',
-                    align: 'center',
-                    style: {
-                        fontSize: '15px',
-                        fontWeight: '700',
-                        // margin: 5,
-                        color: '#CCC'
-                    }
-                },
-                stroke: {
-                    curve: 'smooth'
-                },
-                xaxis: {
-                    type: 'week_days',
-                    categories: ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"]
-                },
-                tooltip: {
-                    x: {
-                        format: 'day'
-                    },
-                },
+            stroke: {
+                width: 3,
+                curve: 'smooth'
             },
-
-
+            fill: {
+                type: 'solid',
+                opacity: 0.5
+            },
+            xaxis: {
+              type: 'weekly',
+              categories: [ ]
+            },
+            tooltip: {
+              x: {
+                format: 'dd/MM/yy HH:mm'
+              },
+            },
+          },
         };
-    }
-    weekArray = () => {
-        const days = ['monday', 'tuesday', 'wednesday', 'thursday',
-            'friday', 'saterday', 'sunday'];
-        var goBackDays = 7;
+      }
 
-        var today = new Date();
-        today.setDate(today.getDate() - 8)
-        var daysSorted = [];
-
-        for (var i = 0; i < goBackDays; i++) {
-            var newDate = new Date(today.setDate(today.getDate() + 1));
-            let str = days[newDate.getDay()].slice(0, 3)
-            str = str.charAt(0).toUpperCase() + str.slice(1)
-            daysSorted.push(str);
-        }
-
-        return (daysSorted);
-    }
-
-    graphData() {
-        axios.post(this.state.base_url + "daily_sale_count_icon", { type: "payout" }, this.state.header).then((res) => {
-            // let weekday=[];
-            // let no_of_transaction=[];
-            // for(let i of res.data.data){
-            //     weekday.push(i.weekday+"("+i.date+")")
-            //     no_of_transaction.push(i.no_of_transaction)
-            // }            sql ="select count(ammount) as no_of_transaction,SUBSTRING(DAYNAME(date(created_on)),1,3) as weekday,date_format(created_on,'%d-%m') as date from tbl_merchant_transaction where DATE(created_on) BETWEEN UB(date(now()), INTERVAL 6 DAY) AND date(now()) GROUP by date(created_on)"
-
-            let weekdaylist = this.weekArray();
+      componentDidMount() {
+        const perDayPayout = async() => {
+          try {
+            const auth = localStorage.getItem("user");
+            let formData = new FormData();
+            
         
-            var noOfTrans = [0, 0, 0, 0, 0, 0, 0]
-            for (let i of res.data.data) {
-                noOfTrans[weekdaylist.indexOf(i.weekday)] = i.no_of_transaction
-            }
-            this.setState({
-                Weekday: weekdaylist,
-                Data: noOfTrans
-            })
-      
-        })
-    }
+            const config = {
+              headers: {
+                "content-type": "multipart/form-data",
+                Authorization: `Bearer ${auth}`,
+              },
+            };
+        
+            let {data} = await axios.post(`${baseUrl}/daily_sale_count_icon`, formData, config);
+            
 
+            this.setState({series:[{data:Object.values(data.data)}]})
 
+            this.setState({options:{xaxis:{categories:Object.keys(data.data)}}})
 
-    componentDidMount() {
-        this.graphData();
+            // this.setState({series:[{data:[data.data[0].count,data.data[1].count,data.data[2].count,data.data[3].count,data.data[4].count,data.data[5].count,data.data[6].count]}]})
 
-    }
+            // this.setState({options:{xaxis:{categories:[data.data[0].day, data.data[1].day, data.data[2].day, data.data[3].day, data.data[4].day, data.data[5].day, data.data[6].day]}}})
+            
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        perDayPayout()
+      }
 
-    render() {
+      render() {
         return (
-            <div>
-                <div id="chart">
-                    <Chart options={{
-                        chart: {
-                            height: 170,
-                            width: '100%',
-                            type: 'area'
-                        },
-                        fill: {
-                            type: 'solid',
-                            opacity: 0.7
-                        },
-                        dataLabels: {
-                            enabled: false
-                        },
-                        title: {
-                            text: 'Daily Sales Count',
-                            align: 'center',
-                            style: {
-                                fontSize: '15px',
-                                fontWeight: '700',
-                                // margin: 5,
-                                color: '#CCC'
-                            }
-                        },
-                        stroke: {
-                            curve: 'smooth'
-                        },
-                        xaxis: {
-                            type: 'week_days',
-                            categories: this.state.Weekday
-                        },
-                        tooltip: {
-                            x: {
-                                format: 'day'
-                            },
-                        },
-                    }} series={[{
-                        name: '',
-                        data: this.state.Data
-                    }]} type="area" height={200} />
-                </div>
-            </div>
+          <div id="chart">
+              <ReactApexChart options={this.state.options} series={this.state.series} type="area" height={200} />
+          </div>
         );
     }
 }

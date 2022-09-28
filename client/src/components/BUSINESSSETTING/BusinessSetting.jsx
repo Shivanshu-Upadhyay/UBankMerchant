@@ -15,18 +15,19 @@ function BusinessSetting() {
   const [comp, setComp] = useState(0);
   const [Token, setToken] = useState();
   let [message, setMessage] = useState("");
-  
-const [SfullName, setSFullName] = useState();
-const [SdateOfBirth, setSDateOfBirth] = useState("");
-const [Snationality, setSNationality] = useState("");
-const [SfullName2, setSFullName2] = useState("");
-const [SdateOfBirth2, setSDateOfBirth2] = useState("");
-const [Snationality2, setSNationality2] = useState("");
-  useEffect(()=>{
+
+  const [SfullName, setSFullName] = useState();
+  const [SdateOfBirth, setSDateOfBirth] = useState("");
+  const [Snationality, setSNationality] = useState("");
+  const [SfullName2, setSFullName2] = useState("");
+  const [SdateOfBirth2, setSDateOfBirth2] = useState("");
+  const [Snationality2, setSNationality2] = useState("");
+  useEffect(() => {
+    Aos.init();
     const token = localStorage.getItem("user");
     setToken(token);
-  },[])
-  
+  }, []);
+
   return (
     <>
       <h4 className="heading">Business Setting</h4>
@@ -80,28 +81,76 @@ const [Snationality2, setSNationality2] = useState("");
               onClick={() => setComp(7)}
               className={comp === 7 ? "activetab" : ""}
             >
-              Download{" "}
+              Download
             </li>
           </ul>
         </Grid>
 
         <Grid item xs={8} className="secondBlock" style={{ height: "37rem" }}>
           {comp === 0 ? (
-            <CompanyProfile Token={Token} message={message} setMessage={setMessage}/>
+            <CompanyProfile
+              Token={Token}
+              message={message}
+              setMessage={setMessage}
+            />
           ) : comp === 1 ? (
-            <SolutionsApplying Token={Token} message={message} setMessage={setMessage}/>
+            <SolutionsApplying
+              Token={Token}
+              message={message}
+              setMessage={setMessage}
+            />
           ) : comp === 2 ? (
-            <DirectorInfo Token={Token} message={message} setMessage={setMessage} SfullName={SfullName} setSFullName={setSFullName} SdateOfBirth={SdateOfBirth} setSDateOfBirth={setSDateOfBirth}  Snationality={Snationality} setSNationality={setSNationality}SfullName2={SfullName2} setSFullName2={setSFullName2} SdateOfBirth2={SdateOfBirth2} setSDateOfBirth2={setSDateOfBirth2} Snationality2={Snationality2} setSNationality2={setSNationality2}/>
+            <DirectorInfo
+              Token={Token}
+              message={message}
+              setMessage={setMessage}
+              SfullName={SfullName}
+              setSFullName={setSFullName}
+              SdateOfBirth={SdateOfBirth}
+              setSDateOfBirth={setSDateOfBirth}
+              Snationality={Snationality}
+              setSNationality={setSNationality}
+              SfullName2={SfullName2}
+              setSFullName2={setSFullName2}
+              SdateOfBirth2={SdateOfBirth2}
+              setSDateOfBirth2={setSDateOfBirth2}
+              Snationality2={Snationality2}
+              setSNationality2={setSNationality2}
+            />
           ) : comp === 3 ? (
-            <ShareholderInfo Token={Token} message={message} setMessage={setMessage} SfullName={SfullName} setSFullName={setSFullName} SdateOfBirth={SdateOfBirth} setSDateOfBirth={setSDateOfBirth}  Snationality={Snationality} setSNationality={setSNationality}SfullName2={SfullName2} setSFullName2={setSFullName2} SdateOfBirth2={SdateOfBirth2} setSDateOfBirth2={setSDateOfBirth2} Snationality2={Snationality2} setSNationality2={setSNationality2}/>
+            <ShareholderInfo
+              Token={Token}
+              message={message}
+              setMessage={setMessage}
+              SfullName={SfullName}
+              setSFullName={setSFullName}
+              SdateOfBirth={SdateOfBirth}
+              setSDateOfBirth={setSDateOfBirth}
+              Snationality={Snationality}
+              setSNationality={setSNationality}
+              SfullName2={SfullName2}
+              setSFullName2={setSFullName2}
+              SdateOfBirth2={SdateOfBirth2}
+              setSDateOfBirth2={setSDateOfBirth2}
+              Snationality2={Snationality2}
+              setSNationality2={setSNationality2}
+            />
           ) : comp === 4 ? (
-            <BusinessProfile Token={Token} message={message} setMessage={setMessage}/>
+            <BusinessProfile
+              Token={Token}
+              message={message}
+              setMessage={setMessage}
+            />
           ) : comp === 5 ? (
-            <SettlementInfo Token={Token} message={message} setMessage={setMessage}/>
+            <SettlementInfo
+              Token={Token}
+              message={message}
+              setMessage={setMessage}
+            />
           ) : comp === 6 ? (
-            <Keys />
+            <Keys Token={Token} />
           ) : (
-            <Download />
+            <Download Token={Token} />
           )}
         </Grid>
       </Grid>
@@ -112,7 +161,7 @@ const [Snationality2, setSNationality2] = useState("");
 
 // COMMON COMPONENTE ********^^^^^^_______+++++
 
-const InputComp = ({ label, type, value, onChange }) => {
+const InputComp = ({ label, type, value, onChange, required = false }) => {
   return (
     <>
       <div className="mb-3">
@@ -123,7 +172,7 @@ const InputComp = ({ label, type, value, onChange }) => {
           placeholder={label}
           value={value}
           onChange={onChange}
-          required
+          required={required}
         />
       </div>
     </>
@@ -132,9 +181,7 @@ const InputComp = ({ label, type, value, onChange }) => {
 
 // COMPANY PROFILE ******_____+++++++##@@@@@
 
-const CompanyProfile = ({Token,}) => {
-  
-  
+const CompanyProfile = ({ Token }) => {
   const [companyName, setCompanyName] = useState("");
   const [tradingDoing, setTradingDoing] = useState("");
   const [registeredAddress, setRegisteredAddress] = useState("");
@@ -142,14 +189,11 @@ const CompanyProfile = ({Token,}) => {
   const [countryofIncorporation, setCountryofIncorporation] = useState("");
   const [mainContactPerson, setMainContactPerson] = useState("");
   const [mainContactEmailAddress, setMainContactEmailAddress] = useState("");
-  
-
-
+  const [country, setCountry] = useState([]);
   const onSubmit = async (e) => {
     e.preventDefault();
-     console.log(Token);
-    let formData = new FormData();
 
+    let formData = new FormData();
     formData.append("company_name", companyName);
     formData.append("trading_dba", tradingDoing);
     formData.append("registered_address", registeredAddress);
@@ -169,13 +213,42 @@ const CompanyProfile = ({Token,}) => {
       .post(`${baseUrl}/save-company-profile`, formData, config)
       .then((response) => {
         console.log(response);
-        
       })
       .catch((error) => {
         console.log(error);
-        
       });
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let formData = new FormData();
+        formData.append("tab", 1);
+        const config = {
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: `Bearer ${Token}`,
+          },
+        };
+        const { data } = await axios.post(
+          `${baseUrl}/defaultBusinesSettingData`,
+          formData,
+          config
+        );
+
+        setCompanyName(data?.result?.bname);
+        setTradingDoing(data?.result?.trading_dba);
+        setRegisteredAddress(data?.result?.blocation);
+        setCompanyNumber(data?.result?.busines_Code);
+        setCountryofIncorporation(data?.result?.busines_Country);
+        setMainContactPerson(data?.result?.fname + " " + data?.result?.lname);
+        setMainContactEmailAddress(data?.result?.main_contact_email);
+        setCountry(data?.country);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, [Token]);
   return (
     <>
       <form action="" onSubmit={onSubmit} className="formBlock mx-3 ">
@@ -187,6 +260,7 @@ const CompanyProfile = ({Token,}) => {
           name="CompanyName"
           value={companyName}
           onChange={(e) => setCompanyName(e.target.value)}
+          required={true}
         />
         <InputComp
           label="Trading As / Doing Business As (DBA) 	"
@@ -194,6 +268,7 @@ const CompanyProfile = ({Token,}) => {
           name="TradingDoingBusiness"
           value={tradingDoing}
           onChange={(e) => setTradingDoing(e.target.value)}
+          required={true}
         />
         <InputComp
           label="Registered Address"
@@ -201,6 +276,7 @@ const CompanyProfile = ({Token,}) => {
           name="RegisteredAddress"
           value={registeredAddress}
           onChange={(e) => setRegisteredAddress(e.target.value)}
+          required={true}
         />
         <InputComp
           label="Company Number / Registration Number 	"
@@ -208,6 +284,7 @@ const CompanyProfile = ({Token,}) => {
           name="CompanyNumberRegistrationNumber"
           value={companyNumber}
           onChange={(e) => setCompanyNumber(e.target.value)}
+          required={true}
         />
 
         <label className="form-label loginlable mb-3">
@@ -218,15 +295,17 @@ const CompanyProfile = ({Token,}) => {
           className="form-select form-select-sm mb-3 boldOption"
           value={countryofIncorporation}
           onChange={(e) => setCountryofIncorporation(e.target.value)}
-          required
+          required={true}
+          style={{ border: "1px solid #ced4da" }}
         >
           <option className="" value="Country of Incorporation">
             Country of Incorporation
           </option>
-          <option value="Netbanking">Netbanking</option>
-          <option value="UPI">UPI</option>
-          <option value="EWallet">EWallet</option>
-          <option value="Cards">Cards</option>
+          {country?.map((item, i) => (
+            <option value={item.id} key={i}>
+              {item.name + "-" + item.sortname}
+            </option>
+          ))}
         </select>
 
         <InputComp
@@ -235,6 +314,7 @@ const CompanyProfile = ({Token,}) => {
           name="MainContactPerson"
           value={mainContactPerson}
           onChange={(e) => setMainContactPerson(e.target.value)}
+          required={true}
         />
         <InputComp
           label="Main Contact Email Address 	"
@@ -242,6 +322,7 @@ const CompanyProfile = ({Token,}) => {
           name="MainContactEmailAddress"
           value={mainContactEmailAddress}
           onChange={(e) => setMainContactEmailAddress(e.target.value)}
+          required={true}
         />
 
         <div className="d-flex justify-content-start mt-3 mb-3">
@@ -259,7 +340,6 @@ const CompanyProfile = ({Token,}) => {
 const SolutionsApplying = ({Token,message,setMessage}) => {
   const [show, setshow] = useState(false);
   const [apiData, setApiData] = useState([]);
-  // const [isChecked, setIsChecked] = useState(false);
   const [solution_apply_for_country, setSolution_apply_for_country] =
     useState([]);
   const [mode_of_solution, setMode_of_solution] = useState([]);
@@ -450,8 +530,17 @@ const SolutionsApplying = ({Token,message,setMessage}) => {
 
 //<>><><><>><><<><><><><<><> Director’s Info <><><><><><><><><><><><><><><><><>
 
-
-const DirectorInfo = ({ setSFullName, setSDateOfBirth, setSNationality, setSFullName2,  setSDateOfBirth2, setSNationality2,Token,message,setMessage}) => {
+const DirectorInfo = ({
+  setSFullName,
+  setSDateOfBirth,
+  setSNationality,
+  setSFullName2,
+  setSDateOfBirth2,
+  setSNationality2,
+  Token,
+  message,
+  setMessage,
+}) => {
   const [director1_name, setFullName] = useState("");
   const [director1_dob, setDateOfBirth] = useState("");
   const [director1_nationality, setNationality] = useState("");
@@ -482,7 +571,11 @@ const DirectorInfo = ({ setSFullName, setSDateOfBirth, setSNationality, setSFull
         Authorization: `Bearer ${Token}`,
       },
     };
-    axios.post(`${baseUrl}/save-director-info`, formData, config).then((response) =>{console.log(response);setMessage((message = response.data.message));
+    axios
+      .post(`${baseUrl}/save-director-info`, formData, config)
+      .then((response) => {
+        console.log(response);
+        setMessage((message = response.data.message));
         if (response.status === 200) {
           toast.success(message, {
             position: "bottom-right",
@@ -493,7 +586,6 @@ const DirectorInfo = ({ setSFullName, setSDateOfBirth, setSNationality, setSFull
             draggable: true,
             progress: undefined,
           });
-          console.log("success");
         } else {
           toast.error(message, {
             position: "bottom-right",
@@ -519,17 +611,45 @@ const DirectorInfo = ({ setSFullName, setSDateOfBirth, setSNationality, setSFull
         });
       });
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let formData = new FormData();
+        formData.append("tab", 3);
+        const config = {
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: `Bearer ${Token}`,
+          },
+        };
+        const { data } = await axios.post(
+          `${baseUrl}/defaultBusinesSettingData`,
+          formData,
+          config
+        );
+
+        setFullName(data?.result?.director1_name);
+        setDateOfBirth(data?.result?.director1_dob);
+        setNationality(data?.result?.director1_nationality);
+        setFullName2(data?.result?.director2_name);
+        setDateOfBirth2(data?.result?.director1_dob);
+        setNationality2(data?.result?.director2_nationality);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, [Token]);
   return (
     <>
       <form
         action=""
-        
         data-aos="fade-up"
         data-aos-offset="200"
         data-aos-delay="50"
         data-aos-duration="2000"
         onSubmit={onSubmit}
-        style={{width: "100%",height:"100%",overflow:"auto"}}
+        style={{ width: "100%", height: "100%", overflow: "auto" }}
       >
         <h6 className="logintext">Director’s Info</h6>
         <hr className="hrstyle" />
@@ -541,21 +661,21 @@ const DirectorInfo = ({ setSFullName, setSDateOfBirth, setSNationality, setSFull
           type="text"
           value={director1_name}
           onChange={(e) => setFullName(e.target.value)}
-          required="required"
+          required={true}
         />
         <InputComp
           label="Date of Birth 	"
           type="date"
           value={director1_dob}
           onChange={(e) => setDateOfBirth(e.target.value)}
-          required="required"
+          required={true}
         />
         <InputComp
           label="Nationality  	"
           type="text"
           value={director1_nationality}
           onChange={(e) => setNationality(e.target.value)}
-          required="required"
+          required={true}
         />
         <hr className="hrstyle" />
 
@@ -580,17 +700,26 @@ const DirectorInfo = ({ setSFullName, setSDateOfBirth, setSNationality, setSFull
         />
 
         <div className="d-flex  mt-3">
-          
-          <button className="Nextbtn2 ">Next</button>
+          <button className="Nextbtn2 ">Save</button>
         </div>
       </form>
     </>
   );
 };
 
-//<>><><><>><><<><><><><<><> Shareholder Info >>><<<<<<<>>>>><<<>>><<<>>><
+//<>><><><>><><<><><><><<><> Shareholder Info <><><><><><><><><><><><><><><>
 
-const ShareholderInfo = ({SfullName, SdateOfBirth, Snationality,SfullName2,SdateOfBirth2, Snationality2,Token,message,setMessage}) => {
+const ShareholderInfo = ({
+  SfullName,
+  SdateOfBirth,
+  Snationality,
+  SfullName2,
+  SdateOfBirth2,
+  Snationality2,
+  Token,
+  message,
+  setMessage,
+}) => {
   let [shareholder1_name, setFullName] = useState("");
   let [shareholder1_dob, setDateOfBirth] = useState("");
   let [shareholder1_nationality, setNationality] = useState("");
@@ -598,6 +727,36 @@ const ShareholderInfo = ({SfullName, SdateOfBirth, Snationality,SfullName2,Sdate
   let [shareholder2_dob, setDateOfBirth2] = useState("");
   let [shareholder2_nationality, setNationality2] = useState("");
   const [isChecked, setIsChecked] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let formData = new FormData();
+        formData.append("tab", 4);
+        const config = {
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: `Bearer ${Token}`,
+          },
+        };
+        const { data } = await axios.post(
+          `${baseUrl}/defaultBusinesSettingData`,
+          formData,
+          config
+        );
+
+        setFullName(data?.result?.shareholder1_name);
+        setDateOfBirth(data?.result?.shareholder1_dob);
+        setNationality(data?.result?.shareholder1_nationality);
+        setFullName2(data?.result?.shareholder2_name);
+        setDateOfBirth2(data?.result?.shareholder2_dob);
+        setNationality2(data?.result?.shareholder2_nationality);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, [Token]);
 
   const setinpiutFields = () => {
     if (isChecked === false) {
@@ -688,7 +847,7 @@ const ShareholderInfo = ({SfullName, SdateOfBirth, Snationality,SfullName2,Sdate
         data-aos-delay="50"
         data-aos-duration="2000"
         onSubmit={onSubmit}
-        style={{width: "100%",height:"100%",overflow:"auto"}}
+        style={{ width: "100%", height: "100%", overflow: "auto" }}
       >
         <h6 className="logintext">Shareholder Info</h6>
 
@@ -708,21 +867,21 @@ const ShareholderInfo = ({SfullName, SdateOfBirth, Snationality,SfullName2,Sdate
           type="text"
           value={shareholder1_name}
           onChange={(e) => setFullName(e.target.value)}
-          required="required"
+          required={true}
         />
         <InputComp
           label="Date of Birth 	"
           type="date"
           value={shareholder1_dob}
           onChange={(e) => setDateOfBirth(e.target.value)}
-          required="required"
+          required={true}
         />
         <InputComp
           label="Nationality  	"
           type="text"
           value={shareholder1_nationality}
           onChange={(e) => setNationality(e.target.value)}
-          required="required"
+          required={true}
         />
         <hr className="hrstyle" />
 
@@ -747,28 +906,52 @@ const ShareholderInfo = ({SfullName, SdateOfBirth, Snationality,SfullName2,Sdate
         />
 
         <div className="d-flex  mt-3">
-          
-          <button className="Nextbtn2 ">Next</button>
+          <button className="Nextbtn2 ">Save</button>
         </div>
       </form>
     </>
   );
 };
 
+// <>><<><<><><><><><><><><><Business Info>><><><<><>><><>><>><>><><>
 
-// <>><<><<><><><><><><><><><Business Info>><><><<><>><><>><>><>><><<>
-
-const BusinessProfile = ({Token,message,setMessage}) => {
+const BusinessProfile = ({ Token, message, setMessage }) => {
   const [company_website_processing_url, setWebsite] = useState("");
   const [company_nature_of_business, setNatureofbusiness] = useState("");
-  const [company_estimated_monthly_volume, setEstimatedMonthly] =
-    useState("");
+  const [company_estimated_monthly_volume, setEstimatedMonthly] = useState("");
   const [company_avarage_ticket_size, setAverageTicket] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let formData = new FormData();
+        formData.append("tab", 5);
+        const config = {
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: `Bearer ${Token}`,
+          },
+        };
+        const { data } = await axios.post(
+          `${baseUrl}/defaultBusinesSettingData`,
+          formData,
+          config
+        );
+
+        setWebsite(data?.result?.website);
+        setNatureofbusiness(data?.result?.job_title);
+        setEstimatedMonthly(data?.result?.company_estimated_monthly_volume);
+        setAverageTicket(data?.result?.company_avarage_ticket_size);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, [Token]);
+
   const onSubmit = (e) => {
     e.preventDefault();
-
     let formData = new FormData();
-
     formData.append(
       "company_website_processing_url",
       company_website_processing_url
@@ -778,10 +961,7 @@ const BusinessProfile = ({Token,message,setMessage}) => {
       "company_estimated_monthly_volume",
       company_estimated_monthly_volume
     );
-    formData.append(
-      "company_avarage_ticket_size",
-      company_avarage_ticket_size
-    );
+    formData.append("company_avarage_ticket_size", company_avarage_ticket_size);
 
     const config = {
       headers: {
@@ -797,7 +977,6 @@ const BusinessProfile = ({Token,message,setMessage}) => {
         setMessage((message = response.data.message));
 
         if (response.status === 200) {
-          
           console.log("success");
         } else {
           toast.error(message, {
@@ -832,25 +1011,24 @@ const BusinessProfile = ({Token,message,setMessage}) => {
         data-aos-offset="200"
         data-aos-delay="50"
         data-aos-duration="2000"
-        style={{width: "100%",height:"100%",overflow:"auto"}}
+        style={{ width: "100%", height: "100%", overflow: "auto" }}
         onSubmit={onSubmit}
-
       >
-        <h6 className="logintext">Company Profile</h6>
+        <h6 className="logintext">Business Info </h6>
 
         <InputComp
           label="Website / Processing URL"
           type="url"
           value={company_website_processing_url}
           onChange={(e) => setWebsite(e.target.value)}
-          required="required"
+          required={true}
         />
         <InputComp
           label="Nature of Business 	"
           type="text"
           value={company_nature_of_business}
           onChange={(e) => setNatureofbusiness(e.target.value)}
-          required="required"
+          required={true}
         />
 
         <div className="mb-2">
@@ -860,15 +1038,16 @@ const BusinessProfile = ({Token,message,setMessage}) => {
           <select
             className="form-select form-select-sm"
             value={company_estimated_monthly_volume}
+            required={true}
             onChange={(e) => setEstimatedMonthly(e.target.value)}
           >
             <option value="">Please Select</option>
-            <option value="Below 50000">Below 50000</option>
-            <option value="50000 - 100000">50000 - 100000</option>
-            <option value="100001 - 300000">100001 - 300000 </option>
-            <option value="300001 - 500000">300001 - 500000 </option>
-            <option value="500001 - 800000 ">500001 - 800000 </option>
-            <option value="800001 and above">800001 and above </option>
+            <option value="1">Below 50000</option>
+            <option value="2">50000 - 100000</option>
+            <option value="3">100001 - 300000 </option>
+            <option value="4">300001 - 500000 </option>
+            <option value="5">500001 - 800000 </option>
+            <option value="6">800001 and above </option>
           </select>
         </div>
         <InputComp
@@ -876,13 +1055,12 @@ const BusinessProfile = ({Token,message,setMessage}) => {
           type="text"
           value={company_avarage_ticket_size}
           onChange={(e) => setAverageTicket(e.target.value)}
-          required="required"
+          required={true}
         />
 
         <div className="d-flex  mt-3">
-         
           <button className="Nextbtn2 " type="submit">
-            Next
+            Save
           </button>
         </div>
       </form>
@@ -890,9 +1068,34 @@ const BusinessProfile = ({Token,message,setMessage}) => {
   );
 };
 
-const SettlementInfo = ({Token,message,setMessage}) => {
+const SettlementInfo = ({ Token, message, setMessage }) => {
   const [international_settelment_currency, setSettelmentInfo] = useState("");
   const [usdt_wallet_address, setCryptoWallet] = useState("");
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let formData = new FormData();
+        formData.append("tab", 6);
+        const config = {
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: `Bearer ${Token}`,
+          },
+        };
+        const { data } = await axios.post(
+          `${baseUrl}/defaultBusinesSettingData`,
+          formData,
+          config
+        );
+
+        setSettelmentInfo(data?.result?.settle_currency);
+        setCryptoWallet(data?.result?.wallet_url);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, [Token]);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -948,7 +1151,7 @@ const SettlementInfo = ({Token,message,setMessage}) => {
     <>
       <form
         action=""
-        style={{width: "100%",height:"100%",overflow:"auto"}}
+        style={{ width: "100%", height: "100%", overflow: "auto" }}
         data-aos="fade-up"
         data-aos-offset="200"
         data-aos-delay="50"
@@ -981,9 +1184,8 @@ const SettlementInfo = ({Token,message,setMessage}) => {
         />
 
         <div className="d-flex  mt-3">
-          
           <button className="Nextbtn2 " type="submit">
-            Finish
+            Save
           </button>
         </div>
       </form>
@@ -991,9 +1193,36 @@ const SettlementInfo = ({Token,message,setMessage}) => {
   );
 };
 
-//<><><><><><><><><><><><><><><> Keys><><><><><><><><><>
+//<><><><><><><><><><><><> Keys <><><><><><><><><><>
 
-const Keys = () => {
+const Keys = ({ Token }) => {
+  const [id, setId] = useState("");
+  const [key, setKey] = useState("");
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let formData = new FormData();
+        formData.append("tab", 7);
+        const config = {
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: `Bearer ${Token}`,
+          },
+        };
+        const { data } = await axios.post(
+          `${baseUrl}/defaultBusinesSettingData`,
+          formData,
+          config
+        );
+
+        setId(data?.result?.id);
+        setKey(data?.result?.secretkey);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, [Token]);
   return (
     <>
       <div className="formBlock mx-3">
@@ -1001,14 +1230,14 @@ const Keys = () => {
         <br />
         <br />
         <div className="d-flex ">
-          <strong className="keyBlock mx-4">Merchant No: 62</strong>
-          <strong className="keyBlock">Secret Key: fPFBKsaC</strong>
+          <strong className="keyBlock mx-4">Merchant No: {id}</strong>
+          <strong className="keyBlock">Secret Key: {key}</strong>
         </div>
       </div>
     </>
   );
 };
-//<><><><><><><><><><><><><><><> Download><><><><><><><><><>
+//<><><><><><><><><><> Download <><><><><><><><><>
 
 const Download = () => {
   return (
