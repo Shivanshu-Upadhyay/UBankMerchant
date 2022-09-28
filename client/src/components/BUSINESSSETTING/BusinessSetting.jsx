@@ -7,6 +7,19 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-toastify/dist/ReactToastify.css";
 import "aos/dist/aos.css";
 import axios from "axios";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Slide from '@mui/material/Slide';
 
 import baseUrl from "../config/baseUrl.js";
 import Aos from "aos";
@@ -166,10 +179,8 @@ function BusinessSetting() {
               setMessage={setMessage}
             />
           ) : comp === 7 ? (
-            <SettlementInfo
+            <CustomerBlock
               Token={Token}
-              message={message}
-              setMessage={setMessage}
             />
           ) : comp === 8 ? (
             <Keys Token={Token} />
@@ -1309,7 +1320,7 @@ const Download = () => {
 
 // <><><><><><><><><>  Secuirty Question  <><><><><><><><><><><><><><><>
 const SecuirtyQuestion = ({ Token }) => {
-  const [qus,setQus] = useState([])
+  const [qna,setQna] = useState([])
   const [toggle,setToggle] = useState([])
   useEffect(() => {
     const fetchData = async () => {
@@ -1327,7 +1338,7 @@ const SecuirtyQuestion = ({ Token }) => {
           formData,
           config
         );
-        setQus(data?.result);
+        setQna(data?.result);
         setToggle(data.toggle.security_status)
       } catch (err) {
         console.log(err);
@@ -1335,11 +1346,11 @@ const SecuirtyQuestion = ({ Token }) => {
     };
     fetchData();
   }, [Token,toggle]);
-  const QusBlock = ({qus})=>{
+  const QusBlock = ({qus,ans})=>{
     return(
       <>
         <div className="d-flex align-items-center justify-content-between borderForQus my-3">
-          <p style={{color:"#2A2F5B",fontWeight:"bold"}}>{qus}</p> <p style={{color:"#2A2F5B",fontWeight:"bold"}}>***************</p>
+          <p style={{color:"#2A2F5B",fontWeight:"bold"}}>{qus}</p> <p style={{color:"#2A2F5B",fontWeight:"bold"}}>{toggle?ans:"**************"}</p>
         </div>
         
       </>
@@ -1387,10 +1398,200 @@ const SecuirtyQuestion = ({ Token }) => {
           </div>
         </div>
         <br />
-        {qus?.map((item,i)=><QusBlock qus={item.question} key={i}/>)}
+        {qna?.map((item,i)=><QusBlock qus={item.question} key={i} ans={item.answer}/>)}
           
       </div>
     </>
   );
 };
+
+// <><><><><><><><><><><> Customer Block <><><><><><><><><><><><><><><><>
+const CustomerBlock = ({Token})=>{
+  const [tblData,setTblData] = useState([])
+  const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
+  
+  function DialogBox() {
+    const [open, setOpen] = React.useState(false);
+    const [blockVal, setBlockVal] = React.useState('');
+  
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
+  const blockUser = async()=>{
+    try {
+      let formData = new FormData();
+      formData.append("status",0)
+      formData.append("id",blockVal)
+      
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${Token}`,
+        },
+      };
+      const { data } = await axios.post(
+        `${baseUrl}/blockToggle`,
+        formData,
+        config
+      );
+      console.log(data);
+      fetchData();  
+      handleClose()
+    } catch (err) {
+      console.log(err);
+    }
+
+  }
+    return (
+      <div>
+        <button className="blockCus" onClick={handleClickOpen}>
+          Block Customer 
+        </button>
+        <Dialog
+          open={open}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleClose}
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle style={{background:"#1eaae7",color:"#fff",fontSize:"16px",fontWeight:"bold"}} className="mb-2">Block Customer</DialogTitle>
+          <DialogContent>
+          <div className="mb-3">
+        <label className="form-label loginlable ">Block By (UPI/Email/Phone Number/Name)</label>
+        <input
+          type="text"
+          className="form-control"
+          placeholder="UPI/Email/Phone Number/Name"
+          value={blockVal}
+          onChange={(e)=>setBlockVal(e.target.value)}
+          required
+        />
+      </div>
+          </DialogContent>
+          <DialogActions>
+            
+            <button onClick={blockUser} className="btn btn-primary ">Save</button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
+  }
+  
+  const fetchData = async () => {
+    try {
+      let formData = new FormData();
+      formData.append("tab", 9);
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${Token}`,
+        },
+      };
+      const { data } = await axios.post(
+        `${baseUrl}/defaultBusinesSettingData`,
+        formData,
+        config
+      );
+
+      setTblData(data.result)
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+   
+    fetchData();
+  }, [Token]);
+
+  function convertTZ(date, tzString) {
+    date.replace('Z',"")
+   let dateTime = new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString})); 
+   dateTime =  dateTime.toDateString() +" "+ dateTime.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,})
+     return dateTime
+}
+
+  const handleStatus = async (id,status)=>{
+    try {
+      let formData = new FormData();
+      formData.append("status",status)
+      formData.append("id",id)
+      
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${Token}`,
+        },
+      };
+      const { data } = await axios.post(
+        `${baseUrl}/blockToggle`,
+        formData,
+        config
+      );
+      console.log(data);
+      fetchData();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  
+  return(
+    <>
+ <div className="formBlock mx-3">
+        <h6 className="profileHeading">Customer Block </h6>
+        <br />
+       
+        <div className="d-flex justify-content-end">
+        <DialogBox />
+        </div>
+        <TableContainer className="tablecontainer2 ">
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell style={{width:"150px"}}> Merchant Id</TableCell>
+              <TableCell > Customer Id</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell >Created On</TableCell>
+              <TableCell >Updated On</TableCell>
+             
+            </TableRow>
+          </TableHead>
+          <TableBody>
+           {tblData.map((item,i)=>{
+            return(
+              <>
+              <TableRow
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                 key={i} 
+                >
+                
+                  <TableCell className="ps-5">{item.merchant_id}</TableCell>
+                  <TableCell >{item.upi_id}</TableCell>
+                  <TableCell >{item.status===1?<button className="btn btn-danger" onClick={()=>handleStatus(item.upi_id,0)}>Block</button>:<button className="btn btn-primary" onClick={()=>handleStatus(item.upi_id,1)}>Unblock</button>}</TableCell>
+                  <TableCell>{item.create_on?convertTZ(item.create_on,JSON.parse(localStorage.getItem('timeZone')).timeZone):"00:00:00"}</TableCell>
+                  <TableCell >{item.update_on ? convertTZ(item.update_on,JSON.parse(localStorage.getItem('timeZone')).timeZone):"00:00:00"}</TableCell>
+                 
+
+                  
+                </TableRow>
+              </>
+            )
+           })}
+                
+              
+          </TableBody>
+        </Table>
+      </TableContainer>
+      </div>
+    </>
+  )
+}
 export default BusinessSetting;

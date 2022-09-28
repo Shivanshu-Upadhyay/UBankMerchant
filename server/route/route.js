@@ -278,3 +278,9 @@ route.post(
   helper.verify,
   BusinesSetting.toggleQNA
 );
+route.post(
+  "/blockToggle",
+  uploads.none(),
+  helper.verify,
+  BusinesSetting.blockToggle
+);

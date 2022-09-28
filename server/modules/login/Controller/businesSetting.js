@@ -81,7 +81,7 @@ class BusinesSetting {
           break;
         }
         case "8": {
-        const sql = "SELECT tbl_login_security.question FROM tbl_login_security INNER JOIN tbl_merchnat_answer ON tbl_login_security.id = tbl_merchnat_answer.question where user_id = ?";
+        const sql = "SELECT tbl_login_security.question, tbl_merchnat_answer.answer FROM tbl_login_security INNER JOIN tbl_merchnat_answer ON tbl_login_security.id = tbl_merchnat_answer.question where user_id = ?";
         const sql2 = 'select security_status from tbl_user where id = ?'
         const result = await mysqlcon(sql,[id]);
         const result2 = await mysqlcon(sql2,[id]);
@@ -90,6 +90,16 @@ class BusinesSetting {
             message: "Qus And Ans",
             result,
             toggle:{...result2[0]}
+          });
+          break;
+        }
+        case "9": {
+          const sql = "SELECT merchant_id, upi_id, status, create_on, update_on FROM tbl_upi_block WHERE merchant_id = ?";
+          const result = await mysqlcon(sql, [id]);
+          res.status(200).json({
+            success: true,
+            message: "BLock",
+            result: result,
           });
           break;
         }
@@ -128,10 +138,29 @@ class BusinesSetting {
         message: "somthing went wrong",
         error
       });
-    }
-    
-        
+    }    
   }
+  async blockToggle(req,res){
+    try {
+    const {status,id} = req.body
+    if(!status){
+      return res.status(400).json({message:"Error in Status change"})
+    }
+   const sqlToggle = "UPDATE tbl_upi_block SET status = ? WHERE upi_id = ?"
+    await mysqlcon(sqlToggle,[status,id]);
+   res.status(200).json({
+    success: true,
+    result:"succesfully changed"
+  });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "somthing went wrong",
+        error
+      });
+    }    
+  }
+
 }
 
 module.exports = new BusinesSetting();
