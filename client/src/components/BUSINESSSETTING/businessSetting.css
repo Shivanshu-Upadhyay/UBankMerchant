@@ -118,3 +118,14 @@ input{
 select{
   text-align: start;
 }
+
+.authSwtich{
+  width: 50px !important;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+   transition: .4s;
+}
+
+.borderForQus{
+  border-bottom: 1px solid#ebedf2;
+}

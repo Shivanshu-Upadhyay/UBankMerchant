@@ -38,12 +38,23 @@ const LogInForm = () => {
         setMessage((message = response.data.message));
         
         if (response.data.is_complete === 1) {
+            setToken(response.data.data.token)
+            setIsLoginUser(true);
+          if(response.data.data.security_status===1){
+            setQus(response.data.questionAnswer);
+            setStep(1);
+          }else{
+        setIsLoginUser(true);
+        console.log(response.data.data.token);
+        localStorage.setItem("user", response.data.data.token);
+        localStorage.setItem('timeZone',JSON.stringify({name:"India",timeZone:"Asia/Kolkata"}))
+        setIsLoginUser(true);
+        
+          natigate("/");
+        
+          }
           
-          setToken(response.data.data.token)
-          setIsLoginUser(true);
-          console.log(response.data.data.token);
-          setQus(response.data.questionAnswer);
-          setStep(1);
+          
         } else if (response.data.is_complete === 2) {
           toast.error(message, {
             position: "bottom-right",

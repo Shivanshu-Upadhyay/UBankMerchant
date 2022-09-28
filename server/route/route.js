@@ -272,3 +272,9 @@ route.post(
   helper.verify,
   BusinesSetting.default
 );
+route.post(
+  "/toggleQNA",
+  uploads.none(),
+  helper.verify,
+  BusinesSetting.toggleQNA
+);

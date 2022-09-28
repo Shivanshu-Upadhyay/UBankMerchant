@@ -75,11 +75,23 @@ function BusinessSetting() {
               onClick={() => setComp(6)}
               className={comp === 6 ? "activetab" : ""}
             >
-              Keys
+              Secuirty Question Info
             </li>
             <li
               onClick={() => setComp(7)}
               className={comp === 7 ? "activetab" : ""}
+            >
+              Block Customer
+            </li>
+            <li
+              onClick={() => setComp(8)}
+              className={comp === 8 ? "activetab" : ""}
+            >
+              Keys
+            </li>
+            <li
+              onClick={() => setComp(9)}
+              className={comp === 9 ? "activetab" : ""}
             >
               Download
             </li>
@@ -148,6 +160,18 @@ function BusinessSetting() {
               setMessage={setMessage}
             />
           ) : comp === 6 ? (
+            <SecuirtyQuestion
+              Token={Token}
+              message={message}
+              setMessage={setMessage}
+            />
+          ) : comp === 7 ? (
+            <SettlementInfo
+              Token={Token}
+              message={message}
+              setMessage={setMessage}
+            />
+          ) : comp === 8 ? (
             <Keys Token={Token} />
           ) : (
             <Download Token={Token} />
@@ -337,11 +361,10 @@ const CompanyProfile = ({ Token }) => {
 
 // Solution Apply For ******______######
 
-
 const SolutionsApplying = ({ Token, message, setMessage }) => {
   const [show, setshow] = useState(false);
   const [apiData, setApiData] = useState([]);
-  
+
   const [solution_apply_for_country, setSolution_apply_for_country] = useState(
     []
   );
@@ -368,7 +391,6 @@ const SolutionsApplying = ({ Token, message, setMessage }) => {
         mode_of_solution.filter((item) => item !== e.target.value)
       );
   };
-  
 
   useEffect(() => {
     Aos.init();
@@ -1189,7 +1211,7 @@ const SettlementInfo = ({ Token, message, setMessage }) => {
         data-aos-duration="2000"
         onSubmit={onSubmit}
       >
-        <h6 className="logintext">Company Profile </h6>
+        <h6 className="logintext">Settlement Info </h6>
 
         <div className="mb-2">
           <label className="form-label loginlable ">Settelment Info</label>
@@ -1285,4 +1307,90 @@ const Download = () => {
   );
 };
 
+// <><><><><><><><><>  Secuirty Question  <><><><><><><><><><><><><><><>
+const SecuirtyQuestion = ({ Token }) => {
+  const [qus,setQus] = useState([])
+  const [toggle,setToggle] = useState([])
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let formData = new FormData();
+        formData.append("tab", 8);
+        const config = {
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: `Bearer ${Token}`,
+          },
+        };
+        const { data } = await axios.post(
+          `${baseUrl}/defaultBusinesSettingData`,
+          formData,
+          config
+        );
+        setQus(data?.result);
+        setToggle(data.toggle.security_status)
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, [Token,toggle]);
+  const QusBlock = ({qus})=>{
+    return(
+      <>
+        <div className="d-flex align-items-center justify-content-between borderForQus my-3">
+          <p style={{color:"#2A2F5B",fontWeight:"bold"}}>{qus}</p> <p style={{color:"#2A2F5B",fontWeight:"bold"}}>***************</p>
+        </div>
+        
+      </>
+    )
+  }
+  const handleSubmitToggle = async(e)=>{
+   window.alert("Authentication succesfully changed ")
+   setToggle(e.target.checked?1:0)
+    try {
+     
+      let formData = new FormData();
+      formData.append("toggle", e.target.checked?1:0);
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${Token}`,
+        },
+      };
+      const { data } = await axios.post(
+        `${baseUrl}/toggleQNA`,
+        formData,
+        config
+      );
+      console.log(data.result);
+    } catch (err) {
+      console.log(err);
+    }
+  
+     
+  }
+  return (
+    <>
+      <div className="formBlock mx-3">
+        <h6 className="profileHeading">Secuirty Question</h6>
+        <div className="d-flex justify-content-between my-3">
+          <div style={{color:"#495057",fontWeight:"bold"}}>Enable security question for double authentication</div>
+          <div className="form-check form-switch ">
+            <input
+              className="form-check-input authSwtich"
+              type="checkbox"
+              role="switch"
+              checked={toggle===1?true:false}
+              onChange={handleSubmitToggle}
+            />
+          </div>
+        </div>
+        <br />
+        {qus?.map((item,i)=><QusBlock qus={item.question} key={i}/>)}
+          
+      </div>
+    </>
+  );
+};
 export default BusinessSetting;

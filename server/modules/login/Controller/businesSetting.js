@@ -80,16 +80,19 @@ class BusinesSetting {
           });
           break;
         }
-        // case "8": {
-        // const sql = "SELECT  id, secretkey FROM tbl_user WHERE id = ?";
-        //   const result = await mysqlcon(sql, [id]);
-        //   res.status(200).json({
-        //     success: true,
-        //     message: "Keys",
-        //     result,
-        //   });
-        //   break;
-        // }
+        case "8": {
+        const sql = "SELECT tbl_login_security.question FROM tbl_login_security INNER JOIN tbl_merchnat_answer ON tbl_login_security.id = tbl_merchnat_answer.question where user_id = ?";
+        const sql2 = 'select security_status from tbl_user where id = ?'
+        const result = await mysqlcon(sql,[id]);
+        const result2 = await mysqlcon(sql2,[id]);
+          res.status(200).json({
+            success: true,
+            message: "Qus And Ans",
+            result,
+            toggle:{...result2[0]}
+          });
+          break;
+        }
         default:
           res.status(400).json({
             success: false,
@@ -103,6 +106,31 @@ class BusinesSetting {
         message: err,
       });
     }
+  }
+  async toggleQNA(req,res){
+    try {
+     const {id} = req.user
+
+    const {toggle} = req.body
+    console.log(toggle);
+    if(!toggle){
+      return res.status(400).json({message:"Error in Toggle"})
+    }
+   const sqlToggle = "UPDATE tbl_user SET security_status = ? WHERE id = ?"
+   const toggleResult = await mysqlcon(sqlToggle,[toggle,id]);
+   res.status(200).json({
+    success: true,
+    result:"Authentication succesfully changed"
+  });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "somthing went wrong",
+        error
+      });
+    }
+    
+        
   }
 }
 
