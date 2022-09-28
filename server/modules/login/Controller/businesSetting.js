@@ -6,8 +6,7 @@ class BusinesSetting {
       const { tab } = req.body;
       switch (tab) {
         case "1": {
-          const sql =
-            "SELECT bname, trading_dba, blocation, busines_Code, busines_Country, fname, lname, main_contact_email FROM tbl_user WHERE id = ?";
+          const sql ="SELECT bname, trading_dba, blocation, busines_Code, busines_Country, fname, lname, main_contact_email FROM tbl_user WHERE id = ?";
           const sqlForCountry = "SELECT id,name, sortname FROM countries";
           const result = await mysqlcon(sql, [id]);
           const country = await mysqlcon(sqlForCountry);
@@ -20,8 +19,7 @@ class BusinesSetting {
           break;
         }
         case "2": {
-          const sql =
-            "SELECT  solution_apply_for_country, mode_of_solution FROM tbl_user WHERE id = ?";
+          const sql ="SELECT  solution_apply_for_country, mode_of_solution FROM tbl_user WHERE id = ?";
           const result = await mysqlcon(sql, [id]);
           res.status(200).json({
             success: true,
@@ -33,8 +31,7 @@ class BusinesSetting {
           break;
         }
         case "3": {
-          const sql =
-            "SELECT  director1_name, director1_dob, director1_nationality, director2_name, director2_dob, director2_nationality FROM tbl_user WHERE id = ?";
+          const sql ="SELECT  director1_name, director1_dob, director1_nationality, director2_name, director2_dob, director2_nationality FROM tbl_user WHERE id = ?";
           const result = await mysqlcon(sql, [id]);
           res.status(200).json({
             success: true,
@@ -54,8 +51,7 @@ class BusinesSetting {
           break;
         }
         case "5": {
-          const sql =
-            "SELECT  website, job_title, company_estimated_monthly_volume, company_avarage_ticket_size FROM tbl_user WHERE id = ?";
+          const sql ="SELECT  website, job_title, company_estimated_monthly_volume, company_avarage_ticket_size FROM tbl_user WHERE id = ?";
           const result = await mysqlcon(sql, [id]);
           res.status(200).json({
             success: true,
@@ -65,8 +61,7 @@ class BusinesSetting {
           break;
         }
         case "6": {
-          const sql =
-            "SELECT  settle_currency, wallet_url FROM tbl_user WHERE id = ?";
+          const sql ="SELECT  settle_currency, wallet_url FROM tbl_user WHERE id = ?";
           const result = await mysqlcon(sql, [id]);
           res.status(200).json({
             success: true,
