@@ -13,11 +13,9 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 
@@ -1575,7 +1573,7 @@ const CustomerBlock = ({Token})=>{
                 
                   <TableCell className="ps-5">{item.merchant_id}</TableCell>
                   <TableCell >{item.upi_id}</TableCell>
-                  <TableCell >{item.status===1?<button className="btn btn-danger" onClick={()=>handleStatus(item.upi_id,0)}>Block</button>:<button className="btn btn-primary" onClick={()=>handleStatus(item.upi_id,1)}>Unblock</button>}</TableCell>
+                  <TableCell >{item.status===1?<button className="blockCus2" onClick={()=>handleStatus(item.upi_id,0)}>Block</button>:<button className="blockCus1" onClick={()=>handleStatus(item.upi_id,1)}>Unblock</button>}</TableCell>
                   <TableCell>{item.create_on?convertTZ(item.create_on,JSON.parse(localStorage.getItem('timeZone')).timeZone):"00:00:00"}</TableCell>
                   <TableCell >{item.update_on ? convertTZ(item.update_on,JSON.parse(localStorage.getItem('timeZone')).timeZone):"00:00:00"}</TableCell>
                  
