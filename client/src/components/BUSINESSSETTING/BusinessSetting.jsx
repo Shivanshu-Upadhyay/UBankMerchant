@@ -337,53 +337,88 @@ const CompanyProfile = ({ Token }) => {
 
 // Solution Apply For ******______######
 
-const SolutionsApplying = ({Token,message,setMessage}) => {
+
+const SolutionsApplying = ({ Token, message, setMessage }) => {
   const [show, setshow] = useState(false);
   const [apiData, setApiData] = useState([]);
-  const [solution_apply_for_country, setSolution_apply_for_country] =
-    useState([]);
+  
+  const [solution_apply_for_country, setSolution_apply_for_country] = useState(
+    []
+  );
   const [mode_of_solution, setMode_of_solution] = useState([]);
 
   const selectAll = (e) => {
-    setSolution_apply_for_country([
-      ...solution_apply_for_country,
-      e.target.value,
-    ]);
+    if (e.target.checked) {
+      setSolution_apply_for_country([
+        ...solution_apply_for_country,
+        e.target.value,
+      ]);
+    } else
+      setSolution_apply_for_country(
+        solution_apply_for_country.filter((item) => item !== e.target.value)
+      );
   };
 
   const selectAll2 = (e) => {
-    setMode_of_solution([...mode_of_solution, e.target.value]);
+    console.log(e.target.checked);
+    if (e.target.checked) {
+      setMode_of_solution([...mode_of_solution, e.target.value]);
+    } else
+      setMode_of_solution(
+        mode_of_solution.filter((item) => item !== e.target.value)
+      );
   };
+  
 
   useEffect(() => {
-    let formData = new FormData();
-    Aos.init()
-    const config = {
-      headers: {
-        "content-type": "multipart/form-data",
-        Authorization: `Bearer ${Token}`,
-      },
+    Aos.init();
+    const firstFetch = async () => {
+      try {
+        let formData = new FormData();
+        const config = {
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: `Bearer ${Token}`,
+          },
+        };
+        const result = await axios.post(
+          `${baseUrl}/solution-apply`,
+          formData,
+          config
+        );
+
+        setApiData(result?.data?.data);
+      } catch (err) {
+        console.log(err);
+      }
     };
+    const fetchData = async () => {
+      try {
+        let formData = new FormData();
+        formData.append("tab", 2);
+        const config = {
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: `Bearer ${Token}`,
+          },
+        };
+        const { data } = await axios.post(
+          `${baseUrl}/defaultBusinesSettingData`,
+          formData,
+          config
+        );
 
-    axios
-      .post(`${baseUrl}/solution-apply`, formData, config)
-      .then((res) => {
-        // console.log(res.data.data);
-        let result = res.data.data;
-        setApiData((pre) => (pre = result));
-        console.log("im call");
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  const handleChange = () => {
-    console.log(solution_apply_for_country, mode_of_solution);
-  };
-  handleChange();
+        setSolution_apply_for_country(data?.solution_apply_for_country);
+        setMode_of_solution(data?.mode_of_solution);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    Promise.all([fetchData(), firstFetch()]);
+  }, [Token]);
 
   const onSubmit = (e) => {
     e.preventDefault();
-
     let formData = new FormData();
     formData.append("solution_apply_for_country", solution_apply_for_country);
     formData.append("mode_of_solution", mode_of_solution);
@@ -395,11 +430,7 @@ const SolutionsApplying = ({Token,message,setMessage}) => {
     };
 
     axios
-      .post(
-        `${baseUrl}/save-country-solution-apply`,
-        formData,
-        config
-      )
+      .post(`${baseUrl}/save-country-solution-apply`, formData, config)
       .then((response) => {
         console.log(response);
         setMessage((message = response.data.message));
@@ -413,7 +444,6 @@ const SolutionsApplying = ({Token,message,setMessage}) => {
             draggable: true,
             progress: undefined,
           });
-          console.log("Success");
         } else {
           toast.error(message, {
             position: "bottom-right",
@@ -449,7 +479,7 @@ const SolutionsApplying = ({Token,message,setMessage}) => {
         data-aos-delay="50"
         data-aos-duration="2000"
         onSubmit={onSubmit}
-        style={{width: "100%",height:"100%",overflow:"auto"}}
+        style={{ width: "100%", height: "100%", overflow: "auto" }}
       >
         <h6 className="logintext">Solutions Applying For</h6>
         <label className="form-label loginlable mb-3 ">Country</label>
@@ -460,67 +490,68 @@ const SolutionsApplying = ({Token,message,setMessage}) => {
             <Accordion.Body>
               {apiData.map((item, index) => {
                 return (
-                  <>
-                    <div key={index}>
-                      <div className="d-flex align-items-center justify-content-between">
-                        <div className="d-flex align-items-center p-2 w-100">
-                          <input
-                            type="checkbox"
-                            className="mx-1"
-                            name={item.name}
-                            value={item.id}
-                            onChange={selectAll}
-                          />
-                          {item.name}
-                        </div>
-                        <span
-                          className="p-2 flex-shrink-1"
-                          style={{
-                            cursor: "pointer",
-                            fontWeight: "bolder",
-                            fontSize: "20px",
-                          }}
-                          onClick={() => setshow(index)}
-                        >
-                          {show===index ? "-" : "+"}
-                        </span>
+                  <div key={index}>
+                    <div className="d-flex align-items-center justify-content-between">
+                      <div className="d-flex align-items-center p-2 w-100">
+                        <input
+                          type="checkbox"
+                          className="mx-1"
+                          name={item.name}
+                          value={item.id}
+                          onChange={selectAll}
+                          checked={solution_apply_for_country.includes(
+                            item.id + ""
+                          )}
+                        />
+                        {item.name}
                       </div>
-
-                      {show === index ? (
-                        <div className="borderlist d-flex flex-column mb-3 p-3">
-                          {item.support_method.map((user, index) => {
-                            return (
-                              <>
-                                <div
-                                  className="d-flex align-items-center mb-3"
-                                  key={index}
-                                >
-                                  <input
-                                    type="checkbox"
-                                    className="mx-1"
-                                    value={`${item.id}.${user.id}`}
-                                    onChange={selectAll2}
-                                  />
-                                  <div>{user.name}</div>
-                                </div>
-                              </>
-                            );
-                          })}
-                        </div>
-                      ) : (
-                        ""
-                      )}
+                      <span
+                        className="p-2 flex-shrink-1"
+                        style={{
+                          cursor: "pointer",
+                          fontWeight: "bolder",
+                          fontSize: "20px",
+                        }}
+                        onClick={() => setshow(index)}
+                      >
+                        {show === index ? "-" : "+"}
+                      </span>
                     </div>
-                  </>
+
+                    {show === index ? (
+                      <div className="borderlist d-flex flex-column mb-3 p-3">
+                        {item.support_method.map((user, index) => {
+                          return (
+                            <div
+                              className="d-flex align-items-center mb-3"
+                              key={index}
+                            >
+                              <input
+                                type="checkbox"
+                                className="mx-1"
+                                value={`${item.id}.${user.id}`}
+                                onChange={selectAll2}
+                                checked={mode_of_solution.includes(
+                                  `${item.id}.${user.id}`
+                                )}
+                              />
+                              <div>{user.name}</div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </div>
                 );
               })}
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
         <div className="d-flex  mt-3">
-         
           <button className="Nextbtn2 " type="submit">
-            Next
+            Save
           </button>
         </div>
       </form>
