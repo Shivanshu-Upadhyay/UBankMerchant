@@ -531,7 +531,7 @@ const SolutionsApplying = ({ Token, message, setMessage }) => {
                           value={item.id}
                           onChange={selectAll}
                           checked={solution_apply_for_country.includes(
-                            item.id + ""
+                            item.id +""
                           )}
                         />
                         {item.name}

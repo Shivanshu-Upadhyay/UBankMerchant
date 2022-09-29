@@ -7,7 +7,7 @@ function Error() {
   const auth = localStorage.getItem("user");
   useEffect(() => {
     const timevar = setTimeout(() => {
-      auth ? navigate("/") : navigate("/login");
+      auth ? navigate("/Dashbord") : navigate("/login");
     }, 11000);
     return () => clearTimeout(timevar);
   }, []);

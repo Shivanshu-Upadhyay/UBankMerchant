@@ -2,16 +2,18 @@ import React, { useState } from "react";
 import Menu from "@mui/material/Menu";
 import "./filter.css";
 
-const CheakboxComp = ({ name,value,onChange }) => {
+const CheakboxComp = ({ name,value,onChange,checked }) => {
   return (
     <>
       <div className="form-check">
-        <input className="form-check-input" type="checkbox" value={value} onChange={onChange} />
+        <input className="form-check-input" type="checkbox" value={value} onChange={onChange} checked={checked} />
         <label className="cheackboxlable">{name}</label>
       </div>
     </>
   );
 };
+
+
 
 function Filter({
   methodPayment,
@@ -58,12 +60,11 @@ function Filter({
     e.preventDefault();
     setDate((pre) => (pre = undefined));
     setMethodPayment([...new Set(methordData)]);
-    console.log(methordData);
     setStatusPayment([...new Set(statusData)]);
     setCurrencyPayment([...new Set(currencyData)]);
     handleClose();
   };
-
+  console.log();
   return (
     <div>
       <button
@@ -124,8 +125,10 @@ function Filter({
                       onChange={(e) =>
                         e.target.checked
                           ? setMethordData([...methordData, e.target.value])
-                          : ""
+                          :  setMethordData(
+                            methordData.filter((item) => item !== e.target.value))
                       }
+                      checked={methordData.includes("UPI")}
                     />
                     <CheakboxComp
                       name="Net Banking"
@@ -133,8 +136,10 @@ function Filter({
                       onChange={(e) =>
                         e.target.checked
                           ? setMethordData([...methordData, e.target.value])
-                          : ""
+                          : setMethordData(
+                            methordData.filter((item) => item !== e.target.value))
                       }
+                      checked={methordData.includes("NETBANKING")}
                     />
                     <CheakboxComp
                       name="Card"
@@ -142,8 +147,10 @@ function Filter({
                       onChange={(e) =>
                         e.target.checked
                           ? setMethordData([...methordData, e.target.value])
-                          : ""
+                          : setMethordData(
+                            methordData.filter((item) => item !== e.target.value))
                       }
+                      checked={methordData.includes("CARD")}
                     />
                     <CheakboxComp
                       name="E-Wallet"
@@ -151,8 +158,10 @@ function Filter({
                       onChange={(e) =>
                         e.target.checked
                           ? setMethordData([...methordData, e.target.value])
-                          : ""
+                          : setMethordData(
+                            methordData.filter((item) => item !== e.target.value))
                       }
+                      checked={methordData.includes("EWALLET")}
                     />
                   </>
                 ) : null}
@@ -167,8 +176,10 @@ function Filter({
                       onChange={(e) =>
                         e.target.checked
                           ? setStatusData([...statusData, e.target.value])
-                          : ""
+                          : setStatusData(
+                            statusData.filter((item) => item !== e.target.value))
                       }
+                      checked={statusData.includes("1")}
                     />
                     <CheakboxComp
                       name="Waiting"
@@ -176,8 +187,10 @@ function Filter({
                       onChange={(e) =>
                         e.target.checked
                           ? setStatusData([...statusData, e.target.value])
-                          : ""
+                          : setStatusData(
+                            statusData.filter((item) => item !== e.target.value))
                       }
+                      checked={statusData.includes("2")}
                     />
                     <CheakboxComp
                       name="Pending"
@@ -185,8 +198,10 @@ function Filter({
                       onChange={(e) =>
                         e.target.checked
                           ? setStatusData([...statusData, e.target.value])
-                          : ""
+                          : setStatusData(
+                            statusData.filter((item) => item !== e.target.value))
                       }
+                      checked={statusData.includes("3")}
                     />
                     <CheakboxComp
                       name="Refund"
@@ -194,8 +209,10 @@ function Filter({
                       onChange={(e) =>
                         e.target.checked
                           ? setStatusData([...statusData, e.target.value])
-                          : ""
+                          : setStatusData(
+                            statusData.filter((item) => item !== e.target.value))
                       }
+                      checked={statusData.includes("4")}
                     />
                     <CheakboxComp
                       name="Failed"
@@ -203,8 +220,10 @@ function Filter({
                       onChange={(e) =>
                         e.target.checked
                           ? setStatusData([...statusData, e.target.value])
-                          : ""
+                          : setStatusData(
+                            statusData.filter((item) => item !== e.target.value))
                       }
+                      checked={statusData.includes("0")}
                     />
                   </>
                 ) : null}
@@ -218,8 +237,10 @@ function Filter({
                       onChange={(e) =>
                         e.target.checked
                           ? setCurrencyData([...currencyData, e.target.value])
-                          : ""
+                          : setCurrencyData(
+                            currencyData.filter((item) => item !== e.target.value))
                       }
+                      checked={currencyData.includes("INR")}
                     />
                     <CheakboxComp
                       name="USD"
@@ -227,8 +248,10 @@ function Filter({
                       onChange={(e) =>
                         e.target.checked
                           ? setCurrencyData([...currencyData, e.target.value])
-                          : ""
+                          : setCurrencyData(
+                            currencyData.filter((item) => item !== e.target.value))
                       }
+                      checked={currencyData.includes("USD")}
                     />
                     <CheakboxComp
                       name="CNY"
@@ -236,8 +259,10 @@ function Filter({
                       onChange={(e) =>
                         e.target.checked
                           ? setCurrencyData([...currencyData, e.target.value])
-                          : ""
+                          : setCurrencyData(
+                            currencyData.filter((item) => item !== e.target.value))
                       }
+                      checked={currencyData.includes("CNY")}
                     />
                     <CheakboxComp
                       name="MYR"
@@ -245,8 +270,10 @@ function Filter({
                       onChange={(e) =>
                         e.target.checked
                           ? setCurrencyData([...currencyData, e.target.value])
-                          : ""
+                          : setCurrencyData(
+                            currencyData.filter((item) => item !== e.target.value))
                       }
+                      checked={currencyData.includes("MYR")}
                     />
                     <CheakboxComp
                       name="THB"
@@ -254,8 +281,10 @@ function Filter({
                       onChange={(e) =>
                         e.target.checked
                           ? setCurrencyData([...currencyData, e.target.value])
-                          : ""
+                          : setCurrencyData(
+                            currencyData.filter((item) => item !== e.target.value))
                       }
+                      checked={currencyData.includes("THB")}
                     />
                     <CheakboxComp
                       name="IDR"
@@ -263,8 +292,10 @@ function Filter({
                       onChange={(e) =>
                         e.target.checked
                           ? setCurrencyData([...currencyData, e.target.value])
-                          : ""
+                          : setCurrencyData(
+                            currencyData.filter((item) => item !== e.target.value))
                       }
+                      checked={currencyData.includes("IDR")}
                     />
                     <CheakboxComp
                       name="VND"
@@ -272,8 +303,10 @@ function Filter({
                       onChange={(e) =>
                         e.target.checked
                           ? setCurrencyData([...currencyData, e.target.value])
-                          : ""
+                          : setCurrencyData(
+                            currencyData.filter((item) => item !== e.target.value))
                       }
+                      checked={currencyData.includes("VND")}
                     />
                   </>
                 ) : null}
