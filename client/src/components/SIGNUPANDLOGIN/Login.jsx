@@ -151,7 +151,7 @@ const LogInForm = () => {
             />
           </div>
           <div className="text-end">
-            <Link to="/forgot-password">Forget Password</Link>
+            <Link to="/forgot-password">Forgot Password</Link>
           </div>
 
           <div className="d-flex  mt-3 justify-content-around">
@@ -201,7 +201,7 @@ const LogInForm = () => {
           </div>
 
           <div className="text-end">
-            <Link to="/forgot-password">Forget Password</Link>
+            <Link to="/forgot-password">Forgot Password</Link>
           </div>
 
           <div className="d-flex justify-content-center mt-5">

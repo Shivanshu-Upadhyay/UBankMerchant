@@ -137,7 +137,7 @@ const Block2 = ({ statementData }) => {
               className="mx-2"
             />
             <Link to="/DownloadRep" style={{ color: "#fff" }}>
-              Download Reporst
+              Download Report
             </Link>
           </button>
         </div>
