@@ -38,23 +38,17 @@ const LogInForm = () => {
         setMessage((message = response.data.message));
         
         if (response.data.is_complete === 1) {
-            setToken(response.data.data.token)
-            setIsLoginUser(true);
+          setToken(response.data.data.token)
           if(response.data.data.security_status===1){
             setQus(response.data.questionAnswer);
             setStep(1);
           }else{
-        setIsLoginUser(true);
-        console.log(response.data.data.token);
+        setIsLoginUser(response.data.data.token);
         localStorage.setItem("user", response.data.data.token);
         localStorage.setItem('timeZone',JSON.stringify({name:"India",timeZone:"Asia/Kolkata"}))
         setIsLoginUser(true);
-        
           natigate("/");
-        
-          }
-          
-          
+          }     
         } else if (response.data.is_complete === 2) {
           toast.error(message, {
             position: "bottom-right",
@@ -101,7 +95,7 @@ const LogInForm = () => {
       if (answer.toLocaleLowerCase() === qus[refreshNumber].answer.toLocaleLowerCase()) {
         localStorage.setItem("user", Token);
         localStorage.setItem('timeZone',JSON.stringify({name:"India",timeZone:"Asia/Kolkata"}))
-        setIsLoginUser(true);
+        setIsLoginUser(Token);
         setTimeout(()=>{
           natigate("/");
         },500)

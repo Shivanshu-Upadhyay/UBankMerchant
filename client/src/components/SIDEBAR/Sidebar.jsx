@@ -100,11 +100,11 @@ export default function Sidebar() {
 
   }
 
-  let timeZoneValShow = JSON.parse(localStorage.getItem('timeZone')).timeZone
+  let timeZoneValShow = JSON.parse(localStorage.getItem('timeZone'))?.timeZone
 
   const logout = () => {
+    setIsLoginUser(undefined);
     localStorage.clear("user");
-    setIsLoginUser(false);
   };
 
   const sidebarLink = [

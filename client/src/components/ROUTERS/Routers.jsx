@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Dashbord from "../DASHBOARD/Dashbord";
 import Deposit from "../DEPOSIT/Deposit";
 import Virtual from "../VIRTUAlTERMINAL/Virtual";
@@ -18,16 +18,26 @@ import Settlement from "../SETTLEMENT/Settlement";
 import Invoice from "../INVOICE/Invoice";
 import DownloadRep from "../STATEMANTS/DownloadRep";
 import CreateInvoice from '../INVOICE/CreateInvoice'
+import Error from "../PAGE404/Error";
 import { useStateContext } from "../../context/ContextProvider";
-const auth = localStorage.getItem("user");
+import { useState } from "react";
+
+
 function Routers() {
   const { isLoginUser } = useStateContext();
+  const [auth,setAuth] = useState('')
+  useEffect(()=>{
+    if(!isLoginUser){
+      setAuth(localStorage.getItem('user'))
+    }else{
+      setAuth(isLoginUser)
+    }
+  },[isLoginUser])
   
-  console.log(auth);
   return (
     <>
       <Routes>
-        {isLoginUser || auth ? (
+        {auth ? (
           <>
             <Route path="/" element={<Sidebar />}>
               <Route path="/" element={<Dashbord />} />
@@ -47,20 +57,15 @@ function Routers() {
             <Route path="/DownloadRep" element={<DownloadRep />} />
           </>
         ) : (
+          <>
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/InCompleteProfile/:key" element={<InCompleteProfile />} />
+          </>
+          
         )}
-
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/InCompleteProfile/:key" element={<InCompleteProfile />} />
-        {/* <Route path="*" element={<Error />} /> */}
-
-        <Route
-          path="*"
-          element={
-            isLoginUser || auth ? <Navigate to="/" /> : <Navigate to="/login" />
-          }
-        />
+        <Route path="*" element={<Error />} />
+        
       </Routes>
     </>
   );

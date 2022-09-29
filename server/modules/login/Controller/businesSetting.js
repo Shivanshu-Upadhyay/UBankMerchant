@@ -143,14 +143,14 @@ class BusinesSetting {
   async blockToggle(req,res){
     try {
     const {status,id} = req.body
-    if(!status){
+    if(!status && !id){
       return res.status(400).json({message:"Error in Status change"})
     }
    const sqlToggle = "UPDATE tbl_upi_block SET status = ? WHERE upi_id = ?"
-    await mysqlcon(sqlToggle,[status,id]);
+   const result = await mysqlcon(sqlToggle,[status,id]);
    res.status(200).json({
     success: true,
-    result:"succesfully changed"
+    result:result.changedRows==0?"No Change":"Successfuly Change"
   });
     } catch (error) {
       res.status(500).json({
