@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import "./report.css";
 import Menu from "@mui/material/Menu";
 import baseUrl from "../config/baseUrl";
 import axios from "axios";
 import * as XLSX from "xlsx";
-import { useStateContext } from "../../context/ContextProvider";
 function Reports() {
   const [todate, SetToDate] = useState("");
   const [fromdate, SetToFromDate] = useState("");
@@ -170,13 +169,9 @@ const Section1 = ({
 
 const Block2 = ({ todate, fromdate }) => {
  
-  const { setActive } = useStateContext();
-
   
 
-  useEffect(() => {
-    setActive(4);
-  }, []);
+  
 
   return (
     <>

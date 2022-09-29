@@ -1,12 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { Link } from "react-router-dom";
 
 const FirstTable = ({downloadStatement}) => {
-  const { setActive } = useStateContext();
-  useEffect(()=>{
-    setActive(5)
-  },[])
+ 
   return (
     <>
       

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { Link } from "react-router-dom";
 import baseUrl from "../../components/config/baseUrl";
 import axios from "axios";
@@ -9,10 +9,7 @@ let newdownloadStatement = [];
 function Statements() {
   const [yearVal, setYearVal] = useState("2022");
   const { setDownloadStatement } = useStateContext();
-  const { setActive } = useStateContext();
-  useEffect(() => {
-    setActive(5);
-  }, []);
+ 
   const statementData = async (val) => {
     try {
       const auth = localStorage.getItem("user");

@@ -40,21 +40,21 @@ function Routers() {
         {auth ? (
           <>
             <Route path="/" element={<Sidebar />}>
-              <Route path="/" element={<Dashbord />} />
-              <Route path="/Deposit" element={<Deposit />} />
-              <Route path="/payout" element={<Payout />} />
-              <Route path="/Settlement" element={<Settlement />} />
-              <Route path="/Reports" element={<Reports />} />
-              <Route path="/Statements" element={<Statements />} />
-              <Route path="/Invoice" element={<Invoice />} />
-              <Route path="/Virtual" element={<Virtual />} />
-              <Route path="/Teams" element={<Teams />} />
-              <Route path="/BusinessSetting" element={<BusinessSetting />} />
-              <Route path="/Integrations" element={<Integrations />} />
-              <Route path="/ChangePassword" element={<ChangePassword />} />
-              <Route path="/CreateInvoice" element={<CreateInvoice />} />
+              <Route path="Dashbord" element={<Dashbord />} />
+              <Route path="Deposit" element={<Deposit />} />
+              <Route path="payout" element={<Payout />} />
+              <Route path="Settlement" element={<Settlement />} />
+              <Route path="Reports" element={<Reports />} />
+              <Route path="Statements" element={<Statements />} />
+              <Route path="Invoice" element={<Invoice />} />
+              <Route path="Virtual" element={<Virtual />} />
+              <Route path="Teams" element={<Teams />} />
+              <Route path="BusinessSetting" element={<BusinessSetting />} />
+              <Route path="Integrations" element={<Integrations />} />
+              <Route path="ChangePassword" element={<ChangePassword />} />
+              <Route path="CreateInvoice" element={<CreateInvoice />} />
             </Route>
-            <Route path="/DownloadRep" element={<DownloadRep />} />
+            <Route path="DownloadRep" element={<DownloadRep />} />
           </>
         ) : (
           <>

@@ -12,7 +12,7 @@ import CachedIcon from "@mui/icons-material/Cached";
 const LogInForm = () => {
   useEffect(() => {
     AOS.init();
-    setActive(0);
+   
   }, []);
 
   const [email, setEmail] = useState("");
@@ -21,7 +21,7 @@ const LogInForm = () => {
   let [message, setMessage] = useState("");
   const [step, setStep] = useState(0);
   const [qus, setQus] = useState([]);
-  const { setIsLoginUser, setActive } = useStateContext();
+  const { setIsLoginUser } = useStateContext();
 
   const natigate = useNavigate();
   const handleSubmit = async (e) => {
@@ -47,7 +47,7 @@ const LogInForm = () => {
         localStorage.setItem("user", response.data.data.token);
         localStorage.setItem('timeZone',JSON.stringify({name:"India",timeZone:"Asia/Kolkata"}))
         setIsLoginUser(true);
-          natigate("/");
+          natigate("/Dashbord");
           }     
         } else if (response.data.is_complete === 2) {
           toast.error(message, {
@@ -97,7 +97,7 @@ const LogInForm = () => {
         localStorage.setItem('timeZone',JSON.stringify({name:"India",timeZone:"Asia/Kolkata"}))
         setIsLoginUser(Token);
         setTimeout(()=>{
-          natigate("/");
+          natigate("/Dashbord");
         },500)
         
         

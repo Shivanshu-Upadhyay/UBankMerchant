@@ -10,7 +10,6 @@ import baseUrl from "../../components/config/baseUrl";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useStateContext } from "../../context/ContextProvider";
 import * as XLSX from "xlsx";
 const Footer = ({ setPage, page, totalPage, message }) => {
   const pageNumber = (e, p) => {
@@ -527,13 +526,13 @@ function Settlement() {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [tableBodyData, setTableBodyData] = useState([]);
-  const { setActive } = useStateContext();
+
 
   // +++++++++++++++++++++Table Data++++++++++++++++++++
 
   useEffect(() => {
     tabledatafetch();
-    setActive(3)
+   
   }, [page, orderNumber, date, to, from]);
 
   const tabledatafetch = async () => {

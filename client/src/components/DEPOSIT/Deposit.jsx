@@ -103,14 +103,14 @@ const SecondBlock = ({
 function Deposit() {
   // Download Data
   const [xlData,setXlData]= useState([])
-  const { setActive } = useStateContext();
+ 
   
   // CARD DATA
   const [cardData, setCardData] = useState([]);
   const [totalPage, setTotalPage] = useState(1);
    
   useEffect(() => {
-    setActive(1);
+    
     const auth = localStorage.getItem("user");
     let formData = new FormData();
     const config = {

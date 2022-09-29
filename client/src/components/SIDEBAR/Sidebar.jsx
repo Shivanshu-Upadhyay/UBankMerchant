@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import MailIcon from "@mui/icons-material/Mail";
 import Badge from "@mui/material/Badge";
-import { Link, Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import { useStateContext } from "../../context/ContextProvider";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ScheduleIcon from "@mui/icons-material/Schedule";
@@ -84,10 +84,9 @@ const Drawer = styled(MuiDrawer, {
 
 export default function Sidebar() {
   const [open, setOpen] = React.useState(true);
-  const { active, setActive,setTimeZoneVal } = useStateContext();
+  const { setTimeZoneVal } = useStateContext();
   const { setIsLoginUser } = useStateContext();
   const [dateState, setDateState] = React.useState(new Date());
-  
   
   React.useEffect(() => {
     setInterval(() => setDateState(new Date()), 30000);
@@ -112,79 +111,79 @@ export default function Sidebar() {
       name: "Dashboard",
       iconUrl:
         "https://www.bankconnect.online/assets/merchants/img/dashboard.svg",
-      path: "/",
+      path: "/Dashbord",
     },
     {
       name: "Deposit",
       iconUrl:
         "https://www.bankconnect.online/assets/merchants/img/transactions.svg",
-      path: "/Deposit",
+      path: "Deposit",
     },
     {
       name: "Payout",
       iconUrl: "https://www.bankconnect.online/assets/merchants/img/payout.svg",
-      path: "/payout",
+      path: "payout",
     },
     {
       name: "Settlement",
       iconUrl:
         "	https://www.bankconnect.online/assets/merchants/img/sattlement.svg",
-      path: "/Settlement",
+      path: "Settlement",
     },
     {
       name: "Reports",
       iconUrl:
         "https://www.bankconnect.online/assets/merchants/img/reports.svg",
-      path: "/Reports",
+      path: "Reports",
     },
 
     {
       name: "Statements",
       iconUrl:
         "https://www.bankconnect.online/assets/merchants/img/statements.svg",
-      path: "/Statements",
+      path: "Statements",
     },
     {
       name: "Invoice",
       iconUrl:
         "	https://www.bankconnect.online/assets/merchants/img/billing.svg",
-      path: "/Invoice",
+      path: "Invoice",
     },
     {
       name: "Virtual Terminal",
       iconUrl:
         "https://www.bankconnect.online/assets/merchants/img/virtual-terminal.svg",
-      path: "/Virtual",
+      path: "Virtual",
     },
     {
       name: "Teams",
       iconUrl:
         "https://www.bankconnect.online/assets/merchants/img/employes.svg",
-      path: "/Teams",
+      path: "Teams",
     },
     {
       name: "Business Setting",
       iconUrl:
         "https://www.bankconnect.online/assets/merchants/img/business-settings.svg",
-      path: "/BusinessSetting",
+      path: "BusinessSetting",
     },
     {
       name: "Integrations",
       iconUrl:
         "https://www.bankconnect.online/assets/merchants/img/developerImg.png",
-      path: "/Integrations",
+      path: "Integrations",
     },
     {
       name: "Change Password",
       iconUrl:
         "https://www.bankconnect.online/assets/merchants/img/change-password.svg",
-      path: "/ChangePassword",
+      path: "ChangePassword",
     },
     {
       name: "Logout",
       iconUrl:
         "https://www.bankconnect.online/assets/merchants/img/log-out.svg",
-      path: "/login",
+      path: "login",
     },
   ];
 
@@ -272,7 +271,7 @@ export default function Sidebar() {
                 width="40px"
                 style={{ borderRadius: "20px" }}
               />
-              <Badge badgeContent="!" color="error" className="mx-3">
+              <Badge  className="mx-3" style={{cursor:"pointer"}}>
                 <img
                   src="https://www.bankconnect.online/assets/merchants/img/setting.svg"
                   alt=""
@@ -287,32 +286,30 @@ export default function Sidebar() {
         <br />
 
         <List className="my-5">
-          {sidebarLink.map((item, index) => {
+        {sidebarLink.map((item, index) => {
             return (
               <div className="sidebarcontainer mb-3 " key={index}>
-                <div
-                  className={
-                    active === index
-                      ? "iconcontainer mx-3 iconActive"
+                <NavLink
+                  to={item.path}
+                  className={({ isActive }) =>
+                    isActive
+                      ? " iconcontainer mx-3 iconActive"
                       : " iconcontainer mx-3"
                   }
                 >
-                  <Link to={item.path} onClick={() => setActive(index)}>
-                    <img src={item.iconUrl} alt="" className="iconstyle" />
-                  </Link>
-                </div>
+                  <img src={item.iconUrl} alt="not found" className="iconstyle" />
+                </NavLink>
+
                 <div>
-                  <Link
+                  <NavLink
                     to={item.path}
-                    className={
-                      active === index ? "linkNAme activeClass" : "linkNAme"
+                    className={({ isActive }) =>
+                      isActive ? "linkNAme activeClass mx-2" : "linkNAme mx-2"
                     }
-                    onClick={() =>
-                      item.name === "Logout" ? logout() : setActive(index)
-                    }
+                    onClick={() => (item.name === "Logout" ? logout() : null)}
                   >
                     {item.name}
-                  </Link>
+                  </NavLink>
                 </div>
               </div>
             );

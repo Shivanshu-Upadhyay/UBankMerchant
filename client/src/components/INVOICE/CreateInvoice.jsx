@@ -27,7 +27,7 @@ function CreateInvoice() {
   const [taxtAble, setTaxable] = useState(false);
   let [Tax, setTax] = useState("");
   const[description, setDescription] = useState("");
-  const { setActive } = useStateContext();
+  
 
   // Send Api Data to Server
   
@@ -62,9 +62,7 @@ function CreateInvoice() {
     }
   };
 
-useEffect(()=>{
-  setActive(6);
-},[])
+
 
 
   return (

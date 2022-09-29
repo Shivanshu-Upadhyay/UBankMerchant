@@ -24,7 +24,7 @@ function Error() {
               <div className="contant_box_404">
                 <h3 className="h2">Look like you're lost</h3>
                 <p>the page you are looking for not avaible!</p>
-                <Link to={auth ? "/" : "/login"} className="link_404">
+                <Link to={auth ? "/Dashbord" : "/login"} className="link_404">
                   Go to Home
                 </Link>
               </div>

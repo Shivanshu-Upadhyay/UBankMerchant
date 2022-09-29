@@ -14,7 +14,7 @@ app.use(express.urlencoded())
 app.use(express.json())
 
 // routing
-app.use(require('./router/route'));
+app.use(require('./route/route'));
 
 // run website
 app.listen(port, (req, res) =>{

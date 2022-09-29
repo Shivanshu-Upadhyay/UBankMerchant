@@ -109,7 +109,7 @@ const SecondBlock = ({
 function Invoice() {
   // Download Data
   const [xlData, setXlData] = useState([]);
-  const { setActive } = useStateContext();
+ 
 
   // CARD DATA
   const [cardData, setCardData] = useState([]);
@@ -132,7 +132,7 @@ function Invoice() {
 
   useEffect(() => {
     tabledatafetch();
-    setActive(6);
+    
   }, [page, date, from, to, sendCheck]);
 
   const tabledatafetch = async () => {
