@@ -1,4 +1,4 @@
-const mysqlcon = require("../../../config/db_connection");
+const mysqlcon = require("../config/db_connection");
 
 let pagination = (total, page) => {
   let limit = 15;

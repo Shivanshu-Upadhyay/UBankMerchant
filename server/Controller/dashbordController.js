@@ -1,5 +1,5 @@
-const config = require("../../../config/config");
-const mysqlcon = require("../../../config/db_connection");
+const config = require("../config/config");
+const mysqlcon = require("../config/db_connection");
 
 const dashboardCount = {
   payout: async (req, res) => {

@@ -1,5 +1,5 @@
-const mysqlcon = require("../../../config/db_connection");
-const send_mail = require("../../../helper/send-mail");
+const mysqlcon = require("../config/db_connection");
+const send_mail = require("../helper/send-mail");
 const dateTime = require("node-datetime");
 const Date = dateTime.create();
 const date_format = Date.format("ymdTHHMMSS");

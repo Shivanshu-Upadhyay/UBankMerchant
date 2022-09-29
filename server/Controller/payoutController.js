@@ -1,4 +1,4 @@
-const mysqlcon = require('../../../config/db_connection');
+const mysqlcon = require('../config/db_connection');
 
 /* Methods with Numbers
 1 - Default Page

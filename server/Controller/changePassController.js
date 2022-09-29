@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 var md5 = require("md5");
-const config = require("../../../config/config");
-const mysqlcon = require("../../../config/db_connection");
+const config = require("../config/config");
+const mysqlcon = require("../config/db_connection");
 module.exports.changePassword = async function (req, res) {
   try {
     let { oldPassword, newPassword, confirmPassword, token } = req.body;

@@ -1,4 +1,4 @@
-const mysqlcon = require('../../../config/db_connection');
+const mysqlcon = require('../config/db_connection');
 
 module.exports.statement = async function(req,res){
 

@@ -1,4 +1,4 @@
-const config = require("../../../config/config");
+const config = require("../config/config");
 const bcrypt = require("bcrypt");
 const fs = require("fs");
 const path = require("path");
@@ -11,15 +11,15 @@ const nodemailer = require("nodemailer");
 const ejs = require("ejs");
 const cors = require("cors");
 
-const user_send_email = require("../../../helper/send-mail");
+const user_send_email = require("../helper/send-mail");
 var dt = dateTime.create();
 var formatted_date = dt.format("Y-m-d H:M:S");
 console.log(formatted_date);
 
 const filepath = path.join(__dirname, "../uploads");
 const jwt = require("jsonwebtoken");
-const email_validate = require("../../../helper/email-validation");
-const mysqlcon = require("../../../config/db_connection");
+const email_validate = require("../helper/email-validation");
+const mysqlcon = require("../config/db_connection");
 const { exit } = require("process");
 
 const loginCont = {

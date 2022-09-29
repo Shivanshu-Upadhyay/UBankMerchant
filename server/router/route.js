@@ -1,14 +1,14 @@
-const loginController = require("../modules/login/Controller/loginController");
-const dashbordController = require("../modules/login/Controller/dashbordController");
-const payoutController = require("../modules/login/Controller/payoutController");
-const depositsController = require("../modules/login/Controller/deposits_controller");
-const settlementController = require("../modules/login/Controller/settlementController");
-const teamsController = require("../modules/login/Controller/teamsController");
-const statementController = require("../modules/login/Controller/statementController");
-const reportsController = require("../modules/login/Controller/reportsController");
-const invoiceController = require("../modules/login/Controller/invoiceController");
-const changePassController = require("../modules/login/Controller/changePassController");
-const BusinesSetting = require("../modules/login/Controller/businesSetting");
+const loginController = require("../Controller/loginController.js");
+const dashbordController = require("../Controller/dashbordController");
+const payoutController = require("../Controller/payoutController");
+const depositsController = require("../Controller/deposits_controller");
+const settlementController = require("../Controller/settlementController");
+const teamsController = require("../Controller/teamsController");
+const statementController = require("../Controller/statementController");
+const reportsController = require("../Controller/reportsController");
+const invoiceController = require("../Controller/invoiceController");
+const changePassController = require("../Controller/changePassController");
+const BusinesSetting = require("../Controller/businesSetting");
 
 const route = require("express").Router();
 const path = require("path");
@@ -30,7 +30,7 @@ const uploads = multer({ storage: storage });
 
 const helper = require("../helper/jwt");
 const username = require("../helper/username");
-const dashboardCount = require("../modules/login/Controller/dashbordController");
+const dashboardCount = require("../Controller/dashbordController");
 // const email_validate = require("../helper/email-validation");
 
 const views = path.join(__dirname, "../views/");

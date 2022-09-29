@@ -1,4 +1,4 @@
-const mysqlcon = require("../../../config/db_connection");
+const mysqlcon = require("../config/db_connection");
 class BusinesSetting {
   async default(req, res) {
     try {
@@ -160,7 +160,6 @@ class BusinesSetting {
       });
     }    
   }
-
 }
 
 module.exports = new BusinesSetting();

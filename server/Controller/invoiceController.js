@@ -1,4 +1,4 @@
-const mysqlcon = require("../../../config/db_connection");
+const mysqlcon = require("../config/db_connection");
 const dateTime = require("node-datetime");
 const { localsName } = require("ejs");
 const Date = dateTime.create();

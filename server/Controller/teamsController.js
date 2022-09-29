@@ -1,10 +1,9 @@
-const mysqlcon = require('../../../config/db_connection');
+const mysqlcon = require('../config/db_connection');
 const emailvalidator = require("email-validator");
 var dateTime = require('node-datetime');
 var dt = dateTime.create();
 var formatted_date = dt.format('Y-m-d H:M:S');
-const send_mail = require('../../../helper/send-mail')
-
+const send_mail = require('../helper/send-mail')
 
 let pagination = (total,page)=>{
     let limit = 15;
