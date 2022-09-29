@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import MailIcon from "@mui/icons-material/Mail";
 import Badge from "@mui/material/Badge";
-import { NavLink, Outlet } from "react-router-dom";
+import { Navigate, NavLink, Outlet } from "react-router-dom";
 import { useStateContext } from "../../context/ContextProvider";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ScheduleIcon from "@mui/icons-material/Schedule";
@@ -262,7 +262,7 @@ export default function Sidebar() {
             </Badge>
             <div className="mx-2">
               <span style={{ fontSize: "12px" }}>Hello,</span>
-              <span className="username">Amit Singh</span>
+              <span className="username">{localStorage.getItem("userName")}</span>
             </div>
             <div>
               <img

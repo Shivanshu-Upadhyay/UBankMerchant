@@ -21,6 +21,7 @@ const LogInForm = () => {
   let [message, setMessage] = useState("");
   const [step, setStep] = useState(0);
   const [qus, setQus] = useState([]);
+  const [userName, setUserName] = useState('');
   const { setIsLoginUser } = useStateContext();
 
   const natigate = useNavigate();
@@ -36,16 +37,18 @@ const LogInForm = () => {
       .post(`${baseUrl}/login`, formData, config)
       .then((response) => {
         setMessage((message = response.data.message));
-        
+        console.log(response.data.data.token);
         if (response.data.is_complete === 1) {
           setToken(response.data.data.token)
           if(response.data.data.security_status===1){
             setQus(response.data.questionAnswer);
+            setUserName(response.data.data.name)
             setStep(1);
           }else{
         setIsLoginUser(response.data.data.token);
         localStorage.setItem("user", response.data.data.token);
         localStorage.setItem('timeZone',JSON.stringify({name:"India",timeZone:"Asia/Kolkata"}))
+        localStorage.setItem("userName",response.data.data.name)
         setIsLoginUser(true);
           natigate("/Dashbord");
           }     
@@ -86,21 +89,18 @@ const LogInForm = () => {
       });
   };
 
-  const QusAns = () => {
+  const QusAns = ({name}) => {
     const [refreshNumber, setRefreshNumber] = useState(0);
     const [answer, setAnswer] = useState("");
 
     const handleSubmit = (e) => {
       e.preventDefault();
       if (answer.toLocaleLowerCase() === qus[refreshNumber].answer.toLocaleLowerCase()) {
+        setIsLoginUser(Token);
         localStorage.setItem("user", Token);
         localStorage.setItem('timeZone',JSON.stringify({name:"India",timeZone:"Asia/Kolkata"}))
-        setIsLoginUser(Token);
-        setTimeout(()=>{
-          natigate("/Dashbord");
-        },500)
-        
-        
+        localStorage.setItem("userName",userName)
+        natigate("/Dashbord");
       } else {
         toast.error("Answer is not Matched❌❌", {
           position: "bottom-right",

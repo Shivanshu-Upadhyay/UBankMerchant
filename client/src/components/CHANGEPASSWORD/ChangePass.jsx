@@ -23,6 +23,16 @@ function ChangePassword() {
 }
 
 const Header = () => {
+  const [img, setimg] = useState("https://www.bankconnect.online/assets/merchants/img/profile.jpg");
+  const chooseImg =(e)=>{
+    const file =e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file)
+    reader.onloadend = function(){
+      setimg(reader.result)
+      
+    }
+  }
   return (
     <>
       <div
@@ -34,9 +44,9 @@ const Header = () => {
         }}
       >
         <div className="imgdiv">
-          <input type="file" className="file" />
+          <input type="file" className="file" onChange={chooseImg} />
           <img
-            src="	https://www.bankconnect.online/assets/merchants/img/profile.jpg"
+            src={img}
             alt="Not Found"
             className="UploadImg"
           />
@@ -53,6 +63,7 @@ const ChangePassForm = () => {
   const [type1, setType1] = useState("password");
   const [type2, setType2] = useState("password");
   const [type3, setType3] = useState("password");
+ 
   let token = localStorage.getItem("user");
   const [changePassdata, setChangePassData] = useState({
     token,
@@ -83,6 +94,8 @@ const ChangePassForm = () => {
   const handleChange = (e) => {
     setChangePassData({ ...changePassdata, [e.target.name]: e.target.value });
   };
+
+  
 
   return (
     <>
