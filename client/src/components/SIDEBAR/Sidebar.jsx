@@ -110,7 +110,7 @@ export default function Sidebar() {
     {
       name: "Dashboard",
       iconUrl:
-        "https://www.bankconnect.online/assets/merchants/img/dashboard.svg",
+        "https://www.payoway.com/web/assets/admin/icons/dashboard.svg",
       path: "/Dashbord",
     },
     {
