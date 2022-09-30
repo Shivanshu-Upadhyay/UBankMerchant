@@ -6,9 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import "aos/dist/aos.css";
 import axios from "axios";
 import "./signup.css";
-import { Link,useNavigate } from "react-router-dom";
+import { Link,useNavigate,useParams } from "react-router-dom";
 import baseUrl from "../config/baseUrl.js";
-import {useParams} from 'react-router-dom'
 function InCompleteProfile() {
   const [comp, setComp] = useState(0);
   const [Token, setToken] = useState();
@@ -17,9 +16,7 @@ function InCompleteProfile() {
    const { key } = useParams();
   useEffect(() => {
     AOS.init();
-
     setToken(key);
-    
   }, [comp,key]);
 
  console.log(Token);
@@ -55,21 +52,36 @@ function InCompleteProfile() {
     const [countryName, setCountryName] = useState([]);
 
     useEffect(() => {
-      let formData = new FormData();
-      const config = {
-        headers: {
-          "content-type": "multipart/form-data",
-          Authorization: `Bearer ${Token}`,
-        },
+      const fetchData = async () => {
+        try {
+          let formData = new FormData();
+          formData.append("tab", 1);
+          const config = {
+            headers: {
+              "content-type": "multipart/form-data",
+              Authorization: `Bearer ${Token}`,
+            },
+          };
+          const { data } = await axios.post(
+            `${baseUrl}/defaultBusinesSettingData`,
+            formData,
+            config
+          );
+  
+          setCompanyName(data?.result?.bname);
+          setTradingDoing(data?.result?.trading_dba);
+          setRegisteredAddress(data?.result?.blocation);
+          setCompanyNumber(data?.result?.busines_Code);
+          setCountryofIncorporation(data?.result?.busines_Country);
+          setMainContactPerson(data?.result?.fname + " " + data?.result?.lname);
+          setMainContactEmailAddress(data?.result?.main_contact_email);
+          setCountryName(data?.country);
+        } catch (err) {
+          console.log(err);
+        }
       };
-
-      axios
-        .post(`${baseUrl}/country-list`, formData, config)
-        .then((res) => {
-          setCountryName(res.data.data);
-        })
-        .catch((err) => console.log(err));
-    }, []);
+      fetchData();
+    }, [Token]);
 
     const onSubmit = async (e) => {
       e.preventDefault();
@@ -134,6 +146,7 @@ function InCompleteProfile() {
             name="CompanyName"
             value={company_name}
             onChange={(e) => setCompanyName(e.target.value)}
+            required={true}
           />
           <InputComp
             label="Trading As / Doing Business As (DBA) 	"
@@ -141,6 +154,7 @@ function InCompleteProfile() {
             name="TradingDoingBusiness"
             value={trading_dba}
             onChange={(e) => setTradingDoing(e.target.value)}
+            required={true}
           />
           <InputComp
             label="Registered Address"
@@ -148,6 +162,7 @@ function InCompleteProfile() {
             name="RegisteredAddress"
             value={registered_address}
             onChange={(e) => setRegisteredAddress(e.target.value)}
+            required={true}
           />
           <InputComp
             label="Company Number / Registration Number 	"
@@ -155,6 +170,7 @@ function InCompleteProfile() {
             name="CompanyNumberRegistrationNumber"
             value={company_registration_no}
             onChange={(e) => setCompanyNumber(e.target.value)}
+            required={true}
           />
 
           <label className="form-label loginlable mb-3">
@@ -164,6 +180,7 @@ function InCompleteProfile() {
           <select
             className="form-select form-select-sm mb-3 boldOption overflow-auto"
             value={country_of_incorporation}
+            required={true}
             onChange={(e) => setCountryofIncorporation(e.target.value)}
           >
             <option className="" value="Country of Incorporation">
@@ -184,6 +201,7 @@ function InCompleteProfile() {
             name="MainContactPerson"
             value={main_contact_person}
             onChange={(e) => setMainContactPerson(e.target.value)}
+            required={true}
           />
           <InputComp
             label="Main Contact Email Address 	"
@@ -191,6 +209,7 @@ function InCompleteProfile() {
             name="MainContactEmailAddress"
             value={main_contact_email}
             onChange={(e) => setMainContactEmailAddress(e.target.value)}
+            required={true}
           />
 
           <div className="d-flex justify-content-center mt-3">
@@ -228,7 +247,6 @@ function InCompleteProfile() {
 
     const onSubmit = (e) => {
       e.preventDefault();
-
       setSFullName(director1_name);
       setSDateOfBirth(director1_dob);
       setSNationality(director1_nationality);
@@ -285,6 +303,35 @@ function InCompleteProfile() {
           });
         });
     };
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          let formData = new FormData();
+          formData.append("tab", 3);
+          const config = {
+            headers: {
+              "content-type": "multipart/form-data",
+              Authorization: `Bearer ${Token}`,
+            },
+          };
+          const { data } = await axios.post(
+            `${baseUrl}/defaultBusinesSettingData`,
+            formData,
+            config
+          );
+  
+          setFullName(data?.result?.director1_name);
+          setDateOfBirth(data?.result?.director1_dob);
+          setNationality(data?.result?.director1_nationality);
+          setFullName2(data?.result?.director2_name);
+          setDateOfBirth2(data?.result?.director1_dob);
+          setNationality2(data?.result?.director2_nationality);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      fetchData();
+    }, [Token]);
     return (
       <>
         <form
@@ -306,18 +353,21 @@ function InCompleteProfile() {
             type="text"
             value={director1_name}
             onChange={(e) => setFullName(e.target.value)}
+            required={true}
           />
           <InputComp
             label="Date of Birth 	"
             type="date"
             value={director1_dob}
             onChange={(e) => setDateOfBirth(e.target.value)}
+            required={true}
           />
           <InputComp
             label="Nationality  	"
             type="text"
             value={director1_nationality}
             onChange={(e) => setNationality(e.target.value)}
+            required={true}
           />
           <hr className="hrstyle" />
 
@@ -437,6 +487,35 @@ function InCompleteProfile() {
           });
         });
     };
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          let formData = new FormData();
+          formData.append("tab", 4);
+          const config = {
+            headers: {
+              "content-type": "multipart/form-data",
+              Authorization: `Bearer ${Token}`,
+            },
+          };
+          const { data } = await axios.post(
+            `${baseUrl}/defaultBusinesSettingData`,
+            formData,
+            config
+          );
+  
+          setFullName(data?.result?.shareholder1_name);
+          setDateOfBirth(data?.result?.shareholder1_dob);
+          setNationality(data?.result?.shareholder1_nationality);
+          setFullName2(data?.result?.shareholder2_name);
+          setDateOfBirth2(data?.result?.shareholder2_dob);
+          setNationality2(data?.result?.shareholder2_nationality);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      fetchData();
+    }, [Token]);
 
     return (
       <>
@@ -467,18 +546,21 @@ function InCompleteProfile() {
             type="text"
             value={shareholder1_name}
             onChange={(e) => setFullName(e.target.value)}
+            required={true}
           />
           <InputComp
             label="Date of Birth 	"
             type="date"
             value={shareholder1_dob}
             onChange={(e) => setDateOfBirth(e.target.value)}
+            required={true}
           />
           <InputComp
             label="Nationality  	"
             type="text"
             value={shareholder1_nationality}
             onChange={(e) => setNationality(e.target.value)}
+            required={true}
           />
           <hr className="hrstyle" />
 
@@ -519,41 +601,81 @@ function InCompleteProfile() {
   };
 
   const SolutionsApplying = () => {
-    const [show, setshow] = useState(false);
-    // const[isChecked,setIsChecked] = useState(false)
-    const [solution_apply_for_country, setSolution_apply_for_country] =
-      useState([]);
-    const [mode_of_solution, setMode_of_solution] = useState([]);
+   const [show, setshow] = useState(false);
+  const [apiData, setApiData] = useState([]);
+  const [solution_apply_for_country, setSolution_apply_for_country] = useState([]);
+  const [mode_of_solution, setMode_of_solution] = useState([]);
     const hideshow = () => {
       setshow(!show);
     };
 
-    let [apiData, setApiData] = useState([]);
+    const selectAll = (e) => {
+      if (e.target.checked) {
+        setSolution_apply_for_country([
+          ...solution_apply_for_country,
+          e.target.value,
+        ]);
+      } else
+        setSolution_apply_for_country(
+          solution_apply_for_country.filter((item) => item !== e.target.value)
+        );
+    };
+    const selectAll2 = (e) => {
+      console.log(e.target.checked);
+      if (e.target.checked) {
+        setMode_of_solution([...mode_of_solution, e.target.value]);
+      } else
+        setMode_of_solution(
+          mode_of_solution.filter((item) => item !== e.target.value)
+        );
+    };
 
     useEffect(() => {
-      let formData = new FormData();
-      const config = {
-        headers: {
-          "content-type": "multipart/form-data",
-          Authorization: `Bearer ${Token}`,
-        },
+      const firstFetch = async () => {
+        try {
+          let formData = new FormData();
+          const config = {
+            headers: {
+              "content-type": "multipart/form-data",
+              Authorization: `Bearer ${Token}`,
+            },
+          };
+          const result = await axios.post(
+            `${baseUrl}/solution-apply`,
+            formData,
+            config
+          );
+  
+          setApiData(result?.data?.data);
+        } catch (err) {
+          console.log(err);
+        }
       };
+      const fetchData = async () => {
+        try {
+          let formData = new FormData();
+          formData.append("tab", 2);
+          const config = {
+            headers: {
+              "content-type": "multipart/form-data",
+              Authorization: `Bearer ${Token}`,
+            },
+          };
+          const { data } = await axios.post(
+            `${baseUrl}/defaultBusinesSettingData`,
+            formData,
+            config
+          );
+  
+          setSolution_apply_for_country(data?.solution_apply_for_country);
+          setMode_of_solution(data?.mode_of_solution);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      Promise.all([fetchData(), firstFetch()]);
+    }, [Token]);
 
-      axios
-        .post(`${baseUrl}/solution-apply`, formData, config)
-        .then((res) => {
-          // console.log(res.data.data);
-          let result = res.data.data;
-          setApiData((apiData = result));
-          console.log(apiData);
-        })
-        .catch((err) => console.log(err));
-    }, []);
-
-    const handleChange = () => {
-      console.log(solution_apply_for_country, mode_of_solution);
-    };
-    handleChange();
 
     const onSubmit = (e) => {
       e.preventDefault();
@@ -620,80 +742,72 @@ function InCompleteProfile() {
           <h6 className="logintext">Solutions Applying For</h6>
           <label className="form-label loginlable mb-3 ">Country</label>
 
-          <Accordion>
-            <Accordion.Item eventKey="0">
-              <Accordion.Header>Select one or more Country</Accordion.Header>
-              <Accordion.Body>
-                {apiData.map((item, index) => {
-                  return (
-                    <>
-                      <div key={index}>
-                        <div className="d-flex align-items-center justify-content-between">
-                          <div className="d-flex align-items-center p-2 w-100">
-                            <input
-                              type="checkbox"
-                              className="mx-1"
-                              name={item.name}
-                              value={item.id}
-                              onChange={(e) =>
-                                setSolution_apply_for_country([
-                                  ...solution_apply_for_country,
-                                  e.target.value,
-                                ])
-                              }
-                            />
-                            {item.name}
-                          </div>
-                          <span
-                            className="p-2 flex-shrink-1"
-                            style={{
-                              cursor: "pointer",
-                              fontWeight: "bolder",
-                              fontSize: "20px",
-                            }}
-                            onClick={hideshow}
-                          >
-                            {show ? "-" : "+"}
-                          </span>
-                        </div>
-
-                        {show ? (
-                          <div className="borderlist d-flex flex-column mb-3 p-3">
-                            {item.support_method.map((user, index) => {
-                              return (
-                                <>
-                                  <div
-                                    className="d-flex align-items-center mb-3"
-                                    key={index}
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      className="mx-1"
-                                      name={user.name}
-                                      value={`${item.id}.${user.id}`}
-                                      onChange={(e) =>
-                                        setMode_of_solution([
-                                          ...mode_of_solution,
-                                          e.target.value,
-                                        ])
-                                      }
-                                    />
-                                    <div>{user.name}</div>
-                                  </div>
-                                </>
-                              );
-                            })}
-                          </div>
-                        ) : (
-                          ""
-                        )}
+         
+        <Accordion>
+          <Accordion.Item eventKey="0">
+            <Accordion.Header>Select one or more Country</Accordion.Header>
+            <Accordion.Body>
+              {apiData.map((item, index) => {
+                return (
+                  <div key={index}>
+                    <div className="d-flex align-items-center justify-content-between">
+                      <div className="d-flex align-items-center p-2 w-100">
+                        <input
+                          type="checkbox"
+                          className="mx-1"
+                          name={item.name}
+                          value={item.id}
+                          onChange={selectAll}
+                          checked={solution_apply_for_country.includes(
+                            item.id +""
+                          )}
+                        />
+                        {item.name}
                       </div>
-                    </>
-                  );
-                })}
-              </Accordion.Body>
-            </Accordion.Item>
-          </Accordion>
+                      <span
+                        className="p-2 flex-shrink-1"
+                        style={{
+                          cursor: "pointer",
+                          fontWeight: "bolder",
+                          fontSize: "20px",
+                        }}
+                        onClick={() => setshow(index)}
+                      >
+                        {show === index ? "-" : "+"}
+                      </span>
+                    </div>
+
+                    {show === index ? (
+                      <div className="borderlist d-flex flex-column mb-3 p-3">
+                        {item.support_method.map((user, index) => {
+                          return (
+                            <div
+                              className="d-flex align-items-center mb-3"
+                              key={index}
+                            >
+                              <input
+                                type="checkbox"
+                                className="mx-1"
+                                value={`${item.id}.${user.id}`}
+                                onChange={selectAll2}
+                                checked={mode_of_solution.includes(
+                                  `${item.id}.${user.id}`
+                                )}
+                              />
+                              <div>{user.name}</div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                );
+              })}
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
           <div className="d-flex justify-content-center mt-3">
             <button
               className=" back "
@@ -778,6 +892,34 @@ function InCompleteProfile() {
           });
         });
     };
+    
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let formData = new FormData();
+        formData.append("tab", 5);
+        const config = {
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: `Bearer ${Token}`,
+          },
+        };
+        const { data } = await axios.post(
+          `${baseUrl}/defaultBusinesSettingData`,
+          formData,
+          config
+        );
+
+        setWebsite(data?.result?.website);
+        setNatureofbusiness(data?.result?.job_title);
+        setEstimatedMonthly(data?.result?.company_estimated_monthly_volume);
+        setAverageTicket(data?.result?.company_avarage_ticket_size);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, [Token]);
     return (
       <>
         <form
@@ -789,19 +931,21 @@ function InCompleteProfile() {
           data-aos-duration="2000"
           onSubmit={onSubmit}
         >
-          <h6 className="logintext">Company Profile</h6>
+          <h6 className="logintext">Business Info</h6>
 
           <InputComp
             label="Website / Processing URL"
-            type="url"
+            type="text"
             value={company_website_processing_url}
             onChange={(e) => setWebsite(e.target.value)}
+            required={true}
           />
           <InputComp
             label="Nature of Business 	"
             type="text"
             value={company_nature_of_business}
             onChange={(e) => setNatureofbusiness(e.target.value)}
+            required={true}
           />
 
           <div className="mb-2">
@@ -811,14 +955,15 @@ function InCompleteProfile() {
             <select
               className="form-select form-select-sm"
               value={company_estimated_monthly_volume}
+              required={true}
               onChange={(e) => setEstimatedMonthly(e.target.value)}
             >
-              <option value="Below 50000">Below 50000</option>
-              <option value="50000 - 100000">50000 - 100000</option>
-              <option value="100001 - 300000">100001 - 300000 </option>
-              <option value="300001 - 500000">300001 - 500000 </option>
-              <option value="500001 - 800000 ">500001 - 800000 </option>
-              <option value="800001 and above">800001 and above </option>
+              <option value="0">Below 50000</option>
+              <option value="1">50000 - 100000</option>
+              <option value="2">100001 - 300000 </option>
+              <option value="3">300001 - 500000 </option>
+              <option value="4">500001 - 800000 </option>
+              <option value="5">800001 and above </option>
             </select>
           </div>
           <InputComp
@@ -826,6 +971,7 @@ function InCompleteProfile() {
             type="text"
             value={company_avarage_ticket_size}
             onChange={(e) => setAverageTicket(e.target.value)}
+            required={true}
           />
 
           <div className="d-flex justify-content-center mt-3">
@@ -849,7 +995,31 @@ function InCompleteProfile() {
   const SettlementInfo = () => {
     const [international_settelment_currency, setSettelmentInfo] = useState("");
     const [usdt_wallet_address, setCryptoWallet] = useState("");
-
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          let formData = new FormData();
+          formData.append("tab", 6);
+          const config = {
+            headers: {
+              "content-type": "multipart/form-data",
+              Authorization: `Bearer ${Token}`,
+            },
+          };
+          const { data } = await axios.post(
+            `${baseUrl}/defaultBusinesSettingData`,
+            formData,
+            config
+          );
+  
+          setSettelmentInfo(data?.result?.settle_currency);
+          setCryptoWallet(data?.result?.wallet_url);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      fetchData();
+    }, [Token]);
     const onSubmit = (e) => {
       e.preventDefault();
 
@@ -874,7 +1044,7 @@ function InCompleteProfile() {
           console.log(response);
           setMessage((message = response.data.message));
           if (response.status === 200) {
-            navigatetologin('/')
+            navigatetologin('/login')
             console.log("success");
           }
         })
@@ -903,13 +1073,14 @@ function InCompleteProfile() {
           data-aos-duration="2000"
           onSubmit={onSubmit}
         >
-          <h6 className="logintext">Company Profile </h6>
+          <h6 className="logintext">Settlement Info </h6>
 
           <div className="mb-2">
             <label className="form-label loginlable ">Settelment Info</label>
             <select
               className="form-select form-select-sm"
               value={international_settelment_currency}
+              required={true}
               onChange={(e) => setSettelmentInfo(e.target.value)}
             >
               <option value="INR">INR</option>

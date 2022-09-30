@@ -373,10 +373,7 @@ const CompanyProfile = ({ Token }) => {
 const SolutionsApplying = ({ Token, message, setMessage }) => {
   const [show, setshow] = useState(false);
   const [apiData, setApiData] = useState([]);
-
-  const [solution_apply_for_country, setSolution_apply_for_country] = useState(
-    []
-  );
+  const [solution_apply_for_country, setSolution_apply_for_country] = useState([]);
   const [mode_of_solution, setMode_of_solution] = useState([]);
 
   const selectAll = (e) => {

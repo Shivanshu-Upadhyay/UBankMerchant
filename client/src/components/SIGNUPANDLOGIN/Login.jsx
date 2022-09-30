@@ -62,7 +62,7 @@ const LogInForm = () => {
             draggable: true,
             progress: undefined,
           });
-          natigate(`/inCompleteProfile/${Token}`);
+          natigate(`/inCompleteProfile/${response.data.data.token}`);
         } else {
           toast.error(message, {
             position: "bottom-right",
