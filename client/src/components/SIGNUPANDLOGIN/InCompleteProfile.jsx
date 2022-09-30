@@ -24,7 +24,7 @@ function InCompleteProfile() {
 
  console.log(Token);
 
-  const InputComp = ({ label, type, value, onChange }) => {
+  const InputComp = ({ label, type, value, onChange,required=false }) => {
     return (
       <>
         <div className="mb-3">
@@ -35,7 +35,7 @@ function InCompleteProfile() {
             placeholder={label}
             value={value}
             onChange={onChange}
-            required
+            required={required}
           />
         </div>
       </>

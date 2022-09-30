@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import MailIcon from "@mui/icons-material/Mail";
 import Badge from "@mui/material/Badge";
-import { Navigate, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import { useStateContext } from "../../context/ContextProvider";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ScheduleIcon from "@mui/icons-material/Schedule";
@@ -265,12 +265,15 @@ export default function Sidebar() {
               <span className="username">{localStorage.getItem("userName")}</span>
             </div>
             <div>
-              <img
+            <Link to="BusinessSetting">
+            <img
                 src="https://www.bankconnect.online/assets/merchants/img/profile.jpg"
                 alt=""
                 width="40px"
                 style={{ borderRadius: "20px" }}
               />
+              </Link>
+              
               <Badge  className="mx-3" style={{cursor:"pointer"}}>
                 <img
                   src="https://www.bankconnect.online/assets/merchants/img/setting.svg"

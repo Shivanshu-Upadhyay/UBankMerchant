@@ -1282,7 +1282,7 @@ function SignUp() {
             <span className="text1">
               Have a UBank Connect account already ?
             </span>
-            <Link to="/" className="button1">
+            <Link to="/login" className="button1">
               Log In
             </Link>
           </div>
