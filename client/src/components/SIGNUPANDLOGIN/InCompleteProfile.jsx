@@ -50,7 +50,7 @@ function InCompleteProfile() {
     const [main_contact_person, setMainContactPerson] = useState("");
     const [main_contact_email, setMainContactEmailAddress] = useState("");
     const [countryName, setCountryName] = useState([]);
-
+ 
     useEffect(() => {
       const fetchData = async () => {
         try {
@@ -178,22 +178,21 @@ function InCompleteProfile() {
           </label>
 
           <select
-            className="form-select form-select-sm mb-3 boldOption overflow-auto"
-            value={country_of_incorporation}
-            required={true}
-            onChange={(e) => setCountryofIncorporation(e.target.value)}
-          >
-            <option className="" value="Country of Incorporation">
-              Country of Incorporation
+          className="form-select form-select-sm mb-3 boldOption"
+          value={country_of_incorporation}
+          onChange={(e) => setCountryofIncorporation(e.target.value)}
+          required={true}
+          style={{ border: "1px solid #ced4da" }}
+        >
+          <option className="" value="Country of Incorporation">
+            Country of Incorporation
+          </option>
+          {countryName?.map((item, i) => (
+            <option value={item.id} key={i}>
+              {item.name + "-" + item.sortname}
             </option>
-            {countryName.map((item, index) => {
-              return (
-                <option value={item.name} key={index}>
-                  {item.name}
-                </option>
-              );
-            })}
-          </select>
+          ))}
+        </select>
 
           <InputComp
             label="Main Contact Person 	"
