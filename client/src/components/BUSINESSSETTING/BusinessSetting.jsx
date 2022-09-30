@@ -246,9 +246,27 @@ const CompanyProfile = ({ Token }) => {
       .post(`${baseUrl}/save-company-profile`, formData, config)
       .then((response) => {
         console.log(response);
+        toast.success("Successfully Update", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       })
       .catch((error) => {
         console.log(error);
+        toast.error("Somthing went wrong", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       });
   };
   useEffect(() => {
