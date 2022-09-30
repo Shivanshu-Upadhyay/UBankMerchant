@@ -12,9 +12,11 @@ import MailIcon from "@mui/icons-material/Mail";
 import Badge from "@mui/material/Badge";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { useStateContext } from "../../context/ContextProvider";
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import Form from "react-bootstrap/Form";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import "./sidebar.css";
 
 const drawerWidth = 240;
@@ -87,19 +89,17 @@ export default function Sidebar() {
   const { setTimeZoneVal } = useStateContext();
   const { setIsLoginUser } = useStateContext();
   const [dateState, setDateState] = React.useState(new Date());
-  
+
   React.useEffect(() => {
     setInterval(() => setDateState(new Date()), 30000);
-   
   }, []);
 
-  const timeZoneFun = (e)=>{
-    setTimeZoneVal(JSON.parse(e.target.value).timeZone)
-    localStorage.setItem("timeZone",e.target.value)
+  const timeZoneFun = (e) => {
+    setTimeZoneVal(JSON.parse(e.target.value).timeZone);
+    localStorage.setItem("timeZone", e.target.value);
+  };
 
-  }
-
-  let timeZoneValShow = JSON.parse(localStorage.getItem('timeZone'))?.timeZone
+  let timeZoneValShow = JSON.parse(localStorage.getItem("timeZone"))?.timeZone;
 
   const logout = () => {
     setIsLoginUser(undefined);
@@ -109,8 +109,7 @@ export default function Sidebar() {
   const sidebarLink = [
     {
       name: "Dashboard",
-      iconUrl:
-        "https://www.payoway.com/web/assets/admin/icons/dashboard.svg",
+      iconUrl: "https://www.payoway.com/web/assets/admin/icons/dashboard.svg",
       path: "/Dashbord",
     },
     {
@@ -187,6 +186,64 @@ export default function Sidebar() {
     },
   ];
 
+
+
+
+  function BasicMenu() {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+   
+  
+    return (
+      <div>
+        <Badge
+          className="mx-3"
+          style={{ cursor: "pointer" }}
+          id="basic-button"
+          aria-controls={open ? "basic-menu" : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? "true" : undefined}
+          onClick={handleClick}
+        >
+          <img
+            src="https://www.bankconnect.online/assets/merchants/img/setting.svg"
+            alt=""
+            width="40px"
+          />
+        </Badge>
+  
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          <MenuItem  > <Link to='BusinessSetting' onClick={handleClose} style={{color:"#212529",fontWeight:"500",fontSize:"13px"}}> Account Setting</Link> </MenuItem>
+          <MenuItem>  <Link to='ChangePassword' onClick={handleClose} style={{color:"#212529",fontWeight:"500",fontSize:"13px"}}> Change Password</Link> </MenuItem>
+          <MenuItem>  <Link to='login' onClick={()=>{handleClose();logout();}} style={{color:"#212529",fontWeight:"500",fontSize:"13px"}}> Logout</Link> </MenuItem>
+          
+          
+        </Menu>
+      </div>
+    );
+  }
+  
+
+
+
+
+
+
+
   return (
     <Box sx={{ display: "flex" }} className="parentAll">
       <div
@@ -225,33 +282,85 @@ export default function Sidebar() {
               className="d-flex justify-content-center align-items-center"
             >
               <div className="d-flex justify-content-between align-items-center">
-              <CalendarMonthIcon className="mx-1"/>
+                <CalendarMonthIcon className="mx-1" />
                 {dateState.toLocaleDateString("en-GB", {
                   day: "numeric",
                   month: "short",
                   year: "numeric",
-                  timeZone:timeZoneValShow?timeZoneValShow:"Asia/Kolkata"
+                  timeZone: timeZoneValShow ? timeZoneValShow : "Asia/Kolkata",
                 })}
                 <ScheduleIcon className="mx-1" />
                 {dateState.toLocaleString("en-US", {
                   hour: "numeric",
                   minute: "numeric",
                   hour12: true,
-                  timeZone:timeZoneValShow?timeZoneValShow:"Asia/Kolkata"
+                  timeZone: timeZoneValShow ? timeZoneValShow : "Asia/Kolkata",
                 })}
               </div>
-
-              
             </div>
             <div>
-              <Form.Select aria-label="Default select example" className="mx-3" onChange={(e)=>timeZoneFun(e)} value={localStorage.getItem('timeZone')}>
-                <option value={JSON.stringify({name:"India",timeZone:"Asia/Kolkata"})}>India</option>
-                <option value={JSON.stringify({name:"China",timeZone:"Asia/Shanghai"})}>China</option>
-                <option value={JSON.stringify({name:"Indonesia",timeZone:"Asia/Jakarta"})}>Indonesia</option>
-                <option value={JSON.stringify({name:"Philippines",timeZone:"Asia/Shanghai"})}>Philippines</option>
-                <option value={JSON.stringify({name:"Thailand",timeZone:"Asia/Jakarta"})}>Thailand</option>
-                <option value={JSON.stringify({name:"Malaysia",timeZone:"Asia/Shanghai"})}>Malaysia</option>
-                <option value={JSON.stringify({name:"Vietanam",timeZone:"Asia/Jakarta"})}>Vietanam</option>
+              <Form.Select
+                aria-label="Default select example"
+                className="mx-3"
+                onChange={(e) => timeZoneFun(e)}
+                value={localStorage.getItem("timeZone")}
+              >
+                <option
+                  value={JSON.stringify({
+                    name: "India",
+                    timeZone: "Asia/Kolkata",
+                  })}
+                >
+                  India
+                </option>
+                <option
+                  value={JSON.stringify({
+                    name: "China",
+                    timeZone: "Asia/Shanghai",
+                  })}
+                >
+                  China
+                </option>
+                <option
+                  value={JSON.stringify({
+                    name: "Indonesia",
+                    timeZone: "Asia/Jakarta",
+                  })}
+                >
+                  Indonesia
+                </option>
+                <option
+                  value={JSON.stringify({
+                    name: "Philippines",
+                    timeZone: "Asia/Shanghai",
+                  })}
+                >
+                  Philippines
+                </option>
+                <option
+                  value={JSON.stringify({
+                    name: "Thailand",
+                    timeZone: "Asia/Jakarta",
+                  })}
+                >
+                  Thailand
+                </option>
+                <option
+                  value={JSON.stringify({
+                    name: "Malaysia",
+                    timeZone: "Asia/Shanghai",
+                  })}
+                >
+                  Malaysia
+                </option>
+                <option
+                  value={JSON.stringify({
+                    name: "Vietanam",
+                    timeZone: "Asia/Jakarta",
+                  })}
+                >
+                  Vietanam
+                </option>
               </Form.Select>
             </div>
           </div>
@@ -262,26 +371,25 @@ export default function Sidebar() {
             </Badge>
             <div className="mx-2">
               <span style={{ fontSize: "12px" }}>Hello,</span>
-              <span className="username">{localStorage.getItem("userName")}</span>
+              <span className="username">
+                {localStorage.getItem("userName")}
+              </span>
             </div>
-            <div>
-            <Link to="BusinessSetting">
-            <img
-                src="https://www.bankconnect.online/assets/merchants/img/profile.jpg"
-                alt=""
-                width="40px"
-                style={{ borderRadius: "20px" }}
-              />
-              </Link>
-              
-              <Badge  className="mx-3" style={{cursor:"pointer"}}>
+            
+              <Link to="BusinessSetting">
                 <img
-                  src="https://www.bankconnect.online/assets/merchants/img/setting.svg"
+                  src="https://www.bankconnect.online/assets/merchants/img/profile.jpg"
                   alt=""
                   width="40px"
+                  style={{ borderRadius: "20px" }}
                 />
-              </Badge>
-            </div>
+              </Link>
+              
+           
+            <div>
+
+              <BasicMenu />
+              </div>
           </div>
         </Toolbar>
       </AppBar>
@@ -289,7 +397,7 @@ export default function Sidebar() {
         <br />
 
         <List className="my-5">
-        {sidebarLink.map((item, index) => {
+          {sidebarLink.map((item, index) => {
             return (
               <div className="sidebarcontainer mb-3 " key={index}>
                 <NavLink
@@ -300,7 +408,11 @@ export default function Sidebar() {
                       : " iconcontainer mx-3"
                   }
                 >
-                  <img src={item.iconUrl} alt="not found" className="iconstyle" />
+                  <img
+                    src={item.iconUrl}
+                    alt="not found"
+                    className="iconstyle"
+                  />
                 </NavLink>
 
                 <div>
@@ -333,3 +445,4 @@ export default function Sidebar() {
     </Box>
   );
 }
+
