@@ -55,17 +55,19 @@ function Routers() {
               <Route path="CreateInvoice" element={<CreateInvoice />} />
             </Route>
             <Route path="DownloadRep" element={<DownloadRep />} />
+            <Route path="*" element={<Error />} />
           </>
         ) : (
           <>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/InCompleteProfile/:key" element={<InCompleteProfile />} />
+          <Route path="*" element={<Error />} />
           </>
           
         )}
    
-    <Route path="*" element={<Error />} />
+ 
    
         
         
