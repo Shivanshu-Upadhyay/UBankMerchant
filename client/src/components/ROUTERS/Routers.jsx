@@ -18,7 +18,7 @@ import Settlement from "../SETTLEMENT/Settlement";
 import Invoice from "../INVOICE/Invoice";
 import DownloadRep from "../STATEMANTS/DownloadRep";
 import CreateInvoice from '../INVOICE/CreateInvoice'
-import Error from "../PAGE404/Error";
+// import Error from "../PAGE404/Error";
 import { useStateContext } from "../../context/ContextProvider";
 import { useState } from "react";
 
@@ -53,6 +53,7 @@ function Routers() {
               <Route path="Integrations" element={<Integrations />} />
               <Route path="ChangePassword" element={<ChangePassword />} />
               <Route path="CreateInvoice" element={<CreateInvoice />} />
+              <Route path="*" element={<Dashbord />} />
             </Route>
             <Route path="DownloadRep" element={<DownloadRep />} />
           </>
@@ -61,9 +62,10 @@ function Routers() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/InCompleteProfile/:key" element={<InCompleteProfile />} />
+          <Route path="*" element={<Login />} />
           </>   
         )}
-        <Route path="*" element={<Error />} />
+        {/* <Route path="*" element={<Error />} /> */}
       </Routes>
     </>
   );
