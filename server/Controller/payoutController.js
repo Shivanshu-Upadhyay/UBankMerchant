@@ -1,13 +1,4 @@
 const mysqlcon = require('../config/db_connection');
-
-/* Methods with Numbers
-1 - Default Page
-2 - search by OrderID
-3 - Today
-4 - Yesterday
-5 - Custom Date 
-*/
-
 const payoutMethods = {
   filter: async (req, res) => {
     let user = req.user;

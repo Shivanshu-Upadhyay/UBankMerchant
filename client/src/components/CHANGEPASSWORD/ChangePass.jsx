@@ -30,7 +30,6 @@ const Header = () => {
     reader.readAsDataURL(file)
     reader.onloadend = function(){
       setimg(reader.result)
-      
     }
   }
   return (
