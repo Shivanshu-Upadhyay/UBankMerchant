@@ -38,6 +38,7 @@ const LogInForm = () => {
       .then((response) => {
         setMessage((message = response.data.message));
         console.log(response.data.data.token);
+        console.log(response.data.data.token);
         if (response.data.is_complete === 1) {
           setToken(response.data.data.token)
           if(response.data.data.security_status===1){

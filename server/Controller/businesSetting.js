@@ -103,33 +103,7 @@ class BusinesSetting {
           });
           break;
         }
-        case "10": {
-          try{
-            let {mode_of_solution} = req.user;
-            let mode = mode_of_solution.split(',').map((item)=>item.split('.'))
-            let sqlCountries = "SELECT id,name, sortname,support_payment_method FROM countries WHERE id in (?)";
-            let sqlPayment_method= "SELECT id as mode,name,type FROM `payment_method` WHERE id in(?)";
-            let countryResult = await mysqlcon(sqlCountries,[mode.map((item)=>item[0])]);
-            let payment_methodResult = await mysqlcon(sqlPayment_method,[mode.map((item)=>item[1])]);
-            let data = []
-            countryResult.forEach((item)=>payment_methodResult.forEach((item2)=>{
-              if(item.support_payment_method.search(item2.mode)>=0 ){
-                data.push({
-                  country:item.name,sortname:item.sortname,name:item2.name,type:item2.type
-                }) 
-              }
-            }))
-          res.status(200).json({data});
-        }
-        catch(error){
-          console.log(error) 
-            return res.json(500, {
-                message: "error occurered",
-                error: error,
-              });
-        }
-          break;
-        }
+       
         default:
           res.status(400).json({
             success: false,
