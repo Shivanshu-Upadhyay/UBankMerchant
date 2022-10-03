@@ -49,9 +49,8 @@ const LogInForm = () => {
         localStorage.setItem("user", response.data.data.token);
         localStorage.setItem('timeZone',JSON.stringify({name:"India",timeZone:"Asia/Kolkata"}))
         localStorage.setItem("userName",response.data.data.name)
-        setIsLoginUser(true);
-          natigate("/Dashbord");
-          }     
+        natigate("/Dashbord");
+        }     
         } else if (response.data.is_complete === 2) {
           toast.error(message, {
             position: "bottom-right",

@@ -19,24 +19,42 @@ function Integrations() {
               Let us know at
               <a href="sales@ubankconnect.com">sales@ubankconnect.com.</a>
             </p>
-            <div className="secondBlock p-3">
-              <div className="mb-4">
+            <div className="secondBlock p-3 row">
+              <div className="mb-4 col-6">
                 <img
                   src="https://www.bankconnect.online/assets/merchants/img/pdfImg.png"
                   alt=" not found"
                   className="pdfImg"
                 />
                 <br />
-                <a href="h">INR API Deposite</a>
+                <a href="doc/Technical_Integration_Document_Bankconnect_INR_Deposit (1).pdf" download>INR API Deposite</a>
               </div>
-              <div>
+              <div className="mb-4 col-6">
                 <img
                   src="https://www.bankconnect.online/assets/merchants/img/pdfImg.png"
                   alt=" not found"
                   className="pdfImg"
                 />
                 <br />
-                <a href="h">INR API Payout</a>
+                <a  href="Technical Integration Document Bankconnect_INR_Payout.pdf" download>INR API Payout</a>
+              </div>
+              <div className="mb-4 col-6">
+                <img
+                  src="https://www.bankconnect.online/assets/merchants/img/pdfImg.png"
+                  alt=" not found"
+                  className="pdfImg"
+                />
+                <br />
+                <a  href="Technical Integration Document Bankconnect for SEA & CNY Updated.pdf" download>SEA & CNY Updated</a>
+              </div>
+              <div className="col-6">
+                <img
+                  src="https://www.bankconnect.online/assets/merchants/img/pdfImg.png"
+                  alt=" not found"
+                  className="pdfImg"
+                />
+                <br />
+                <a  href="Technical Integration Document Bankconnect for Payout SEA_CNY Updated 1.3.pdf" download>Payout SEA_CNY Updated 1.3</a>
               </div>
             </div>
           </div>

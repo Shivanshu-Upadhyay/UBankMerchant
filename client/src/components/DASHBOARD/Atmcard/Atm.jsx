@@ -17,7 +17,10 @@ function Atm({ atmData }) {
     }
   };
 
-  const AtmCard = ({ flip, bgImg, name,holderName ,date,amount}) => {
+  const AtmCard = ({ flip, bgImg, name,holderName ,amount,id}) => {
+    const d = new Date();
+  
+  let date = d.getMonth() + 1 + '/' + d.getFullYear().toString().substr(-2);
     return (
       <div className="mainAtmDiv">
         <div
@@ -41,7 +44,7 @@ function Atm({ atmData }) {
               className="text-end  "
               style={{ fontSize: "16px", fontWeight: "700" }}
             >
-              * * ** 62
+              * * ** {id}
             </div>
             <br />
             <div className="d-flex justify-content-between ">
@@ -51,7 +54,7 @@ function Atm({ atmData }) {
               </div>
               <div className="mx-5">
                 <div className="holdername">Merchant Name</div>
-                <div>{holderName}</div>
+                <div style={{fontSize:"13px"}}>{holderName}</div>
               </div>
             </div>
           </div>
@@ -77,72 +80,72 @@ function Atm({ atmData }) {
           bgImg="./imges/greenAtm.svg"
           name="Deposits"
           flip="flip-up"
-          date={atmData.date}
-          holderName={atmData.i_flname}
+          holderName={atmData.name}
           amount={atmData.deposit}
+          id={atmData.id}
         />
       ) : cardflip === 1 ? (
         <AtmCard
           flip="flip-up"
           bgImg="./imges/orangAtm.svg"
           name="Payouts"
-          date={atmData.date}
-          holderName={atmData.i_flname}
+          holderName={atmData.name}
           amount={atmData.payout}
+          id={atmData.id}
         />
       ) : cardflip === 2 ? (
         <AtmCard
           flip="flip-up"
           bgImg="./imges/darkBlue.svg"
           name="Settelments"
-          date={atmData.date}
-          holderName={atmData.i_flname}
+          holderName={atmData.name}
           amount={atmData.settlement}
+          id={atmData.id}
         />
       ) : cardflip === 3 ? (
         <AtmCard
           flip="flip-up"
           bgImg="./imges/purpleAtm.svg"
           name="Comission & Charges"
-          date={atmData.date}
-          holderName={atmData.i_flname}
-          amount={atmData.charges}
+          holderName={atmData.name}
+          amount={atmData.commission}
+          id={atmData.id}
         />
       ) : cardflip === 4 ? (
         <AtmCard
           flip="flip-up"
           bgImg="./imges/redAtm.svg"
-          name="Rolling Resever"
-          date={atmData.date}
-          holderName={atmData.i_flname}
-          amount={atmData.roll_reverse}
+          name="Rolling Reserve"
+          holderName={atmData.name}
+          amount={atmData.rolling_reverse}
+          id={atmData.id}
         />
       ) : cardflip === 5 ? (
         <AtmCard
           flip="flip-up"
           bgImg="./imges/pinkAtm.svg"
           name="Refund and Checkback"
-          date={atmData.date}
-          holderName={atmData.i_flname}
+          holderName={atmData.name}
           amount='00.00'
+          id={atmData.id}
         />
       ) : cardflip === 6 ? (
         <AtmCard
           flip="flip-up"
           bgImg="./imges/ligrtBlueAtm.svg"
           name="Available Balance"
-          date={atmData.date}
-          holderName={atmData.i_flname}
-          amount={atmData.avilable_amt}
+          holderName={atmData.name}
+          amount={atmData.available_balance}
+          id={atmData.id}
         />
       ) : (
         <AtmCard
           bgImg="./imges/atm1.svg"
           flip="flip-up"
           name="Deposits"
-          date={atmData.date}
-          holderName={atmData.i_flname}
+          holderName={atmData.name}
           amount={atmData.deposit}
+          id={atmData.id}
         />
       )}
     </div>

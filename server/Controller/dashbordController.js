@@ -20,28 +20,37 @@ const dashboardCount = {
 
   card_data: async function (req, res) {
     let user = req.user;
-    let user_id = user.id;
-
+    let sql = "SELECT IF(status,1,1) AS tbl, status, ammount_type AS currency, SUM(ammount) AS amount, SUM(gst_charges) + SUM(payin_charges) AS commission, rolling_reverse_amount AS rr FROM tbl_merchant_transaction WHERE user_id = ? AND status in (1,4,5) GROUP BY status, ammount_type UNION SELECT IF(status,2,2) AS tbl, status, currency, SUM(amount) AS amount, SUM(akonto_charge) + SUM(gst_amount) AS commission,IF(status,0,0) AS rr FROM tbl_icici_payout_transaction_response_details WHERE users_id = ? AND status = 'SUCCESS' GROUP BY status, currency UNION SELECT IF(status,3,3) as tbl, status,fromCurrency as currency, SUM(requestedAmount) AS amount, SUM(charges) as commission, net_amount_for_settlement AS rr FROM tbl_settlement WHERE user_id = ? AND status = 1 GROUP BY status, fromCurrency";
+    let sql1 = "SELECT * FROM tbl_user_settled_currency WHERE settled_currency = ?";
+    let sql2 = "SELECT symbol FROM countries WHERE sortname = ?";
     try {
-      sql =
-        "select i_flname,date_format(tbl_icici_payout_transaction_response_details.created_on,'%m/%Y') as date,i_email,ROUND(sum(ammount)) as deposit, ROUND(sum(amount)) as payout, ROUND(sum(settlementAmount)) as settlement, ROUND(sum(rolling_reverse_amount)) as roll_reverse, ROUND(sum(totalCharges)) as charges,wallet as avilable_amt from tbl_merchant_transaction INNER JOIN tbl_icici_payout_transaction_response_details on tbl_merchant_transaction.user_id = tbl_icici_payout_transaction_response_details.users_id INNER JOIN tbl_settlement on tbl_settlement.user_id = tbl_icici_payout_transaction_response_details.users_id INNER JOIN tbl_user on tbl_icici_payout_transaction_response_details.users_id=tbl_user.parent_id";
-      // sql = "select i_flname,date_format(created_on,'%m/%Y') as date,ROUND(sum(ammount)) as deposit,i_email from tbl_icici_payout_transaction_response_details ";//where user_id = ? user_id
+      let result = await mysqlcon(sql, [user.id, user.id, user.id]);
+      let result1 = await mysqlcon(sql1, [user.settle_currency]);
+      let result2 = await mysqlcon(sql2, [user.settle_currency == 'USDT' ? 'USD' :user.settle_currency]);
+      let data = {
+        id: user.id,
+        name: user.name,
+        // settlement_currency : user.settle_currency,
+        available_balance: result2[0].symbol + " " + user.wallet.toFixed(2),
+        deposit: result2[0].symbol + " " + (result.filter((item) => item.tbl === 1 && item.status == 1 && item.currency != null).reduce((total, curr) => { return total += ((Number(curr.amount) - Number(curr.commission)) / ((result1.filter((item) => item.deposit_currency === curr.currency)[0]) ? (result1.filter((item) => item.deposit_currency === curr.currency)[0].rate) : 1)) }, 0)).toFixed(2),
+        commission: result2[0].symbol + " " + (result.filter((item) => item.currency != null).reduce((total, curr) => { return total += (curr.commission) / ((result1.filter((item) => item.deposit_currency === curr.currency)[0]) ? (result1.filter((item) => item.deposit_currency === curr.currency)[0].rate) : 1) }, 0)).toFixed(2),
+        rolling_reverse: result2[0].symbol + " " + (result.filter((item) => item.tbl === 1 && item.currency != null && (item.status == 1 || item.status == 4 || item.status == 5)).reduce((total, curr) => { return total += (Number(curr.rr) / ((result1.filter((item) => item.deposit_currency === curr.currency)[0]) ? (result1.filter((item) => item.deposit_currency === curr.currency)[0].rate) : 1)) }, 0)).toFixed(2),
+        refund_nd_chargeback: result2[0].symbol + " " + (result.filter((item) => item.tbl === 1 && item.currency != null && (item.status == 4 || item.status == 5)).reduce((total, curr) => { return total += ((Number(curr.amount) - Number(curr.commission)) / ((result1.filter((item) => item.deposit_currency === curr.currency)[0]) ? (result1.filter((item) => item.deposit_currency === curr.currency)[0].rate) : 1)) }, 0)).toFixed(2),
+        settlement: result2[0].symbol + " " + (result.filter((item) => item.tbl === 3 && item.status == 1 && item.currency != null).reduce((total, curr) => { return total += ((Number(curr.amount) - Number(curr.commission)) / ((result1.filter((item) => item.deposit_currency === curr.currency)[0]) ? (result1.filter((item) => item.deposit_currency === curr.currency)[0].rate) : 1)) }, 0)).toFixed(2),
+        payout: result2[0].symbol + " " + (result.filter((item) => item.status === "SUCCESS" && item.currency != null).reduce((total, curr) => { return total += (Number(curr.amount) - Number(curr.commission)) / ((result1.filter((item) => item.deposit_currency === curr.currency)[0]) ? (result1.filter((item) => item.deposit_currency === curr.currency)[0].rate) : 1) }, 0)).toFixed(2)
 
-      let result = await mysqlcon(sql);
-
+      }
       return res.status(200).json({
         status: true,
-        message: "data sent successfully",
-        data: result,
+        message: "User card data - ",
+        data: data
       });
-    } catch (Error) {
-      console.log(Error);
-      res
-        .status(500)
-        .json({ status: false, message: "Error to complete task.", Error });
-    } finally {
-      
+
+    } catch (error) {
+      console.log(Error)
+      res.status(500).json({ status: false, message: 'Error to complete task.', data: [] });
     }
+
   },
   success_rate: async function (req, res) {
     let {id} = req.user;                      

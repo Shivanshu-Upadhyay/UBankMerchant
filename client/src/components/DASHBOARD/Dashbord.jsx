@@ -66,8 +66,8 @@ function Dashbord() {
       };
 
       let result = await axios.post(`${baseUrl}/card_data`, formData, config);
-     
-      setAtmData(result.data.data[0]);
+     console.log(result.data.data);
+      setAtmData(result.data.data);
     } catch (error) {
       console.log(error);
     }
