@@ -53,7 +53,6 @@ function Routers() {
               <Route path="Integrations" element={<Integrations />} />
               <Route path="ChangePassword" element={<ChangePassword />} />
               <Route path="CreateInvoice" element={<CreateInvoice />} />
-              <Route path="*" element={<Dashbord />} />
             </Route>
             <Route path="DownloadRep" element={<DownloadRep />} />
           </>
@@ -62,7 +61,6 @@ function Routers() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/InCompleteProfile/:key" element={<InCompleteProfile />} />
-          <Route path="*" element={<Login />} />
           </>   
         )}
         {/* <Route path="*" element={<Error />} /> */}
