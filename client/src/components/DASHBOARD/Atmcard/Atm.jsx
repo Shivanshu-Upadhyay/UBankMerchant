@@ -54,7 +54,7 @@ function Atm({ atmData }) {
               </div>
               <div className="mx-5">
                 <div className="holdername">Merchant Name</div>
-                <div style={{fontSize:"13px"}}>{holderName}</div>
+                <div style={{fontSize:"14px"}}>{holderName}</div>
               </div>
             </div>
           </div>
