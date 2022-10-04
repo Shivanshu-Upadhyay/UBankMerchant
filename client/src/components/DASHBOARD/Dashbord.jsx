@@ -44,10 +44,7 @@ function Dashbord() {
         formData,
         config
       );
-
       setSuccess(result.data.data);
-     
-      
     } catch (error) {
       console.log(error);
     }

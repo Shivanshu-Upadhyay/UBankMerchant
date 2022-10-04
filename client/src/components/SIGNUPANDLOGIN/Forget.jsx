@@ -22,7 +22,7 @@ const ForgetReg = ({ setComp }) => {
           </label>
           <input
             type="email"
-            className="form-control inputField"
+            className="form-control inputField2"
             placeholder="Email"
             required
           />
