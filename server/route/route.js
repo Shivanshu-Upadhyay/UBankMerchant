@@ -284,3 +284,9 @@ route.post(
   helper.verify,
   BusinesSetting.blockToggle
 );
+route.post(
+  "/BusnissDownload",
+  uploads.none(),
+  helper.verify,
+  BusinesSetting.download
+);

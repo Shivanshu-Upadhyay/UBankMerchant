@@ -102,6 +102,32 @@ class BusinesSetting {
             result: result,
           });
           break;
+        }case "10": {
+          try{
+            let {mode_of_solution} = req.user;
+            let mode = mode_of_solution.split(',').map((item)=>item.split('.'))
+            let sqlCountries = "SELECT id,name, sortname,support_payment_method FROM countries WHERE id in (?)";
+            let sqlPayment_method= "SELECT id as mode,name,type FROM `payment_method` WHERE id in(?)";
+            let countryResult = await mysqlcon(sqlCountries,[mode.map((item)=>item[0])]);
+            let payment_methodResult = await mysqlcon(sqlPayment_method,[mode.map((item)=>item[1])]);
+            let data = [] 
+            countryResult.forEach((item)=>payment_methodResult.forEach((item2)=>{
+              item.support_payment_method.split(',').forEach((item3)=>{
+                   if( item3==item2.mode){
+                    data.push({country:item.name,sortname:item.sortname,name:item2.name,type:item2.type}) 
+                  }
+              })
+            }))
+          res.status(200).json({data});
+        }
+        catch(error){
+          console.log(error) 
+            return res.json(500, {
+                message: "error occurered",
+                error: error,
+              });
+        }
+          break;
         }
        
         default:
@@ -160,6 +186,39 @@ class BusinesSetting {
         error
       });
     }    
+  }
+  async download(req, res) {
+    let user = req.user;
+      try {
+        let {mode_of_solution} = req.user;
+        let mode = mode_of_solution.split(',').map((item)=>item.split('.'))
+        let sqlCountries = "SELECT id,name, sortname,support_payment_method FROM countries WHERE id in (?)";
+        let sqlPayment_method= "SELECT id as mode,name,type FROM `payment_method` WHERE id in(?)";
+        let countryResult = await mysqlcon(sqlCountries,[mode.map((item)=>item[0])]);
+        let payment_methodResult = await mysqlcon(sqlPayment_method,[mode.map((item)=>item[1])]);
+        let data = [] 
+        countryResult.forEach((item)=>payment_methodResult.forEach((item2)=>{
+          item.support_payment_method.split(',').forEach((item3)=>{
+               if( item3==item2.mode){
+                data.push({country:item.name,sortname:item.sortname,name:item2.name,type:item2.type}) 
+              }
+          })
+        }))
+      let defaultSql = "SELECT name, email, complete_profile, id, secretkey, bname, trading_dba, blocation, busines_Code, fname, lname, main_contact_email, director1_name, director1_dob, director1_nationality, director2_name, director2_dob, director2_nationality, shareholder1_name, shareholder1_dob, shareholder1_nationality, shareholder2_name, shareholder2_dob, shareholder2_nationality, website, job_title, company_estimated_monthly_volume, company_avarage_ticket_size, settle_currency, wallet_url from tbl_user WHERE id = ?";
+      let bcountrySql = "SELECT countries.name FROM countries INNER JOIN tbl_user ON countries.id = tbl_user.busines_Country WHERE tbl_user.id = ?";
+      const defaultResult = await mysqlcon(defaultSql, [user.id]);
+      const bcountryResult = await mysqlcon(bcountrySql, [user.id]);
+      res.status(200).json({
+        default: defaultResult,
+        buisness_country:bcountryResult,
+        countryResult:data
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: "Somthing went wrong in reports",
+      });
+    }
   }
 }
 

@@ -21,6 +21,7 @@ import Slide from '@mui/material/Slide';
 
 import baseUrl from "../config/baseUrl.js";
 import Aos from "aos";
+import { Link } from "react-router-dom";
 
 function BusinessSetting() {
   const [comp, setComp] = useState(0);
@@ -1324,7 +1325,7 @@ const Download = () => {
         <br />
         <br />
         <div className="d-flex mx-4">
-          <a href="hhh">Download</a>
+          <Link to="/DownloadSetting">Download</Link>
         </div>
       </div>
     </>

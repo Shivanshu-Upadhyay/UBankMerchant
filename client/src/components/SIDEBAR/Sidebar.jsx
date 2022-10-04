@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import MailIcon from "@mui/icons-material/Mail";
 import Badge from "@mui/material/Badge";
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useStateContext } from "../../context/ContextProvider";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ScheduleIcon from "@mui/icons-material/Schedule";
@@ -89,7 +89,7 @@ export default function Sidebar() {
   const { setTimeZoneVal } = useStateContext();
   const { setIsLoginUser } = useStateContext();
   const [dateState, setDateState] = React.useState(new Date());
-
+  const navigate = useNavigate()
   React.useEffect(() => {
     setInterval(() => setDateState(new Date()), 30000);
   }, []);
@@ -102,8 +102,9 @@ export default function Sidebar() {
   let timeZoneValShow = JSON.parse(localStorage.getItem("timeZone"))?.timeZone;
 
   const logout = () => {
-    setIsLoginUser(undefined);
     localStorage.clear("user");
+    setIsLoginUser(undefined);
+    navigate('login')
   };
 
   const sidebarLink = [
@@ -229,7 +230,7 @@ export default function Sidebar() {
         >
           <MenuItem  > <Link to='BusinessSetting' onClick={handleClose} style={{color:"#212529",fontWeight:"500",fontSize:"13px"}}> Account Setting</Link> </MenuItem>
           <MenuItem>  <Link to='ChangePassword' onClick={handleClose} style={{color:"#212529",fontWeight:"500",fontSize:"13px"}}> Change Password</Link> </MenuItem>
-          <MenuItem>  <Link to='login' onClick={()=>{handleClose();logout();}} style={{color:"#212529",fontWeight:"500",fontSize:"13px"}}> Logout</Link> </MenuItem>
+          <MenuItem>  <div onClick={()=>{handleClose();logout();}} style={{color:"#212529",fontWeight:"500",fontSize:"13px"}}> Logout</div> </MenuItem>
           
           
         </Menu>

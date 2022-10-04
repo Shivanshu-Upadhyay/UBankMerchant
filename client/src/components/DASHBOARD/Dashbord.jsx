@@ -57,14 +57,12 @@ function Dashbord() {
     try {
       const auth = localStorage.getItem("user");
       let formData = new FormData();
-
       const config = {
         headers: {
           "content-type": "multipart/form-data",
           Authorization: `Bearer ${auth}`,
         },
       };
-
       let result = await axios.post(`${baseUrl}/card_data`, formData, config);
      console.log(result.data.data);
       setAtmData(result.data.data);
