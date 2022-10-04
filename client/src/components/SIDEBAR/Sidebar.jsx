@@ -98,9 +98,7 @@ export default function Sidebar() {
     setTimeZoneVal(JSON.parse(e.target.value).timeZone);
     localStorage.setItem("timeZone", e.target.value);
   };
-
   let timeZoneValShow = JSON.parse(localStorage.getItem("timeZone"))?.timeZone;
-
   const logout = () => {
     localStorage.clear("user");
     setIsLoginUser(undefined);
