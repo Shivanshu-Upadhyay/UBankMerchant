@@ -84,21 +84,19 @@
 }
 
 .openClose {
-  
   position: absolute;
-  top: 20rem;
+  top: 22rem;
   z-index: 9999;
   left: 215px;
-  
-  
+  transition: all 0.2s ease;
 }
 .openClose2 {
-  
   position: absolute;
-  top: 20rem;
+  top: 25rem;
   z-index: 9999;
-  left: 45px;
-  
+  left: 85px;
+  transform: rotate(180deg);
+  transition: all 0.2s ease;
   
 }
 
