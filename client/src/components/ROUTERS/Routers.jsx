@@ -26,20 +26,16 @@ import Forget from "../SIGNUPANDLOGIN/Forget";
 
 
 function Routers() {
-  const { isLoginUser } = useStateContext();
-  const [auth,setAuth] = useState(isLoginUser)
+  const { isLoginUser,setIsLoginUser } = useStateContext();
+
   useEffect(()=>{
-    if(!isLoginUser){
-      setAuth(localStorage.getItem('user'))
-    }else{
-      setAuth(isLoginUser)
-    }
+    setIsLoginUser(localStorage.getItem('user')) 
   },[isLoginUser])
   
   return (
     <>
       <Routes>
-        {auth ? (
+        {isLoginUser ? (
           <>
             <Route path="/" element={<Sidebar />}>
               <Route path="Dashbord" element={<Dashbord />} />
