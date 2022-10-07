@@ -63,7 +63,7 @@ function Routers() {
           <Route path="/forgot-password" element={<Forget />} />
           </>   
         )}
-        <Route path="*" element={<Error />} />
+        <Route path="*" element={isLoginUser?<Error />:<Login />} />
       </Routes>
     </>
   );
