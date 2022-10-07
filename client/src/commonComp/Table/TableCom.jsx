@@ -9,7 +9,6 @@ import Popover from "@mui/material/Popover";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-
 import "./table.css";
 
 const ButtonBox = ({ name }) => {
@@ -43,7 +42,6 @@ export default function TableComp({ tableBodyData, xlData, setXlData }) {
      return dateTime
 }
 
-console.log();
 
   useEffect(() => {
     setUsers(tableBodyData);

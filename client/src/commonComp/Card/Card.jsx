@@ -3,8 +3,6 @@ import Circul from '../Circul/Circul';
 import './card.css'
 
 const Card = ({carddata}) => {
-  
-  
   return (
     <>
       <div className="row justify-content-between">
