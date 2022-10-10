@@ -12,28 +12,20 @@ module.exports.defaultOrder = async function (req, res) {
   try {
     let { orderNumber } = req.body;
     let sql;
-
     if (orderNumber) {
-      sql =
-        "SELECT COUNT(*) as Total FROM tbl_merchant_transaction WHERE user_id = ? AND order_no LIKE ?";
+      sql ="SELECT COUNT(*) as Total FROM tbl_merchant_transaction WHERE user_id = ? AND order_no LIKE ?";
     } else {
-      sql =
-        "SELECT COUNT(*) as Total FROM tbl_merchant_transaction WHERE user_id = ?";
+      sql ="SELECT COUNT(*) as Total FROM tbl_merchant_transaction WHERE user_id = ?";
     }
-
     let result;
     if (orderNumber) {
       result = await mysqlcon(sql, [user.id, orderNumber + "%"]);
     } else {
       result = await mysqlcon(sql, [user.id]);
     }
-
     let total = result[0].Total;
-
     let Page = req.body.page ? Number(req.body.page) : 1;
-
     let page = pagination(total, Page);
-
     let sql1;
     if (orderNumber) {
       sql1 =
