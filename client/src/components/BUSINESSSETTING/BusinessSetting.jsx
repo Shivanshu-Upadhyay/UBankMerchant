@@ -1252,6 +1252,8 @@ const SettlementInfo = ({ Token, message, setMessage }) => {
             <option value="MYR">MYR</option>
             <option value="THB">THB</option>
             <option value="VND">VND </option>
+            <option value="USD">USD </option>
+            <option value="USDT">USDT </option>
           </select>
         </div>
         <InputComp

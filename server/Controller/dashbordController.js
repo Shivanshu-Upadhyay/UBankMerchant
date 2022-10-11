@@ -216,34 +216,33 @@ const dashboardCount = {
       res.status(500).json({ status: false, message: 'Error to complete task.', data: [] });
     }
   },
+
   daily_sale_count_icon: async (req, res) => {
-    let user = req.user;
     let day = { 0: 'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat' }
-    let sql = "SELECT date_format(created_on,'%d-%m') as day, SUM(ammount) as total FROM tbl_merchant_transaction WHERE user_id = ? AND status = 1 AND DATE(created_on) >= DATE(NOW()) - INTERVAL 6 DAY GROUP BY day ORDER BY created_on ASC;";
+    let sql = "SELECT date_format(created_on,'%d-%m') as day, sum(ammount) as total, ammount_type  as currency FROM tbl_merchant_transaction WHERE user_id = 6 AND status = 1 AND DATE(created_on) >= DATE(NOW()) - INTERVAL 6 DAY GROUP BY day, currency ORDER BY created_on ASC";
+    let sql1 = "SELECT deposit_currency, rate FROM tbl_user_settled_currency WHERE settled_currency = ?";
     try {
-        let result = await mysqlcon(sql, [user.id]);
-        const dates = [...Array(7)].map((_, i) => {
-          const d = new Date();
-          d.setDate(d.getDate() - i);
-          return (("0" + (d.getDate())).slice(-2)+ "-" +   ("0" + (d.getMonth() + 1)).slice(-2)  + " " + day[d.getDay()]);
-        })
-        let data = {}
-        dates.forEach(item => {
-          let data1 = (result.filter((item1)=> item1.day === item.split(' ')[0] )[0])
-          let data2 = (data1 ? data1 : 'daily_trnx');
-          if (item.split(' ')[0] === data2.day){
-            data[item] = data2.total
-          }
-          else{
-            data[item] = 0
-          } 
-        });
+      let result = await mysqlcon(sql, [req.user.id]);
+      let result1 = await mysqlcon(sql1, [req.user.settle_currency]);
+      const dates = [...Array(7)].map((_, i) => {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        return (("0" + (d.getDate())).slice(-2) + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + " " + day[d.getDay()]);
+      })
+      let data = {}
+      dates.forEach(item => {
+        data[item] = 0
+        let data_per_day = (result.filter((item1) => item1.day === item.split(' ')[0]))
+        for (x of data_per_day) {
+          let exchange_rate = result1.filter((item) => item.deposit_currency == x.currency).reduce((total, current) => { return current.rate }, 1)
+          data[item] += Number((x.total/exchange_rate).toFixed(2))
+        }
+      });
       return res.status(200).json({
         status: true,
         message: "Daily Sales count - ",
         data: data
       });
-
     } catch (error) {
       console.log(error)
       res.status(500).json({ status: false, message: 'Error to complete task.', data: [] });
