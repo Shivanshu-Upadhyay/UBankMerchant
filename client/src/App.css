@@ -61,3 +61,30 @@ textarea.createInvoiceTeaxtArea{
 
 
 /* <>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>scrollbar css <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */
+
+
+.createNewMerchant{
+  padding: 10px 20px;
+  display: flex;
+  background-color: #1eaae7;
+  border: none;
+  border-radius: 30px;
+  color: #fff;
+}
+
+.normail{
+  text-align: center;
+  width: 100px;
+  padding: 5px 10px;
+  color: #fff;
+  background-color: gray;
+  border-radius: 30px;
+}
+.approved{
+  text-align: center;
+  width: 100px;
+  padding: 5px 10px;
+  color: #fff;
+  background-color: #28a745;
+  border-radius: 30px;
+}

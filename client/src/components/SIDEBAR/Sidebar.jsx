@@ -112,11 +112,17 @@ export default function Sidebar() {
       path: "/Dashbord",
     },
     {
+      name: "Sub Merchants",
+      iconUrl:"https://www.payoway.com/web/assets/merchants/img/merchant.svg",
+      path: "SubMerchants",
+    },
+    {
       name: "Deposit",
       iconUrl:
         "https://www.bankconnect.online/assets/merchants/img/transactions.svg",
       path: "Deposit",
     },
+  
     {
       name: "Payout",
       iconUrl: "https://www.bankconnect.online/assets/merchants/img/payout.svg",

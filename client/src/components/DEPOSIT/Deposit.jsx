@@ -9,7 +9,7 @@ import Filter from "../../commonComp/filter/Filter";
 import Card from "../../commonComp/Card/Card";
 import baseUrl from "../../components/config/baseUrl";
 import * as XLSX from "xlsx";
-import { useStateContext } from "../../context/ContextProvider";
+
 const Footer = ({ setPage, page, totalPage }) => {
   const pageNumber = (e, p) => {
     setPage(p);

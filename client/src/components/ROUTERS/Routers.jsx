@@ -22,6 +22,7 @@ import Error from "../PAGE404/Error";
 import { useStateContext } from "../../context/ContextProvider";
 import DownloadSetting from "../BUSINESSSETTING/DownloadSetting";
 import Forget from "../SIGNUPANDLOGIN/Forget";
+import SubMerchants from "../SubMerchants/SubMerchants";
 
 
 function Routers() {
@@ -38,6 +39,7 @@ function Routers() {
           <>
             <Route path="/" element={<Sidebar />}>
               <Route path="Dashbord" element={<Dashbord />} />
+              <Route path="SubMerchants" element={<SubMerchants />} />
               <Route path="Deposit" element={<Deposit />} />
               <Route path="payout" element={<Payout />} />
               <Route path="Settlement" element={<Settlement />} />

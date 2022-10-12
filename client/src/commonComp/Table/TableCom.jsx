@@ -29,7 +29,7 @@ const ButtonBox = ({ name }) => {
   );
 };
 
-export default function TableComp({ tableBodyData, xlData, setXlData }) {
+export default function TableComp({ tableBodyData, xlData, setXlData,tableHeading }) {
   const [users, setUsers] = useState([]);
   
   function convertTZ(date, tzString) {
