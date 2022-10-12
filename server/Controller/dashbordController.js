@@ -374,15 +374,12 @@ const dashboardCount = {
   dbycurrency: async function (req, res) {
     let user = req.user;
 
-    let curr = ["INR", "CNY", "IDR", "THB", "VND", "USD", "PHP", "MYR"];
+    let curr = ["INR", "CNY", "IDR", "THB", "VND", "USD", "PHP", "MYR","CLP",'MXN','PEN','GTQ','CRC','BRL'];
 
     try {
       let { today, week, month } = req.body;
-
       let sql;
-
       let output = [];
-
       if (today) {
         for (let i = 0; i < curr.length; i++) {
           sql =
