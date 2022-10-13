@@ -14,9 +14,7 @@ a {
   text-decoration: none !important;
 }
 
-.MuiPaper-elevation.MuiPaper-elevation8.MuiPaper-root.MuiPaper-rounded.MuiPopover-paper.css-3bmhjh-MuiPaper-root-MuiPopover-paper {
-  left: 1310px !important;
-}
+
 
 select.form-select.form-select-sm.mb-3.boldOption {
   border: none;
@@ -65,6 +63,18 @@ textarea.createInvoiceTeaxtArea{
 
 .createNewMerchant{
   padding: 10px 20px;
+  text-align: center;
+  display: flex;
+  background-color: #1eaae7;
+  border: none;
+  border-radius: 30px;
+  color: #fff;
+  font-weight: 600;
+}
+.createNewMerchant2{
+  padding: 8px 30px;
+  text-align: center;
+  font-weight: 600;
   display: flex;
   background-color: #1eaae7;
   border: none;

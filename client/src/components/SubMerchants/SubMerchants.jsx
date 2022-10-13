@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TableComp from "./TableComp";
 import Pagination from "@mui/material/Pagination";
-import AddIcon from '@mui/icons-material/Add';
+import CreateSubMer from "./CreateSubMer";
 
 
 const Footer = ({ setPage, page, totalPage }) => {
@@ -40,7 +40,7 @@ function SubMerchants() {
     <>
       <h4 className="heading animate__backInDown">Sub Merchants</h4>
       <div className="d-flex justify-content-end my-3">
-        <button className="createNewMerchant"><AddIcon />Create Merchant</button>
+      <CreateSubMer />
       </div>
       <div className="row">
         <div className="col-12">

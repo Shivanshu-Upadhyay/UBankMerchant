@@ -13,7 +13,6 @@ import * as XLSX from "xlsx";
 const Footer = ({ setPage, page, totalPage }) => {
   const pageNumber = (e, p) => {
     setPage(p);
-   
   };
   return (
     <>
