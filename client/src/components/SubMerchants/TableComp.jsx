@@ -33,9 +33,9 @@ function TableComp({tableBodyData}) {
               <TableCell >{ item.name }</TableCell>
               <TableCell>{item.id}</TableCell>
               <TableCell>
-                {item.status===0?<div className='approved'>Normal</div>:''}
+                {item.status===0?<div className='approved'>Approve</div>:''}
               </TableCell>
-              <TableCell>{item.wp===0?<div className='approved'>Normal</div>:''}</TableCell>
+              <TableCell>{item.wp===0?<div className='approved'>Approve</div>:''}</TableCell>
               <TableCell >
                 {item.ct}
               </TableCell>
