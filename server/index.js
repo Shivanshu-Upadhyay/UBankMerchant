@@ -3,7 +3,6 @@ const app = express();
 const port = 9240;
 const config = require('./config/config.js');
 const cors = require("cors");
-
 // Cors error
 const corsOption = {
     credentials:true,

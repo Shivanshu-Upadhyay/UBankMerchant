@@ -31,6 +31,7 @@ const uploads = multer({ storage: storage });
 const helper = require("../helper/jwt");
 const username = require("../helper/username");
 const dashboardCount = require("../Controller/dashbordController");
+const subMerchant = require("../Controller/subMerchant.js");
 // const email_validate = require("../helper/email-validation");
 
 const views = path.join(__dirname, "../views/");
@@ -290,3 +291,5 @@ route.post(
   helper.verify,
   BusinesSetting.download
 );
+
+route.post('/submerchant',helper.verify,subMerchant.dafault)

@@ -20,5 +20,6 @@ export const top_transaction_today = (data) =>api.post("top_transaction_today", 
 export const statusResult = () => api.post("statusResult");
 // CHANGEPASSWORD
 export const changePass = (data) => api.post("changePassword-merchant", data);
+export const subMerchant = () => api.post("submerchant");
 
 export default api;

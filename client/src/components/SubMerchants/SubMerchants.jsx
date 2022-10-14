@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import TableComp from "./TableComp";
 import Pagination from "@mui/material/Pagination";
 import CreateSubMer from "./CreateSubMer";
+import { subMerchant } from "../../Api";
 
 
 const Footer = ({ setPage, page, totalPage }) => {
@@ -33,9 +34,17 @@ const Footer = ({ setPage, page, totalPage }) => {
 
 
 function SubMerchants() {
-  const [tableBodyData, setTableBodyData] = useState([{actype:1,name:"Shiv",id:23432356,status:0,wp:0,ct:"2022-09-30T10:44:45.000Z"}]);
+  const [tableBodyData, setTableBodyData] = useState([]);
   const [page, setPage] = useState(1);
+  const fetchData= async()=>{
+    const {data} =  await subMerchant()
+    setTableBodyData(data.data);
+    }
+  useEffect(()=>{
+    fetchData()
+  },[])
 
+ 
   return (
     <>
       <h4 className="heading animate__backInDown">Sub Merchants</h4>

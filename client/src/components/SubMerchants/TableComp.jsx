@@ -42,25 +42,25 @@ function TableComp({ tableBodyData }) {
                 key={index}
               >
                 <TableCell>
-                  {item.actype === 1 ? (
+                  {item.account_type === 0 ? (
                     <div className="normail">Normal</div>
                   ) : (
                     ""
                   )}
                 </TableCell>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.id}</TableCell>
+                <TableCell>{item.fname + item.lname}</TableCell>
+                <TableCell align="center">{item.id}</TableCell>
                 <TableCell>
-                  {item.status === 0 ? (
+                  {item.status === 1 ? (
                     <div className="approved">Approve</div>
                   ) : (
-                    ""
+                    <div className="approved">Approve</div>
                   )}
                 </TableCell>
                 <TableCell>
-                  {item.wp === 0 ? <div className="approved">Approve</div> : ""}
+                  {item.allow_webpayment === 1 ? <div className="approved">Approve</div> :  <div className="approved">Not Approve</div>}
                 </TableCell>
-                <TableCell>{item.ct}</TableCell>
+                <TableCell>{item.created_on}</TableCell>
                 <TableCell>
                   <div aria-describedby={id} onClick={handleClick}>
                     <MoreVertIcon style={{ cursor: "pointer" }} />
