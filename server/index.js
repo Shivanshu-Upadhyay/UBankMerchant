@@ -17,9 +17,8 @@ app.use(express.json())
 app.use(require('./route/route'));
 
 // run website
-app.listen(process.env.PORT||PORT, (req, res) =>{
-    
-    console.log('http://' + config.DB_HOST + ':' + PORT);
+app.listen(process.env.PORT||PORT, (req, res) =>{  
+  console.log('http://' + config.DB_HOST + ':' + PORT);
 });
 
 
