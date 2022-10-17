@@ -203,7 +203,7 @@ const DialogOpenModel = ({ formData }) => {
           onClick={handleClickOpen}
           style={{ cursor: "pointer", fontWeight: "700", marginTop: "10px" }}
         >
-          View Details
+          View 
         </h6>
         <Dialog
           open={open}

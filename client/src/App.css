@@ -81,6 +81,16 @@ textarea.createInvoiceTeaxtArea{
   border-radius: 30px;
   color: #fff;
 }
+.createNewMerchant2Close{
+  padding: 8px 30px;
+  text-align: center;
+  font-weight: 600;
+  display: flex;
+  background-color: #8bbd4b;
+  border: none;
+  border-radius: 30px;
+  color: #fff;
+}
 
 .normail{
   text-align: center;
@@ -98,3 +108,8 @@ textarea.createInvoiceTeaxtArea{
   background-color: #28a745;
   border-radius: 30px;
 }
+
+.css-3bmhjh-MuiPaper-root-MuiPopover-paper{
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px !important;
+}
+
