@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
-const port = 9240;
+require('dotenv').config()
+const PORT = 9240;
 const config = require('./config/config.js');
 const cors = require("cors");
 // Cors error
@@ -16,9 +17,9 @@ app.use(express.json())
 app.use(require('./route/route'));
 
 // run website
-app.listen(port, (req, res) =>{
+app.listen(process.env.PORT||PORT, (req, res) =>{
     
-    console.log('http://' + config.DB_HOST + ':' + port);
+    console.log('http://' + config.DB_HOST + ':' + PORT);
 });
 
 
