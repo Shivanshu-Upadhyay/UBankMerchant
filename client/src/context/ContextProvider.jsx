@@ -4,7 +4,7 @@ const StateContext = createContext();
 
 function ContextProvider({ children }) {
   const [downloadStatement, setDownloadStatement] = useState([]);
-  const [isLoginUser, setIsLoginUser] = useState(false);
+  const [isLoginUser, setIsLoginUser] = useState(localStorage.getItem('user'));
   const [timeZoneVal,setTimeZoneVal] = useState('')
   return (
     <StateContext.Provider

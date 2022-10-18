@@ -42,6 +42,7 @@ label {
 
 .input1 {
   border: none;
+  outline: none !important;
   text-align: center;
   color: #000000 ;
   font-weight: 700;
