@@ -27,8 +27,6 @@ var storage = multer.diskStorage({
   },
 });
 const uploads = multer({ storage: storage });
-
-const helper = require("../helper/jwt");
 const username = require("../helper/username");
 const dashboardCount = require("../Controller/dashbordController");
 const subMerchant = require("../Controller/subMerchant.js");

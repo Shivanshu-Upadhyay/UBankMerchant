@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Grid } from "@mui/material";
 import "./changePass.css";
-import { changePass } from "../../Api";
+import { changePass } from "../../Api/Index";
 function ChangePassword() {
   return (
     <>

@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import "../Currency/currency.css";
 import "./transition.css";
-import { top_transaction_today } from "../../../Api/index";
+import { top_transaction_today } from "../../../Api/Index";
 function Transition() {
   const [tab, setTab] = useState(3);
   const [todayData, setTodayData] = useState([]);

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import TableComp from "./TableComp";
 import Pagination from "@mui/material/Pagination";
 import CreateSubMer from "./CreateSubMer";
-import { subMerchant } from "../../Api";
-
+import axios from "axios";
+import baseUrl from "../config/baseUrl";
 
 const Footer = ({ setPage, page, totalPage }) => {
   const pageNumber = (e, p) => {
@@ -37,9 +37,23 @@ function SubMerchants() {
   const [tableBodyData, setTableBodyData] = useState([]);
   const [page, setPage] = useState(1);
   const fetchData= async()=>{
-    const {data} =  await subMerchant()
-    console.log(data);
-    setTableBodyData(data.data);
+    try {
+      const auth = localStorage.getItem("user");
+      const formData = new FormData()
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+        Authorization: `Bearer ${auth}`,
+      },
+    };
+      const {data} = await axios.post(`${baseUrl}/submerchant`,formData,config)
+      console.log(data);
+      setTableBodyData(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+    
+    
     }
   useEffect(()=>{
     fetchData()

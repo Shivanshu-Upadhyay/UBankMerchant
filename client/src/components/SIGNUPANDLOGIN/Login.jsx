@@ -11,8 +11,7 @@ import { useStateContext } from "../../context/ContextProvider.jsx";
 import CachedIcon from "@mui/icons-material/Cached";
 const LogInForm = () => {
   useEffect(() => {
-    AOS.init();
-   
+    AOS.init(); 
   }, []);
 
   const [email, setEmail] = useState("");
@@ -37,7 +36,6 @@ const LogInForm = () => {
       .post(`${baseUrl}/login`, formData, config)
       .then((response) => {
         setMessage((message = response.data.message));
-        console.log(response.data.data.token);
         console.log(response.data.data.token);
         if (response.data.is_complete === 1) {
           setToken(response.data.data.token)
