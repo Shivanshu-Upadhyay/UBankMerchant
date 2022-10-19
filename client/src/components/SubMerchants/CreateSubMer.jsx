@@ -37,7 +37,7 @@ const CreateSubMer = ({ReadOnlyVal,formData}) => {
   const handleClose = () => {
     setOpen(false);
   };
-console.log(formData);
+
   return (
     <>
       <div>

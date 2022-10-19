@@ -704,6 +704,7 @@ const loginCont = {
     }
   },
 
+
   get_countries: async function (req, res) {
     // console.log('solution : ', req.user);
     try {

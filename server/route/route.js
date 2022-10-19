@@ -9,7 +9,7 @@ const reportsController = require("../Controller/reportsController");
 const invoiceController = require("../Controller/invoiceController");
 const changePassController = require("../Controller/changePassController");
 const BusinesSetting = require("../Controller/businesSetting");
-
+const authMiddleware = require('../middleware/authMiddleware')
 const route = require("express").Router();
 const path = require("path");
 const multer = require("multer");
@@ -46,26 +46,26 @@ route.post("/register", uploads.none(), loginController.register);
 route.post(
   "/save-company-profile",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   loginController.company_profile
 );
 
 route.post(
   "/save_shareholder_info",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   loginController.save_shareholder_info
 );
 route.post(
   "/save_business_info",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   loginController.save_business_info
 );
 route.post(
   "/save_settelment_info",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   loginController.save_settelment_info
 );
 
@@ -75,86 +75,86 @@ route.post("/login", uploads.none(), loginController.login);
 route.post(
   "/country-list",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   loginController.get_countries
 );
 route.post(
   "/solution-apply",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   loginController.get_solution_apply
 );
 route.post(
   "/save-country-solution-apply",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   loginController.save_country_solution_apply
 );
 route.post(
   "/save-director-info",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   loginController.save_director_info
 );
 
-route.post("/qusAns", uploads.none(), helper.verify, loginController.qusAns);
+route.post("/qusAns", uploads.none(), authMiddleware, loginController.qusAns);
 
 // dashboard controller
 
 route.post(
   "/top_transaction_today",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   dashbordController.top_transaction_today
 );
 
 route.post(
   "/card_data",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   dashbordController.card_data
 );
 
 route.post(
   "/success_rate",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   dashbordController.success_rate
 );
 route.post(
   "/payment_type",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   dashbordController.payment_type
 );
 route.post(
   "/daily_sale_count_icon",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   dashbordController.daily_sale_count_icon
 );
 route.post(
   "/payout_icon",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   dashbordController.payout_icon
 );
 route.post(
   "/monthly_transaction",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   dashbordController.monthly_transaction
 );
 route.post(
   "/weekly_transaction",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   dashbordController.weekly_transaction
 );
 route.post(
   "/dbycurrency",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   dashbordController.dbycurrency
 );
 
@@ -163,37 +163,37 @@ route.post(
 route.post(
   "/show_all",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   depositsController.defaultOrder
 );
 
 route.get(
   "/downloadReports",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   depositsController.downloadReports
 );
 
 route.post(
   "/statusResult",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   depositsController.statusResult
 );
 route.post(
   "/searchDateFilter",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   depositsController.searchDateFilter
 );
 
 // Payout Router
 
-route.post("/filter", uploads.none(), helper.verify, payoutController.filter);
+route.post("/filter", uploads.none(), authMiddleware, payoutController.filter);
 route.post(
   "/payoutheader",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   payoutController.payoutheader
 );
 
@@ -202,13 +202,13 @@ route.post(
 route.post(
   "/settlemetnt_Trans",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   settlementController.settlemetnt_Trans
 );
 route.post(
   "/requestSettlement",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   settlementController.requestSettlement
 );
 
@@ -217,16 +217,16 @@ route.post(
 route.post(
   "/statement",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   statementController.statement
 );
 
 // teams controller ==============================
-route.post("/default", uploads.none(), helper.verify, teamsController.default);
+route.post("/default", uploads.none(), authMiddleware, teamsController.default);
 route.post(
   "/createEmployee",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   teamsController.createEmployee
 );
 module.exports = route;
@@ -235,13 +235,13 @@ module.exports = route;
 route.post(
   "/invoice",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   invoiceController.allInvoice
 );
 route.post(
   "/new_invoice",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   invoiceController.new_invoice
 );
 
@@ -249,13 +249,13 @@ route.post(
 // route.post(
 //   "/reports",
 //   uploads.none(),
-//   helper.verify,
+//   authMiddleware,
 //   reportsController.reports
 // );
 route.post(
   "/changePassword-merchant",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   changePassController.changePassword
 );
 
@@ -264,32 +264,32 @@ route.post(
 route.post(
   "/accountSummary",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   reportsController.accountSummary
 );
 route.post(
   "/defaultBusinesSettingData",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   BusinesSetting.default
 );
 route.post(
   "/toggleQNA",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   BusinesSetting.toggleQNA
 );
 route.post(
   "/blockToggle",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   BusinesSetting.blockToggle
 );
 route.post(
   "/BusnissDownload",
   uploads.none(),
-  helper.verify,
+  authMiddleware,
   BusinesSetting.download
 );
 
-route.post('/submerchant',helper.verify,subMerchant.dafault)
+route.post('/submerchant',authMiddleware,subMerchant.dafault)

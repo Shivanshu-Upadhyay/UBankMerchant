@@ -38,6 +38,7 @@ function SubMerchants() {
   const [page, setPage] = useState(1);
   const fetchData= async()=>{
     const {data} =  await subMerchant()
+    console.log(data);
     setTableBodyData(data.data);
     }
   useEffect(()=>{
