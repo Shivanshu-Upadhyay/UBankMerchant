@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
+import jwtDecode from "jwt-decode";
 import Dashbord from "../DASHBOARD/Dashbord";
 import Deposit from "../DEPOSIT/Deposit";
 import Virtual from "../VIRTUAlTERMINAL/Virtual";
@@ -24,13 +25,19 @@ import DownloadSetting from "../BUSINESSSETTING/DownloadSetting";
 import Forget from "../SIGNUPANDLOGIN/Forget";
 import SubMerchants from "../SubMerchants/SubMerchants";
 
-
 function Routers() {
   const { isLoginUser,setIsLoginUser } = useStateContext();
-
+  const location = useLocation();
   useEffect(()=>{
+    if(localStorage.getItem('user')){
+      const { exp } = jwtDecode(localStorage.getItem('user'))
+      const expirationTime = (exp * 1000) - 60000
+      if (Date.now() >= expirationTime) {
+        return localStorage.clear()
+      }
+    }
     setIsLoginUser(localStorage.getItem('user')) 
-  },[setIsLoginUser])
+  },[setIsLoginUser,location.pathname])
   
   return (
     <>
