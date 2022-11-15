@@ -56,7 +56,7 @@ const dashboardCount = {
     let {id} = req.user;                      
     try {
       sql =
-        "select status from  tbl_icici_payout_transaction_response_details where users_id = ? AND created_on > CURRENT_TIMESTAMP "; //WHERE users_id = ? user_id
+        "select status from  tbl_icici_payout_transaction_response_details where users_id = ?  "; //WHERE users_id = ? user_id
       let result = await mysqlcon(sql,[id]);
       let total = result.length;
      if(total<1){
@@ -319,7 +319,7 @@ const dashboardCount = {
     
     const currentdate     = new Date(); 
     try {
-      sql = "select payment_type,ammount from tbl_merchant_transaction where users_id = ? AND created_on > CURRENT_TIMESTAMP";
+      sql = "select payment_type,ammount from tbl_merchant_transaction where users_id = ? ";
 
       let result = await mysqlcon(sql,[id]);
       upi_amt = 0;

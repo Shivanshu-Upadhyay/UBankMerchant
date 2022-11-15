@@ -272,7 +272,7 @@ export default function Sidebar() {
               <img
                 src="https://www.bankconnect.online/assets/merchants/img/logo.png"
                 alt=""
-                width="40px"
+                width="200px"
               />
             ) : (
               <img src="./imges/fav-icon.png" alt="" width="36px" />
