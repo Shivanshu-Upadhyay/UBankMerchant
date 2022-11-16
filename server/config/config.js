@@ -12,7 +12,7 @@ const config = {
   DB_NAME: "bankconnect",
 
   // JWT DATA
-  JWT_EXPIRY: "1d",
+  JWT_EXPIRY: "1h",
   JWT_ALGO: "sha512",
   JWT_SECRET: "UBankConnect.15.05.22",
   PWD_SALT: 10,
