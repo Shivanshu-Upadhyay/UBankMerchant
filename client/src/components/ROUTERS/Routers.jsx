@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import Dashbord from "../DASHBOARD/Dashbord";
 import Deposit from "../DEPOSIT/Deposit";
@@ -28,12 +28,15 @@ import SubMerchants from "../SubMerchants/SubMerchants";
 function Routers() {
   const { isLoginUser,setIsLoginUser } = useStateContext();
   const location = useLocation();
+  const reactNavigate = useNavigate()
   useEffect(()=>{
     if(localStorage.getItem('user')){
       const { exp } = jwtDecode(localStorage.getItem('user'))
       const expirationTime = (exp * 1000) - 60000
       if (Date.now() >= expirationTime) {
-        return localStorage.clear()
+        localStorage.clear(); 
+        reactNavigate('/login')
+        return;
       }
     }
     setIsLoginUser(localStorage.getItem('user')) 
