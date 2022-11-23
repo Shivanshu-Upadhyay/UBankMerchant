@@ -219,8 +219,6 @@ const CreateSubMer = ({ReadOnlyVal,formData}) => {
               </button>:<button className="createNewMerchant2" onClick={(e)=>handleSubmit(e)} type='submit'>
                 Create 
               </button>}
-           
-              
               </div>
                 </form>
               </div>
