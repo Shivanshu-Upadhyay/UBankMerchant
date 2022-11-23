@@ -6,6 +6,7 @@ function ContextProvider({ children }) {
   const [downloadStatement, setDownloadStatement] = useState([]);
   const [isLoginUser, setIsLoginUser] = useState(localStorage.getItem('user'));
   const [timeZoneVal,setTimeZoneVal] = useState('')
+  const [accoutType,setAccoutType] = useState('')
   return (
     <StateContext.Provider
       value={{
@@ -13,7 +14,7 @@ function ContextProvider({ children }) {
         setDownloadStatement,
         isLoginUser,
         setIsLoginUser,
-        timeZoneVal,setTimeZoneVal
+        timeZoneVal,setTimeZoneVal,setAccoutType,accoutType
       }}
     >
       {children}

@@ -105,6 +105,8 @@ export default function Sidebar() {
     navigate('login')
   };
 
+  const accountAssign = localStorage.getItem("accoutType")
+
   const sidebarLink = [
     {
       name: "Dashboard",
@@ -177,6 +179,71 @@ export default function Sidebar() {
         "https://www.bankconnect.online/assets/merchants/img/developerImg.png",
       path: "Integrations",
     },
+    {
+      name: "Change Password",
+      iconUrl:
+        "https://www.bankconnect.online/assets/merchants/img/change-password.svg",
+      path: "ChangePassword",
+    },
+    {
+      name: "Logout",
+      iconUrl:
+        "https://www.bankconnect.online/assets/merchants/img/log-out.svg",
+      path: "login",
+    },
+  ];
+  const sidebarLinkManager = [
+    {
+      name: "Dashboard",
+      iconUrl: "https://www.payoway.com/web/assets/admin/icons/dashboard.svg",
+      path: "/Dashbord",
+    },
+   
+    {
+      name: "Deposit",
+      iconUrl:
+        "https://www.bankconnect.online/assets/merchants/img/transactions.svg",
+      path: "Deposit",
+    },
+  
+    {
+      name: "Payout",
+      iconUrl: "https://www.bankconnect.online/assets/merchants/img/payout.svg",
+      path: "payout",
+    },
+   
+    {
+      name: "Reports",
+      iconUrl:
+        "https://www.bankconnect.online/assets/merchants/img/reports.svg",
+      path: "Reports",
+    },
+
+    {
+      name: "Statements",
+      iconUrl:
+        "https://www.bankconnect.online/assets/merchants/img/statements.svg",
+      path: "Statements",
+    },
+    {
+      name: "Invoice",
+      iconUrl:
+        "	https://www.bankconnect.online/assets/merchants/img/billing.svg",
+      path: "Invoice",
+    },
+    {
+      name: "Virtual Terminal",
+      iconUrl:
+        "https://www.bankconnect.online/assets/merchants/img/virtual-terminal.svg",
+      path: "Virtual",
+    },
+    {
+      name: "Teams",
+      iconUrl:
+        "https://www.bankconnect.online/assets/merchants/img/employes.svg",
+      path: "Teams",
+    },
+    
     {
       name: "Change Password",
       iconUrl:
@@ -399,7 +466,38 @@ export default function Sidebar() {
         <br />
 
         <List className="my-5">
-          {sidebarLink.map((item, index) => {
+          { Number(accountAssign)===2? sidebarLinkManager.map((item, index) => {
+            return (
+              <div className="sidebarcontainer mb-3 " key={index}>
+                <NavLink
+                  to={item.path}
+                  className={({ isActive }) =>
+                    isActive
+                      ? " iconcontainer mx-3 iconActive"
+                      : " iconcontainer mx-3"
+                  }
+                >
+                  <img
+                    src={item.iconUrl}
+                    alt="not found"
+                    className="iconstyle"
+                  />
+                </NavLink>
+
+                <div>
+                  <NavLink
+                    to={item.path}
+                    className={({ isActive }) =>
+                      isActive ? "linkNAme activeClass mx-2" : "linkNAme mx-2"
+                    }
+                    onClick={() => (item.name === "Logout" ? logout() : null)}
+                  >
+                    {item.name}
+                  </NavLink>
+                </div>
+              </div>
+            );
+          }) :sidebarLink.map((item, index) => {
             return (
               <div className="sidebarcontainer mb-3 " key={index}>
                 <NavLink

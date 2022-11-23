@@ -21,7 +21,7 @@ const LogInForm = () => {
   const [step, setStep] = useState(0);
   const [qus, setQus] = useState([]);
   const [userName, setUserName] = useState('');
-  const { setIsLoginUser } = useStateContext();
+  const { setIsLoginUser,setAccoutType,accoutType } = useStateContext();
 
   const natigate = useNavigate();
   const handleSubmit = async (e) => {
@@ -37,8 +37,10 @@ const LogInForm = () => {
       .then((response) => {
         setMessage((message = response.data.message));
         console.log(response.data.data.token);
+        console.log(response.data.data?.account_type,"accou");
         if (response.data.is_complete === 1) {
           setToken(response.data.data.token)
+          setAccoutType(response.data.data?.account_type)
           if(response.data.data.security_status===1){
             setQus(response.data.questionAnswer);
             setUserName(response.data.data.name)
@@ -48,6 +50,7 @@ const LogInForm = () => {
         localStorage.setItem("user", response.data.data.token);
         localStorage.setItem('timeZone',JSON.stringify({name:"India",timeZone:"Asia/Kolkata"}))
         localStorage.setItem("userName",response.data.data.name)
+        localStorage.setItem("accoutType",response.data.data?.account_type)
         natigate("/Dashbord");
         }     
         } else if (response.data.is_complete === 2) {
@@ -98,6 +101,7 @@ const LogInForm = () => {
         localStorage.setItem("user", Token);
         localStorage.setItem('timeZone',JSON.stringify({name:"India",timeZone:"Asia/Kolkata"}))
         localStorage.setItem("userName",userName)
+        localStorage.setItem("accoutType",accoutType)
         natigate("/Dashbord");
       } else {
         toast.error("Answer is not Matched❌❌", {

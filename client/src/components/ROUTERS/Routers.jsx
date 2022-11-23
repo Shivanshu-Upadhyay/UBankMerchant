@@ -26,7 +26,7 @@ import Forget from "../SIGNUPANDLOGIN/Forget";
 import SubMerchants from "../SubMerchants/SubMerchants";
 
 function Routers() {
-  const { isLoginUser,setIsLoginUser } = useStateContext();
+  const { isLoginUser,setIsLoginUser,setAccoutType,accoutType } = useStateContext();
   const location = useLocation();
   const reactNavigate = useNavigate()
   useEffect(()=>{
@@ -40,6 +40,8 @@ function Routers() {
       }
     }
     setIsLoginUser(localStorage.getItem('user')) 
+    setAccoutType(localStorage.getItem('accoutType')) 
+
   },[setIsLoginUser,location.pathname])
   
   return (
@@ -47,6 +49,32 @@ function Routers() {
       <Routes>
         {isLoginUser ? (
           <>
+            {Number(accoutType)===2?<Route path="/" element={<Sidebar />}>
+              <Route path="Dashbord" element={<Dashbord />} />            
+              <Route path="Deposit" element={<Deposit />} />
+              <Route path="payout" element={<Payout />} />             
+              <Route path="Reports" element={<Reports />} />
+              <Route path="Statements" element={<Statements />} />  
+              <Route path="Invoice" element={<Invoice />} />           
+              <Route path="Virtual" element={<Virtual />} />
+              <Route path="Teams" element={<Teams />} />            
+              <Route path="ChangePassword" element={<ChangePassword />} />
+            </Route>:<Route path="/" element={<Sidebar />}>
+              <Route path="Dashbord" element={<Dashbord />} />
+              <Route path="SubMerchants" element={<SubMerchants />} />
+              <Route path="Deposit" element={<Deposit />} />
+              <Route path="payout" element={<Payout />} />
+              <Route path="Settlement" element={<Settlement />} />
+              <Route path="Reports" element={<Reports />} />
+              <Route path="Statements" element={<Statements />} />
+              <Route path="Invoice" element={<Invoice />} />
+              <Route path="Virtual" element={<Virtual />} />
+              <Route path="Teams" element={<Teams />} />
+              <Route path="BusinessSetting" element={<BusinessSetting />} />
+              <Route path="Integrations" element={<Integrations />} />
+              <Route path="ChangePassword" element={<ChangePassword />} />
+              <Route path="CreateInvoice" element={<CreateInvoice />} />
+            </Route> }
             <Route path="/" element={<Sidebar />}>
               <Route path="Dashbord" element={<Dashbord />} />
               <Route path="SubMerchants" element={<SubMerchants />} />

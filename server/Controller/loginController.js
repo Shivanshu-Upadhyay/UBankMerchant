@@ -580,13 +580,11 @@ const loginCont = {
           var password = request.password;
           if (password) {
             sql = "SELECT * FROM tbl_user where email = ? AND password = ?";
-            console.log(request.email);
-            console.log(request.password);
             var dbquery = await mysqlcon(sql, [
               request.email,
               md5(request.password),
             ]);
-            console.log(dbquery);
+            console.log(dbquery[0].account_type);
 
             if (dbquery[0]) {
               if (dbquery[0].complete_profile == 1) {
@@ -629,6 +627,7 @@ const loginCont = {
                       message: "Login successfully",
                       questionAnswer,
                       data: dbquery[0],
+                      account_Type: dbquery[0].account_type,
                     });
                 } else {
                   res
