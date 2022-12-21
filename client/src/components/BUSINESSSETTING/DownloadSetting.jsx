@@ -2,6 +2,7 @@ import React, { useState, useEffect} from 'react';
 import { useStateContext } from "../../context/ContextProvider";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import printJS from 'print-js'
 import baseUrl from "../config/baseUrl.js";
 const token = localStorage.getItem("user");
 
@@ -54,7 +55,7 @@ const DownloadTable = () => {
         <thead>
           <tr style={{ background: "#000", color: "#fff" }}>
             <th scope="col" colSpan={4}>
-              <b>Profile</b>
+              {/* <b>Profile</b> */}
             </th>
             <th></th>
           </tr>
@@ -138,11 +139,11 @@ const DownloadTable = () => {
             <th colSpan={4}>Solutions and Payment Methods</th>
             <td>
               <div>
-                {uniqueSolution.map((item, index) => {
+                {uniqueSolution?.map((item, index) => {
                   return (
                     <>
                       <h6 key={index}>{item.country}   ({item.sortname})</h6>
-                      {mode_solution.map((item,index)=>{
+                      {mode_solution?.map((item,index)=>{
                         return(
                           <>
                             <li>{item.name} - {item.type}</li>

@@ -30,6 +30,11 @@ function Routers() {
   const location = useLocation();
   const reactNavigate = useNavigate()
   useEffect(()=>{
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth"
+    });
     if(localStorage.getItem('user')){
       const { exp } = jwtDecode(localStorage.getItem('user'))
       const expirationTime = (exp * 1000) - 60000

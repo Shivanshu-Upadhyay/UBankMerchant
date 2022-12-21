@@ -265,7 +265,7 @@ const TeamTable = ({ tableBodyData }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {tableBodyData.map((item, index) => {
+            {tableBodyData?.map((item, index) => {
               return (
                 <TableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -284,7 +284,7 @@ const TeamTable = ({ tableBodyData }) => {
                       ? "Cashier"
                       : "Reporter"}
                   </TableCell>
-                  <TableCell >{convertTZ(item.last_login,JSON.parse(localStorage.getItem('timeZone')).timeZone)}</TableCell>
+                  <TableCell >{convertTZ(item.created_on,JSON.parse(localStorage.getItem('timeZone')).timeZone)}</TableCell>
                   <TableCell>
                     {item.status ? (
                       <button className="enable">Enabled</button>
