@@ -2,7 +2,6 @@ import React, { useState, useEffect} from 'react';
 import { useStateContext } from "../../context/ContextProvider";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import printJS from 'print-js'
 import baseUrl from "../config/baseUrl.js";
 const token = localStorage.getItem("user");
 
